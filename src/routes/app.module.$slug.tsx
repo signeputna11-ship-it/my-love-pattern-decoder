@@ -1,0 +1,322 @@
+import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft, CheckCircle2, Loader2, Save, Download, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import jsPDF from "jspdf";
+
+type Module = {
+  id: string;
+  slug: string;
+  position: number;
+  title: string;
+  subtitle: string | null;
+  intro: string | null;
+};
+type Exercise = {
+  id: string;
+  position: number;
+  kind: "prompt" | "checklist";
+  title: string;
+  body: string | null;
+  options: string[] | null;
+};
+
+export const Route = createFileRoute("/app/module/$slug")({
+  component: ModulePage,
+});
+
+function ModulePage() {
+  const { slug } = useParams({ from: "/app/module/$slug" });
+  const [module, setModule] = useState<Module | null>(null);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [answers, setAnswers] = useState<Record<string, { text: string; data: any }>>({});
+  const [completed, setCompleted] = useState(false);
+  const [userId, setUserId] = useState<string>("");
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const saveTimers = useRef<Record<string, any>>({});
+
+  useEffect(() => {
+    const load = async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      const uid = sess.session?.user.id;
+      if (!uid) return;
+      setUserId(uid);
+
+      const { data: mod } = await supabase
+        .from("modules")
+        .select("*")
+        .eq("slug", slug)
+        .maybeSingle();
+      if (!mod) return;
+      setModule(mod as Module);
+
+      const { data: exs } = await supabase
+        .from("exercises")
+        .select("*")
+        .eq("module_id", (mod as any).id)
+        .order("position");
+      setExercises((exs as Exercise[]) ?? []);
+
+      const { data: existing } = await supabase
+        .from("user_answers")
+        .select("exercise_id, answer_text, answer_data")
+        .eq("user_id", uid);
+
+      const map: Record<string, { text: string; data: any }> = {};
+      ((existing as any[]) ?? []).forEach((a) => {
+        map[a.exercise_id] = { text: a.answer_text ?? "", data: a.answer_data ?? null };
+      });
+      setAnswers(map);
+
+      const { data: prog } = await supabase
+        .from("user_progress")
+        .select("completed_at")
+        .eq("user_id", uid)
+        .eq("module_id", (mod as any).id)
+        .maybeSingle();
+      setCompleted(!!prog?.completed_at);
+
+      // mark started
+      await supabase
+        .from("user_progress")
+        .upsert(
+          { user_id: uid, module_id: (mod as any).id, started_at: new Date().toISOString() },
+          { onConflict: "user_id,module_id", ignoreDuplicates: true },
+        );
+    };
+    load();
+  }, [slug]);
+
+  const persist = async (exerciseId: string, text: string, data: any) => {
+    if (!userId) return;
+    setSavingId(exerciseId);
+    await supabase.from("user_answers").upsert(
+      {
+        user_id: userId,
+        exercise_id: exerciseId,
+        answer_text: text,
+        answer_data: data,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "user_id,exercise_id" },
+    );
+    setSavingId(null);
+  };
+
+  const updateAnswer = (id: string, text: string, data: any) => {
+    setAnswers((prev) => ({ ...prev, [id]: { text, data } }));
+    if (saveTimers.current[id]) clearTimeout(saveTimers.current[id]);
+    saveTimers.current[id] = setTimeout(() => persist(id, text, data), 800);
+  };
+
+  const saveAll = async () => {
+    for (const ex of exercises) {
+      const a = answers[ex.id] ?? { text: "", data: null };
+      await persist(ex.id, a.text, a.data);
+    }
+    toast.success("Progress saved");
+  };
+
+  const markComplete = async () => {
+    if (!module || !userId) return;
+    await saveAll();
+    await supabase
+      .from("user_progress")
+      .upsert(
+        {
+          user_id: userId,
+          module_id: module.id,
+          completed_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id,module_id" },
+      );
+    setCompleted(true);
+    toast.success("Module complete");
+  };
+
+  const downloadPdf = () => {
+    if (!module) return;
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const margin = 48;
+    let y = margin;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text(module.title, margin, y);
+    y += 14;
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(11);
+    if (module.subtitle) {
+      doc.text(module.subtitle, margin, y + 8);
+      y += 24;
+    }
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+
+    exercises.forEach((ex, i) => {
+      if (y > 740) {
+        doc.addPage();
+        y = margin;
+      }
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      const heading = `${i + 1}. ${ex.title}`;
+      doc.text(heading, margin, y);
+      y += 18;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(11);
+      if (ex.kind === "prompt") {
+        const text = answers[ex.id]?.text || "—";
+        const lines = doc.splitTextToSize(text, 500);
+        doc.text(lines, margin, y);
+        y += lines.length * 14 + 10;
+      } else {
+        const data = (answers[ex.id]?.data as Record<string, boolean>) || {};
+        (ex.options ?? []).forEach((opt) => {
+          const mark = data[opt] ? "[x]" : "[ ]";
+          doc.text(`${mark} ${opt}`, margin, y);
+          y += 14;
+        });
+        y += 6;
+      }
+    });
+
+    doc.save(`${module.slug}-my-love-pattern.pdf`);
+  };
+
+  if (!module) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-white/50" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+      <Link
+        to="/app"
+        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50 hover:text-white"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" /> Dashboard
+      </Link>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="mt-6"
+      >
+        <p className="text-xs uppercase tracking-[0.3em] text-white/50">Module {module.position}</p>
+        <h1 className="mt-2 font-serif text-4xl sm:text-5xl">{module.title}</h1>
+        {module.subtitle && (
+          <p className="mt-2 font-serif italic text-lg text-white/70">{module.subtitle}</p>
+        )}
+      </motion.div>
+
+      {module.intro && (
+        <div className="mt-6 liquid-glass-strong rounded-3xl p-6 text-sm leading-relaxed text-white/80">
+          {module.intro}
+        </div>
+      )}
+
+      <div className="mt-8 space-y-4">
+        {exercises.map((ex, i) => {
+          const a = answers[ex.id] ?? { text: "", data: {} };
+          return (
+            <motion.div
+              key={ex.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.04 }}
+              className="liquid-glass rounded-3xl p-5 sm:p-6"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-white/40">
+                    {ex.kind === "checklist" ? "Commitment" : `Question ${i + 1}`}
+                  </p>
+                  <h3 className="mt-1 font-serif text-xl">{ex.title}</h3>
+                  {ex.body && <p className="mt-1.5 text-sm text-white/60">{ex.body}</p>}
+                </div>
+                {savingId === ex.id && (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-white/40" />
+                )}
+              </div>
+
+              {ex.kind === "prompt" ? (
+                <textarea
+                  value={a.text}
+                  onChange={(e) => updateAnswer(ex.id, e.target.value, null)}
+                  rows={4}
+                  placeholder="Write what comes up. Nothing is wrong."
+                  className="mt-4 w-full rounded-2xl bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+                />
+              ) : (
+                <div className="mt-4 space-y-2">
+                  {(ex.options ?? []).map((opt) => {
+                    const data = (a.data as Record<string, boolean>) || {};
+                    const checked = !!data[opt];
+                    return (
+                      <label
+                        key={opt}
+                        className="flex cursor-pointer items-center gap-3 rounded-2xl bg-black/20 px-4 py-3 text-sm transition hover:bg-black/30"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) => {
+                            const nextData = { ...data, [opt]: e.target.checked };
+                            updateAnswer(ex.id, "", nextData);
+                          }}
+                          className="h-4 w-4 accent-white"
+                        />
+                        <span>{opt}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <div className="mt-8 liquid-glass-strong rounded-3xl p-5 sm:p-6">
+        <div className="flex items-start gap-3">
+          <Sparkles className="mt-1 h-5 w-5 text-white/70" />
+          <div>
+            <p className="text-xs uppercase tracking-widest text-white/40">Your AI guide</p>
+            <p className="mt-1 text-sm text-white/80">
+              Once you've answered, you'll see a single focused next step here — based on what
+              you wrote. Coming next.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <button
+          onClick={saveAll}
+          className="flex items-center justify-center gap-2 rounded-full liquid-glass px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
+        >
+          <Save className="h-4 w-4" /> Save progress
+        </button>
+        <button
+          onClick={downloadPdf}
+          className="flex items-center justify-center gap-2 rounded-full liquid-glass px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
+        >
+          <Download className="h-4 w-4" /> Download my answers
+        </button>
+        <button
+          onClick={markComplete}
+          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black hover:bg-white/90"
+        >
+          <CheckCircle2 className="h-4 w-4" />
+          {completed ? "Completed — re-confirm" : "Mark module complete"}
+        </button>
+      </div>
+    </div>
+  );
+}
