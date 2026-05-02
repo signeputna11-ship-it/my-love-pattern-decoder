@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -37,8 +36,8 @@ export function Nav() {
     { label: "Home", href: "#top" },
     { label: "Patterns", href: "#patterns" },
     { label: "Diagnosis", href: "#diagnosis" },
-    { label: "Toolkit", href: "#toolkit" },
-    { label: "Experience", href: "#experience" },
+    { label: "Reset", href: "#toolkit" },
+    { label: "Path", href: "#experience" },
   ];
 
   return (
@@ -48,7 +47,12 @@ export function Nav() {
           <span className="grid h-8 w-8 place-items-center rounded-full bg-white/10">
             <Sparkles className="h-4 w-4" />
           </span>
-          <span className="font-serif text-lg">Healthy Love</span>
+          <span className="flex flex-col leading-tight">
+            <span className="font-serif text-lg">My Love Pattern</span>
+            <span className="hidden text-[10px] text-white/55 sm:block">
+              Understand why it keeps happening.
+            </span>
+          </span>
         </a>
         <nav className="hidden items-center gap-7 md:flex">
           {links.map((link) => (
@@ -65,7 +69,7 @@ export function Nav() {
           href="#diagnosis"
           className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-black md:inline-flex"
         >
-          Start Diagnosis
+          Find My Pattern
         </a>
         <button
           onClick={() => setOpen(!open)}
@@ -98,34 +102,27 @@ export function Hero() {
   return (
     <section id="top" className="relative min-h-screen overflow-hidden bg-black">
       <BackgroundVideo src={VIDEOS.hero} />
-      <div className="absolute inset-0 z-[1] bg-black/55" />
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 pt-32 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="liquid-glass mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-white/80"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-white" />
-          New · Relationship Pattern Observatory
-        </motion.div>
+      <div className="absolute inset-0 bg-black/50" />
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, delay: 0.1 }}
+          transition={{ duration: 1.1 }}
           className="font-serif text-5xl leading-[1.05] text-white text-balance md:text-7xl"
         >
-          Your heart knows the pattern before your mind can{" "}
-          <em className="italic text-white/80">name it.</em>
+          You don't have a dating problem.
+          <br />
+          <em className="italic text-white/85">You have a pattern.</em>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.25 }}
-          className="mt-6 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg"
+          transition={{ duration: 1, delay: 0.2 }}
+          className="mt-8 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg"
         >
-          A guided self-worth and relationship clarity system for people who keep getting pulled
-          toward mixed signals, unavailable partners, and the fear of not being chosen.
+          You keep getting pulled into the same kind of connection —
+          mixed signals, uncertainty, emotional highs and lows.
+          This shows you exactly why… and what to do instead.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -137,15 +134,18 @@ export function Hero() {
             href="#diagnosis"
             className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
           >
-            Start Pattern Diagnosis <ArrowUpRight className="h-4 w-4" />
+            Find My Pattern <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
-            href="#toolkit"
+            href="#patterns"
             className="liquid-glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white"
           >
-            Explore Toolkit
+            See How It Works
           </a>
         </motion.div>
+        <p className="mt-6 text-xs text-white/55">
+          Most people recognize their pattern in under 2 minutes
+        </p>
       </div>
     </section>
   );
@@ -155,20 +155,16 @@ export function PatternSection() {
   return (
     <section id="patterns" className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.pattern} />
-      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
-            // Pattern types
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+            // You've seen this before…
           </p>
           <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
-            The pattern is not random.{" "}
-            <em className="italic text-white/70">It is readable.</em>
+            One of these is{" "}
+            <em className="italic text-white/75">already yours.</em>
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-white/65">
-            Your diagnosis turns vague relationship pain into a named pattern, a clear trigger map,
-            and a next action.
-          </p>
         </div>
 
         <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -188,14 +184,11 @@ export function PatternSection() {
                     <Icon className="h-5 w-5 text-white" />
                   </span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-white/45">
-                    Profile {i + 1}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
                 <h3 className="mt-5 font-serif text-2xl text-white">{p.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/70">{p.description}</p>
-                <p className="mt-5 border-t border-white/10 pt-4 text-xs italic text-white/55">
-                  {p.signal}
-                </p>
+                <p className="mt-3 text-sm leading-relaxed text-white/75">{p.description}</p>
               </motion.div>
             );
           })}
@@ -225,18 +218,17 @@ export function Diagnosis() {
   return (
     <section id="diagnosis" className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.diagnosis} />
-      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto max-w-4xl px-6">
         <div className="text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
             // Diagnosis
           </p>
           <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
-            Meet your <em className="italic text-white/70">relationship profile.</em>
+            This takes 60 seconds.
+            <br />
+            <em className="italic text-white/75">You'll see your pattern clearly.</em>
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-white/65">
-            Answer four questions. Get a fast pattern read. Then unlock the full reset experience.
-          </p>
           <div className="mx-auto mt-8 h-1 w-64 overflow-hidden rounded-full bg-white/10">
             <div
               className="h-full bg-white transition-all duration-500"
@@ -269,7 +261,7 @@ export function Diagnosis() {
                             className={`rounded-2xl px-4 py-3 text-left text-sm leading-5 transition ${
                               active
                                 ? "bg-white text-black"
-                                : "bg-white/[0.04] text-white/75 hover:bg-white/[0.08]"
+                                : "bg-white/[0.04] text-white/80 hover:bg-white/[0.08]"
                             }`}
                           >
                             {opt.label}
@@ -296,30 +288,33 @@ export function Diagnosis() {
               className="liquid-glass-strong rounded-3xl p-8 md:p-12"
             >
               <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">
-                Your Relationship Pattern Profile
+                Your Pattern
               </p>
               <h3 className="mt-3 font-serif text-4xl text-white md:text-5xl">{result.title}</h3>
-              <p className="mt-4 max-w-2xl text-white/70">{result.description}</p>
+              <p className="mt-4 max-w-2xl text-white/80">{result.description}</p>
 
               <div className="mt-10 grid gap-5 md:grid-cols-3">
                 <div className="rounded-2xl border border-white/10 p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">01</p>
-                  <p className="mt-2 font-serif text-lg text-white">What is happening</p>
-                  <p className="mt-2 text-sm text-white/70">{result.signal}</p>
+                  <p className="mt-2 font-serif text-lg text-white">What's actually happening</p>
+                  <p className="mt-2 text-sm text-white/75">
+                    You move closer when connection feels uncertain.
+                  </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">02</p>
                   <p className="mt-2 font-serif text-lg text-white">Why it repeats</p>
-                  <p className="mt-2 text-sm text-white/70">
-                    Your nervous system treats familiar uncertainty as chemistry, then turns
-                    attention into evidence of worth.
+                  <p className="mt-2 text-sm text-white/75">
+                    Your nervous system reads inconsistency as something to solve —
+                    not something to step away from.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">03</p>
-                  <p className="mt-2 font-serif text-lg text-white">Next action</p>
-                  <p className="mt-2 text-sm text-white/70">
-                    Pause the chase, track behavior, and let consistency decide access to you.
+                  <p className="mt-2 font-serif text-lg text-white">What changes everything</p>
+                  <p className="mt-2 text-sm text-white/75">
+                    You stop responding to intensity
+                    and start responding to consistency.
                   </p>
                 </div>
               </div>
@@ -329,7 +324,7 @@ export function Diagnosis() {
                   href="#toolkit"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black"
                 >
-                  Unlock Full Reset Experience <ArrowUpRight className="h-4 w-4" />
+                  Unlock My Reset <ArrowUpRight className="h-4 w-4" />
                 </a>
                 <button
                   onClick={() => {
@@ -338,7 +333,7 @@ export function Diagnosis() {
                   }}
                   className="liquid-glass rounded-full px-7 py-3.5 text-sm font-semibold text-white"
                 >
-                  Retake Diagnosis
+                  Retake
                 </button>
               </div>
             </motion.div>
@@ -350,28 +345,32 @@ export function Diagnosis() {
 }
 
 export function Toolkit() {
+  const transformations = [
+    "You stop overthinking messages",
+    "You stop chasing clarity",
+    "You stop mistaking anxiety for chemistry",
+    "You start choosing based on behavior",
+  ];
+
   return (
     <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.toolkit} />
-      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid items-start gap-12 lg:grid-cols-2">
           <div>
-            <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
-              // Full reset experience
-            </p>
             <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
-              Turn insight into a new{" "}
-              <em className="italic text-white/70">relationship standard.</em>
+              This is where things{" "}
+              <em className="italic text-white/75">actually change.</em>
             </h2>
-            <p className="mt-6 max-w-lg text-white/65">
-              A guided digital system with trackers, scripts, worksheets, and self-soothing
-              protocols to move from anxious interpretation to clear action.
+            <p className="mt-6 max-w-lg text-white/75">
+              You don't need more advice.
+              You need a way to stop repeating the same pattern in real time.
             </p>
 
             <ul className="mt-10 space-y-3">
-              {toolkit.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-sm text-white/85">
+              {transformations.map((item) => (
+                <li key={item} className="flex items-center gap-3 text-base text-white/90">
                   <span className="grid h-6 w-6 place-items-center rounded-full bg-white/10">
                     <Check className="h-3.5 w-3.5 text-white" />
                   </span>
@@ -379,12 +378,24 @@ export function Toolkit() {
                 </li>
               ))}
             </ul>
+
+            <div className="mt-10 border-t border-white/10 pt-6">
+              <p className="text-xs uppercase tracking-widest text-white/45">Inside</p>
+              <ul className="mt-4 grid gap-2 text-sm text-white/70 sm:grid-cols-2">
+                {toolkit.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-2 h-1 w-1 rounded-full bg-white/40" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="liquid-glass-strong rounded-3xl p-8 md:p-10">
             <div className="flex items-baseline justify-between">
               <div>
-                <p className="font-serif text-2xl text-white">Healthy Love System</p>
+                <p className="font-serif text-2xl text-white">My Reset</p>
                 <p className="mt-1 text-xs uppercase tracking-widest text-white/45">
                   Lifetime access
                 </p>
@@ -394,22 +405,16 @@ export function Toolkit() {
 
             <div className="my-8 h-px w-full bg-white/10" />
 
-            <p className="text-sm text-white/70">
-              Best for buyers who want immediate clarity, practical boundaries, and a structured
-              path through the emotional pattern.
+            <p className="text-sm text-white/75">
+              For people who already know the pattern — and are ready to stop living it.
             </p>
 
-            {/*
-              Future: connect this button to Stripe Checkout.
-              After successful payment, redirect buyers to /experience.
-              Supabase can later store user purchase + module progress.
-            */}
             <button className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-black">
-              Purchase the Experience <ArrowUpRight className="h-4 w-4" />
+              Get My Reset (€49) <ArrowUpRight className="h-4 w-4" />
             </button>
 
-            <p className="mt-4 text-center text-[11px] text-white/40">
-              Connects to Stripe. After payment, buyers are redirected to /experience.
+            <p className="mt-4 text-center text-[11px] text-white/50">
+              Instant access. Start immediately.
             </p>
           </div>
         </div>
@@ -420,29 +425,30 @@ export function Toolkit() {
 
 export function ExperiencePortal() {
   const modules: [string, string, React.ComponentType<{ className?: string }>][] = [
-    ["Pattern Reveal", "Map the repeated dynamic and name what is actually happening.", Heart],
-    ["Trigger Reset", "Calm the anxiety spike before it becomes a chase response.", Waves],
-    ["Self-Worth Rebuild", "Separate your value from attention, silence, and being chosen.", Sparkles],
-    ["Boundaries & Standards", "Turn your needs into clear words and protected decisions.", Shield],
-    ["Relationship Decision", "Choose from evidence instead of chemistry, hope, or fear.", Brain],
+    ["Pattern Reveal", "Name the dynamic that keeps repeating.", Heart],
+    ["Trigger Reset", "Calm the spike before it becomes a chase.", Waves],
+    ["Self-Worth Rebuild", "Separate your value from being chosen.", Sparkles],
+    ["Boundaries & Standards", "Turn your needs into clear, protected decisions.", Shield],
+    ["Choose Differently", "Read behavior — not chemistry, hope, or fear.", Brain],
   ];
 
   return (
     <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-32">
-      <BackgroundVideo src={VIDEOS.toolkit} />
-      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <BackgroundVideo src={VIDEOS.experience} />
+      <div className="absolute inset-0 bg-black/70" />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
-          // Post-purchase portal
-        </p>
-        <h2 className="max-w-3xl font-serif text-4xl leading-tight text-white md:text-6xl">
-          Your Relationship Reset{" "}
-          <em className="italic text-white/70">Experience.</em>
-        </h2>
-        <p className="mt-6 max-w-2xl text-white/65">
-          After purchase, users enter this guided portal. Each module includes teaching, interactive
-          questions, saved answers, downloadable tools, and a completion step.
-        </p>
+        <div className="max-w-3xl">
+          <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+            Your Reset <em className="italic text-white/75">Path.</em>
+          </h2>
+          <p className="mt-6 max-w-2xl text-white/80">
+            This is where you move from understanding
+            to choosing differently — step by step.
+          </p>
+          <p className="mt-3 text-xs text-white/55">
+            Most people complete this in 2–3 sittings
+          </p>
+        </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {modules.map(([title, desc, Icon], i) => (
@@ -458,16 +464,12 @@ export function ExperiencePortal() {
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10">
                   <Icon className="h-5 w-5 text-white" />
                 </span>
-                {/* Completion circle — future: bind to Supabase user progress */}
                 <span className="grid h-9 w-9 place-items-center rounded-full border border-white/15 text-[10px] font-mono text-white/55">
-                  {i + 1}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
               <h3 className="mt-5 font-serif text-2xl text-white">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/70">{desc}</p>
-              <button className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-semibold text-black">
-                Start Module <ArrowUpRight className="h-3.5 w-3.5" />
-              </button>
+              <p className="mt-2 text-sm leading-relaxed text-white/75">{desc}</p>
             </motion.div>
           ))}
         </div>
@@ -480,29 +482,25 @@ export function FinalCTA() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.hero} />
-      <div className="absolute inset-0 z-[1] bg-black/55" />
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-        <Sparkles className="mx-auto h-6 w-6 text-white/70" />
-        <h2 className="mt-6 font-serif text-4xl leading-tight text-white md:text-6xl">
-          Stop decoding mixed signals.{" "}
-          <em className="italic text-white/70">Start choosing clearly.</em>
+      <div className="absolute inset-0 bg-black/50" />
+      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-6 text-center">
+        <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+          You already know this pattern.
+          <br />
+          You've lived it.
+          <br />
+          <em className="italic text-white/85">Now you can finally change it.</em>
         </h2>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href="#diagnosis"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black"
-          >
-            Start Diagnosis <ArrowUpRight className="h-4 w-4" />
-          </a>
+        <div className="mt-12">
           <a
             href="#toolkit"
-            className="liquid-glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
           >
-            Get the Toolkit <ArrowUpRight className="h-4 w-4" />
+            Start My Reset <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
-        <p className="mt-16 text-xs text-white/40">
-          © {new Date().getFullYear()} Healthy Love Observatory. Crafted with intention.
+        <p className="mt-20 text-xs text-white/40">
+          © {new Date().getFullYear()} My Love Pattern. Understand why it keeps happening.
         </p>
       </div>
     </section>
