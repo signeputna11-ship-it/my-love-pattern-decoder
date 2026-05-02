@@ -9,38 +9,39 @@ export type Pattern = {
 };
 
 export const VIDEOS = {
-  hero: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/HEAR%20FLOWERS%20GEMS.mp4",
-  pattern: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEMS%20ISLAND.mp4",
+  hero: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/ROSES%20FAUNA%20CLOSE%20UP.mp4",
+  pattern: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEMS%20ISLAND%20MOTION.mp4",
   diagnosis: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/HEART.mp4",
   toolkit: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEM%20SPARKLE.mp4",
+  experience: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/ROSES%20FAUNA%20CLOSE%20UP.mp4",
 };
 
 export const patterns: Pattern[] = [
   {
     key: "over_investor",
     title: "The Over-Investor",
-    description: "You create emotional momentum faster than the relationship has earned.",
+    description: "You give more, faster — hoping it creates security.",
     signal: "You initiate, soften, explain, and carry the connection.",
     icon: Heart,
   },
   {
     key: "unavailable_chaser",
     title: "The Unavailable Chaser",
-    description: "Distance feels magnetic because uncertainty activates old worth beliefs.",
+    description: "You feel most attracted when someone becomes unclear.",
     signal: "You feel most drawn in when someone becomes hard to read.",
     icon: Waves,
   },
   {
     key: "validator_seeker",
     title: "The Validator Seeker",
-    description: "Attention starts to feel like proof that you are lovable or safe.",
+    description: "You feel calm when they give attention — and anxious when they don't.",
     signal: "Silence, slow replies, or vague plans feel personal.",
     icon: Eye,
   },
   {
     key: "boundary_softener",
     title: "The Boundary Softener",
-    description: "Your standards become negotiable when chemistry or attention appears.",
+    description: "You know your standards… until you like them.",
     signal: "You know your line, then question it when they come closer.",
     icon: Shield,
   },

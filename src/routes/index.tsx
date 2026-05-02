@@ -13,17 +13,16 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Healthy Love Observatory — Relationship Pattern Diagnosis" },
+      { title: "My Love Pattern — Understand why it keeps happening." },
       {
         name: "description",
         content:
-          "A guided self-worth and relationship clarity system. Diagnose your pattern, reset your standards, choose consistency over chemistry.",
+          "You don't have a dating problem — you have a pattern. Find yours in 60 seconds and learn exactly what to do instead.",
       },
-      { property: "og:title", content: "Healthy Love Observatory" },
+      { property: "og:title", content: "My Love Pattern" },
       {
         property: "og:description",
-        content:
-          "Diagnose your relationship pattern. Reset your standards. Choose consistency.",
+        content: "Understand why it keeps happening. Find your pattern in 60 seconds.",
       },
     ],
   }),
