@@ -10,7 +10,7 @@ export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
   head: () => ({
     meta: [
-      { title: "Unlock The Reset — My Love Pattern" },
+      { title: "Unlock The Reset · My Love Pattern" },
       { name: "description", content: "Lifetime access to The Reset for €49." },
     ],
   }),

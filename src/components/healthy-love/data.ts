@@ -21,7 +21,7 @@ export const patterns: Pattern[] = [
   {
     key: "over_investor",
     title: "The Over-Investor",
-    description: "You give more, faster — hoping it creates security.",
+    description: "You give more, faster, hoping it creates security.",
     signal: "You initiate, soften, explain, and carry the connection.",
     icon: Heart,
   },
@@ -35,7 +35,7 @@ export const patterns: Pattern[] = [
   {
     key: "validator_seeker",
     title: "The Validator Seeker",
-    description: "You feel calm when they give attention — and anxious when they don't.",
+    description: "You feel calm when they give attention, and anxious when they don't.",
     signal: "Silence, slow replies, or vague plans feel personal.",
     icon: Eye,
   },

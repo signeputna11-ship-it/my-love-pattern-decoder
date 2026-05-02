@@ -169,7 +169,7 @@ function ModulePage() {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
       if (ex.kind === "prompt") {
-        const text = answers[ex.id]?.text || "—";
+        const text = answers[ex.id]?.text || "(no answer)";
         const lines = doc.splitTextToSize(text, 500);
         doc.text(lines, margin, y);
         y += lines.length * 14 + 10;
@@ -309,7 +309,7 @@ function ModulePage() {
           className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black hover:bg-white/90"
         >
           <CheckCircle2 className="h-4 w-4" />
-          {completed ? "Completed — re-confirm" : "Mark module complete"}
+          {completed ? "Completed. Re-confirm" : "Mark module complete"}
         </button>
       </div>
     </div>

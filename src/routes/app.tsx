@@ -8,7 +8,7 @@ export const Route = createFileRoute("/app")({
   component: AppLayout,
   head: () => ({
     meta: [
-      { title: "Your Reset — My Love Pattern" },
+      { title: "Your Reset · My Love Pattern" },
       { name: "description", content: "Your private reset path." },
     ],
   }),
@@ -83,7 +83,7 @@ function AppLayout() {
             to="/checkout"
             className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
           >
-            Unlock The Reset — €49
+            Unlock The Reset for €49
           </Link>
         }
         footer={

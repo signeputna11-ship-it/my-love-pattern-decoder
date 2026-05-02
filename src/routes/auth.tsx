@@ -10,7 +10,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: "Sign in — My Love Pattern" },
+      { title: "Sign in · My Love Pattern" },
       { name: "description", content: "Sign in to access your private reset path." },
     ],
   }),
