@@ -233,13 +233,16 @@ export function Diagnosis() {
       <div className="relative z-10 mx-auto max-w-4xl px-6">
         <div className="text-center">
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
-            // Diagnosis
+            // Now you can see it clearly.
           </p>
           <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
             This takes 60 seconds.
             <br />
             <em className="italic text-white/75">You'll see your pattern clearly.</em>
           </h2>
+          <p className="mx-auto mt-6 max-w-xl text-white/75">
+            Answer four questions and get your relationship pattern profile.
+          </p>
           <div className="mx-auto mt-8 h-1 w-64 overflow-hidden rounded-full bg-white/10">
             <div
               className="h-full bg-white transition-all duration-500"
