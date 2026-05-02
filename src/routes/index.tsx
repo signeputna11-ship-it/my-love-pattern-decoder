@@ -5,8 +5,8 @@ import {
   PatternSection,
   Diagnosis,
   Toolkit,
-  Experience,
-  FooterCTA,
+  ExperiencePortal,
+  FinalCTA,
 } from "@/components/healthy-love/sections";
 
 export const Route = createFileRoute("/")({
@@ -22,7 +22,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Healthy Love Observatory" },
       {
         property: "og:description",
-        content: "Diagnose your relationship pattern. Reset your standards. Choose consistency.",
+        content:
+          "Diagnose your relationship pattern. Reset your standards. Choose consistency.",
       },
     ],
   }),
@@ -36,8 +37,8 @@ function Index() {
       <PatternSection />
       <Diagnosis />
       <Toolkit />
-      <Experience />
-      <FooterCTA />
+      <ExperiencePortal />
+      <FinalCTA />
     </div>
   );
 }

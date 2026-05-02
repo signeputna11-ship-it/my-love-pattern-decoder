@@ -8,6 +8,13 @@ export type Pattern = {
   icon: LucideIcon;
 };
 
+export const VIDEOS = {
+  hero: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/HEAR%20FLOWERS%20GEMS.mp4",
+  pattern: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEMS%20ISLAND.mp4",
+  diagnosis: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/HEART.mp4",
+  toolkit: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEM%20SPARKLE.mp4",
+};
+
 export const patterns: Pattern[] = [
   {
     key: "over_investor",
@@ -90,9 +97,3 @@ export const quizQuestions = [
     ],
   },
 ];
-
-export const VIDEO_URL_HERO = "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260228_065522_522e2295-ba22-457e-8fdb-fbcd68109c73.mp4";
-export const VIDEO_URL_DARK = "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_094631_d30ab262-45ee-4b7d-99f3-5d5848c8ef13.mp4";
-export const HERO_IMAGE = "https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=2200&auto=format&fit=crop";
-export const CRYSTAL_IMAGE = "https://images.unsplash.com/photo-1518709268805-4e9042af2176?q=80&w=2200&auto=format&fit=crop";
-export const AVATAR_IMAGE = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop";
