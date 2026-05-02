@@ -17,17 +17,17 @@ import { patterns, toolkit, quizQuestions, VIDEOS } from "./data";
 
 function BackgroundVideo({ src }: { src: string }) {
   return (
-    <div className="absolute inset-0 -z-10 overflow-hidden">
-      <video
-        src={src}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="h-full w-full object-cover opacity-60"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black" />
-    </div>
+    <video
+      key={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      className="absolute inset-0 z-0 h-full w-full object-cover"
+    >
+      <source src={src} type="video/mp4" />
+    </video>
   );
 }
 
