@@ -74,7 +74,7 @@ export function Nav() {
         <button
           onClick={() => setOpen(!open)}
           aria-label="Open menu"
-          className="md:hidden text-white"
+          className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full text-white md:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
