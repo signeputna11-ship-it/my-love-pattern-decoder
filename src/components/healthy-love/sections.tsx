@@ -161,24 +161,24 @@ export function Hero() {
 
 export function PatternSection() {
   return (
-    <section id="patterns" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="patterns" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.pattern} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
             // You feel it when they pull away.
           </p>
-          <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+          <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             You've seen this <em className="italic text-white/75">before…</em>
           </h2>
-          <p className="mt-6 text-base leading-relaxed text-white/75">
+          <p className="mt-5 text-sm leading-relaxed text-white/75 sm:mt-6 sm:text-base">
             When the same emotional loop keeps repeating, the problem is not your worth.
             It is the pattern your nervous system keeps following.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:mt-16 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
           {patterns.map((p, i) => {
             const Icon = p.icon;
             return (
@@ -188,18 +188,18 @@ export function PatternSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, delay: i * 0.08 }}
-                className="liquid-glass-strong rounded-3xl p-6"
+                className="liquid-glass-strong rounded-2xl p-5 sm:rounded-3xl sm:p-6"
               >
                 <div className="flex items-center justify-between">
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10">
+                  <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 sm:h-11 sm:w-11">
                     <Icon className="h-5 w-5 text-white" />
                   </span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-white/45">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="mt-5 font-serif text-2xl text-white">{p.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/75">{p.description}</p>
+                <h3 className="mt-4 font-serif text-xl text-white sm:mt-5 sm:text-2xl">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/75 sm:mt-3">{p.description}</p>
               </motion.div>
             );
           })}
