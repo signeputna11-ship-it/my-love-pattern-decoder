@@ -22,14 +22,14 @@ function CheckoutReturn() {
       const { data: sess } = await supabase.auth.getSession();
       const uid = sess.session?.user.id;
       if (!uid) {
-        setState("pending");
+        if (!cancelled) setState("pending");
         return;
       }
       const { data: ok } = await supabase.rpc("has_paid_access", { _user_id: uid });
       if (cancelled) return;
       if (ok) {
         setState("ready");
-      } else if (attempts++ < 12) {
+      } else if (attempts++ < 20) {
         setTimeout(poll, 1500);
       } else {
         setState("pending");

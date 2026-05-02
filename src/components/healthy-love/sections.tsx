@@ -34,6 +34,33 @@ function BackgroundVideo({ src }: { src: string }) {
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const [hasAccess, setHasAccess] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
+  React.useEffect(() => {
+    let mounted = true;
+    const check = async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      const uid = sess.session?.user.id;
+      if (!mounted) return;
+      setSignedIn(!!uid);
+      if (!uid) {
+        setHasAccess(false);
+        return;
+      }
+      const { data: ok } = await supabase.rpc("has_paid_access", { _user_id: uid });
+      if (!mounted) return;
+      setHasAccess(!!ok);
+    };
+    check();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => check());
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
   const links: { label: string; href: string }[] = [
     { label: "Home", href: "#top" },
     { label: "Patterns", href: "#patterns" },
