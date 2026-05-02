@@ -96,9 +96,10 @@ export function Nav() {
 
 export function Hero() {
   return (
-    <section id="top" className="relative min-h-screen overflow-hidden">
+    <section id="top" className="relative min-h-screen overflow-hidden bg-black">
       <BackgroundVideo src={VIDEOS.hero} />
-      <div className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 pt-32 text-center">
+      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 pt-32 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -152,9 +153,10 @@ export function Hero() {
 
 export function PatternSection() {
   return (
-    <section id="patterns" className="relative overflow-hidden py-32">
+    <section id="patterns" className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.pattern} />
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-3xl text-center">
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
             // Pattern types
@@ -221,9 +223,10 @@ export function Diagnosis() {
   const allAnswered = Object.keys(answers).length === quizQuestions.length;
 
   return (
-    <section id="diagnosis" className="relative overflow-hidden py-32">
+    <section id="diagnosis" className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.diagnosis} />
-      <div className="relative mx-auto max-w-4xl px-6">
+      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="relative z-10 mx-auto max-w-4xl px-6">
         <div className="text-center">
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
             // Diagnosis
@@ -348,9 +351,10 @@ export function Diagnosis() {
 
 export function Toolkit() {
   return (
-    <section id="toolkit" className="relative overflow-hidden py-32">
+    <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.toolkit} />
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid items-start gap-12 lg:grid-cols-2">
           <div>
             <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
@@ -424,9 +428,10 @@ export function ExperiencePortal() {
   ];
 
   return (
-    <section id="experience" className="relative overflow-hidden py-32">
+    <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.toolkit} />
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/50">
           // Post-purchase portal
         </p>
@@ -473,9 +478,10 @@ export function ExperiencePortal() {
 
 export function FinalCTA() {
   return (
-    <section className="relative overflow-hidden py-32">
+    <section className="relative min-h-screen overflow-hidden bg-black py-32">
       <BackgroundVideo src={VIDEOS.hero} />
-      <div className="relative mx-auto max-w-4xl px-6 text-center">
+      <div className="absolute inset-0 z-[1] bg-black/55" />
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <Sparkles className="mx-auto h-6 w-6 text-white/70" />
         <h2 className="mt-6 font-serif text-4xl leading-tight text-white md:text-6xl">
           Stop decoding mixed signals.{" "}
