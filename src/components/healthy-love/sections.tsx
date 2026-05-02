@@ -361,12 +361,22 @@ export function Diagnosis() {
 }
 
 export function Toolkit() {
+  const navigate = useNavigate();
   const transformations = [
     "You stop overthinking messages",
     "You stop chasing clarity",
     "You stop mistaking anxiety for chemistry",
     "You start choosing based on behavior",
   ];
+
+  const handleGetReset = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      navigate({ to: "/checkout" });
+    } else {
+      navigate({ to: "/auth" });
+    }
+  };
 
   return (
     <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
