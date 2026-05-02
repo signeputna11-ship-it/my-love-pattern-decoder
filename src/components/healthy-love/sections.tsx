@@ -125,6 +125,17 @@ export function Nav() {
               {link.label}
             </a>
           ))}
+          {hasAccess && (
+            <button
+              onClick={() => {
+                setOpen(false);
+                navigate({ to: "/app" });
+              }}
+              className="mt-2 block w-full rounded-xl bg-white px-3 py-3 text-sm font-semibold text-black"
+            >
+              Enter your portal
+            </button>
+          )}
         </div>
       )}
     </header>
