@@ -16,11 +16,12 @@ Hard rules — never break:
 - Do NOT open a chat. You return ONE structured reflection only, via the provided tool.
 - Use the user's own words and the data given. Stay grounded — no speculation about people not described.
 - Tone: calm, descriptive, kind, concrete. Never preachy.
-- If the user mentions self-harm, abuse, or being in danger: keep "noticing" brief and non-clinical, set next_step.type="resource" with label "Reach out to a licensed professional or local support line", reason "This is outside the scope of a self-reflection workbook."
-- Length limits: noticing = 2 to 3 sentences. question = ONE sentence ending with a question mark. reason = 1 short sentence.
+- If the user mentions self-harm, abuse, or being in danger: keep "noticing" brief and non-clinical, set next_step to "Reach out to a licensed professional or local support line", and set recommended_resource_id to null.
+- Length limits: noticing = 2 to 3 sentences, supportive direct grounded tone. question = ONE sentence ending with a question mark. next_step = 1–2 short sentences, concrete and doable.
 - Arrays: max 5 items each, each item 2–6 words, lowercase fragments.
+- Recommend a kit resource only when one is genuinely a fit for what the user wrote — otherwise return recommended_resource_id: null.
 
-You will receive: the user's pattern type, the current module, their saved answers in this module, and the slugs of modules they've already completed plus available modules. Pick next_step.slug from the provided "available_next" list only (unless type="resource").`;
+You will receive: the user's pattern type, the current module, their saved answers in this module, the slugs of completed and available modules, and the available kit_resources for this module. Pick recommended_resource_id from available_kit_resources[].id only (or null).`;
 
 Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -68,9 +69,10 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
     if (!mod) return json({ error: "Module not found" }, 404);
 
-    const [{ data: exercises }, { data: answers }] = await Promise.all([
+    const [{ data: exercises }, { data: answers }, { data: kitResources }] = await Promise.all([
       admin.from("exercises").select("id, title, kind, body, position").eq("module_id", (mod as any).id).order("position"),
       admin.from("user_answers").select("exercise_id, answer_text, answer_data").eq("user_id", userId),
+      admin.from("kit_resources").select("id, title, description, file_type, file_path, order_index").eq("module", moduleSlug).order("order_index"),
     ]);
 
     const answerMap = new Map<string, any>();
@@ -89,12 +91,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     if (moduleAnswers.length === 0) {
       return json({
         empty: true,
-        noticing: "Write at least one answer above first — your reflection is built from your own words.",
-        question: "What's the first thing you noticed when reading the prompts on this page?",
-        next_step: { type: "module", slug: moduleSlug, label: "Answer one prompt above", reason: "We need your words to reflect anything back." },
-        key_triggers: [],
-        repeated_behaviors: [],
-        boundaries_needed: [],
+        message: "Complete at least one answer first so your guide has something real to read.",
       });
     }
 
@@ -113,7 +110,13 @@ Deno.serve(async (req: Request): Promise<Response> => {
       pattern_type: profile?.pattern_type ?? "unknown",
       current_module: { slug: (mod as any).slug, title: (mod as any).title, subtitle: (mod as any).subtitle },
       completed_modules: completedSlugList,
-      available_next: availableNext,
+      available_next_modules: availableNext,
+      available_kit_resources: (kitResources ?? []).map((r: any) => ({
+        id: r.id,
+        title: r.title,
+        description: r.description,
+        file_type: r.file_type,
+      })),
       previous_memory: existingMemory
         ? {
             key_triggers: (existingMemory as any).key_triggers ?? [],
@@ -124,6 +127,10 @@ Deno.serve(async (req: Request): Promise<Response> => {
       answers_in_this_module: moduleAnswers,
     };
 
+    const validResourceIds = (kitResources ?? []).map((r: any) => r.id as string);
+    const resourceIdEnum: (string | null)[] =
+      validResourceIds.length > 0 ? [...validResourceIds, null] : [null];
+
     const tool = {
       type: "function",
       function: {
@@ -132,24 +139,30 @@ Deno.serve(async (req: Request): Promise<Response> => {
         parameters: {
           type: "object",
           properties: {
-            noticing: { type: "string", description: "2-3 descriptive sentences using the user's own words. No diagnosis." },
-            question: { type: "string", description: "ONE focused self-reflection question." },
-            next_step: {
-              type: "object",
-              properties: {
-                type: { type: "string", enum: ["module", "resource"] },
-                slug: { type: "string", description: "Module slug from available_next, or short resource slug." },
-                label: { type: "string" },
-                reason: { type: "string" },
-              },
-              required: ["type", "slug", "label", "reason"],
-              additionalProperties: false,
+            noticing: {
+              type: "string",
+              description: "2-3 grounded sentences about the repeated pattern. Supportive, direct, no diagnosis, no therapy claims. Use the user's own words.",
+            },
+            question: { type: "string", description: "ONE focused follow-up question." },
+            next_step: { type: "string", description: "ONE practical next step the user can take this week." },
+            recommended_resource_id: {
+              type: ["string", "null"],
+              description: "ID of ONE kit_resource from available_kit_resources, or null if none fits.",
+              enum: resourceIdEnum,
             },
             key_triggers: { type: "array", items: { type: "string" }, maxItems: 5 },
             repeated_behaviors: { type: "array", items: { type: "string" }, maxItems: 5 },
             boundaries_needed: { type: "array", items: { type: "string" }, maxItems: 5 },
           },
-          required: ["noticing", "question", "next_step", "key_triggers", "repeated_behaviors", "boundaries_needed"],
+          required: [
+            "noticing",
+            "question",
+            "next_step",
+            "recommended_resource_id",
+            "key_triggers",
+            "repeated_behaviors",
+            "boundaries_needed",
+          ],
           additionalProperties: false,
         },
       },
@@ -193,7 +206,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const mergedTriggers = merge((existingMemory as any)?.key_triggers ?? [], parsed.key_triggers ?? []);
     const mergedBehaviors = merge((existingMemory as any)?.repeated_behaviors ?? [], parsed.repeated_behaviors ?? []);
     const mergedBoundaries = merge((existingMemory as any)?.boundaries_needed ?? [], parsed.boundaries_needed ?? []);
-    const mergedNextSteps = merge((existingMemory as any)?.next_steps ?? [], [parsed.next_step.slug]);
+    const mergedNextSteps = merge((existingMemory as any)?.next_steps ?? [], [parsed.next_step]);
 
     const memoryRow = {
       user_id: userId,
@@ -206,7 +219,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
       last_noticing: parsed.noticing,
       last_question: parsed.question,
       summary: parsed.noticing,
-      recommended_next: parsed.next_step.slug,
+      recommended_next: parsed.recommended_resource_id ?? parsed.next_step ?? null,
       updated_at: new Date().toISOString(),
     };
 
