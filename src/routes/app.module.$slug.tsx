@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, CheckCircle2, Loader2, Save, Download, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
+import { KitResources } from "@/components/healthy-love/KitResources";
 
 type Module = {
   id: string;
@@ -295,6 +296,8 @@ function ModulePage() {
           </div>
         </div>
       </div>
+
+      <KitResources moduleKey={module.slug} />
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <button
