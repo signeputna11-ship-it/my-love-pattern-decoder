@@ -453,6 +453,7 @@ export function Toolkit() {
 }
 
 export function ExperiencePortal() {
+  const navigate = useNavigate();
   const modules: [string, string, React.ComponentType<{ className?: string }>][] = [
     ["Pattern Reveal", "Map the repeated dynamic and name what is actually happening.", Heart],
     ["Trigger Reset", "Calm the anxiety spike before it becomes a chase response.", Waves],
@@ -460,6 +461,16 @@ export function ExperiencePortal() {
     ["Boundaries", "Turn your needs into clear words and protected decisions.", Shield],
     ["Relationship Decision", "Choose from evidence instead of chemistry, hope, or fear.", Brain],
   ];
+
+  const handleStartModule = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      navigate({ to: "/auth" });
+      return;
+    }
+    const { data: ok } = await supabase.rpc("has_paid_access", { _user_id: data.session.user.id });
+    navigate({ to: ok ? "/app" : "/checkout" });
+  };
 
   return (
     <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
@@ -505,7 +516,10 @@ export function ExperiencePortal() {
               </div>
               <h3 className="mt-4 font-serif text-xl text-white sm:mt-5 sm:text-2xl">{title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-white/75">{desc}</p>
-              <button className="liquid-glass mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white sm:mt-6 sm:w-auto sm:px-5">
+              <button
+                onClick={handleStartModule}
+                className="liquid-glass mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white transition hover:bg-white/10 sm:mt-6 sm:w-auto sm:px-5"
+              >
                 Start Module <ArrowUpRight className="h-3.5 w-3.5" />
               </button>
             </motion.div>
