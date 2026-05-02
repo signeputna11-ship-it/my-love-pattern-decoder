@@ -447,18 +447,18 @@ export function ExperiencePortal() {
   ];
 
   return (
-    <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.experience} />
       <div className="absolute inset-0 bg-black/70" />
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
             // You respond differently now.
           </p>
-          <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+          <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             Your Reset <em className="italic text-white/75">Path.</em>
           </h2>
-          <p className="mt-6 max-w-2xl text-white/80">
+          <p className="mt-5 max-w-2xl text-sm text-white/80 sm:mt-6 sm:text-base">
             Move from understanding
             to choosing differently.
           </p>
@@ -467,7 +467,7 @@ export function ExperiencePortal() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {modules.map(([title, desc, Icon], i) => (
             <motion.div
               key={title}
@@ -475,10 +475,10 @@ export function ExperiencePortal() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, delay: i * 0.08 }}
-              className="liquid-glass-strong flex flex-col rounded-3xl p-6"
+              className="liquid-glass-strong flex flex-col rounded-2xl p-5 sm:rounded-3xl sm:p-6"
             >
               <div className="flex items-center justify-between">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 sm:h-12 sm:w-12">
                   <Icon className="h-5 w-5 text-white" />
                 </span>
                 <span
@@ -488,9 +488,9 @@ export function ExperiencePortal() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">{title}</h3>
+              <h3 className="mt-4 font-serif text-xl text-white sm:mt-5 sm:text-2xl">{title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-white/75">{desc}</p>
-              <button className="liquid-glass mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-widest text-white">
+              <button className="liquid-glass mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white sm:mt-6 sm:w-auto sm:px-5">
                 Start Module <ArrowUpRight className="h-3.5 w-3.5" />
               </button>
             </motion.div>
@@ -503,27 +503,27 @@ export function ExperiencePortal() {
 
 export function FinalCTA() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.final} />
       <div className="absolute inset-0 bg-black/65" />
-      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-6 text-center">
-        <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-4 text-center sm:px-6">
+        <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
           You already know this pattern.
           <br />
           You've lived it.
           <br />
           <em className="italic text-white/85">Now you can finally change it.</em>
         </h2>
-        <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row">
+        <div className="mt-10 flex w-full flex-col items-stretch gap-3 sm:mt-12 sm:w-auto sm:flex-row sm:items-center">
           <a
             href="#toolkit"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-black transition hover:bg-white/90 sm:px-8"
           >
             Start My Reset <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
             href="#diagnosis"
-            className="liquid-glass inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-white"
+            className="liquid-glass inline-flex items-center justify-center gap-2 rounded-full px-6 py-4 text-sm font-semibold text-white sm:px-8"
           >
             Find My Pattern
           </a>
@@ -531,7 +531,7 @@ export function FinalCTA() {
         <p className="mt-6 text-xs text-white/65">
           Start with the diagnosis. Unlock the reset when you're ready.
         </p>
-        <p className="mt-20 text-xs text-white/40">
+        <p className="mt-16 text-xs text-white/40 sm:mt-20">
           © {new Date().getFullYear()} My Love Pattern. Understand why it keeps happening.
         </p>
       </div>
