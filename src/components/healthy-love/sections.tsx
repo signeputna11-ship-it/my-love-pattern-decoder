@@ -41,14 +41,14 @@ export function Nav() {
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full liquid-glass px-4 py-3">
-        <a href="#top" className="flex items-center gap-2 text-white">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-white/10">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full liquid-glass px-3 py-2.5 sm:px-4 sm:py-3">
+        <a href="#top" className="flex min-w-0 items-center gap-2 text-white">
+          <span className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-full bg-white/10">
             <Sparkles className="h-4 w-4" />
           </span>
-          <span className="flex flex-col leading-tight">
-            <span className="font-serif text-lg">My Love Pattern</span>
+          <span className="flex min-w-0 flex-col leading-tight">
+            <span className="truncate font-serif text-base sm:text-lg">My Love Pattern</span>
             <span className="hidden text-[10px] text-white/55 sm:block">
               Understand why it keeps happening.
             </span>
@@ -103,20 +103,20 @@ export function Hero() {
     <section id="top" className="relative min-h-screen overflow-hidden bg-black">
       <BackgroundVideo src={VIDEOS.hero} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 text-center">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-4 pb-16 pt-28 text-center sm:px-6 sm:pt-32">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="liquid-glass mb-8 inline-flex rounded-full px-4 py-1.5 text-[11px] uppercase tracking-[0.2em] text-white/80"
+          className="liquid-glass mb-6 inline-flex max-w-full rounded-full px-3 py-1.5 text-[9px] uppercase tracking-[0.18em] text-white/80 sm:mb-8 sm:px-4 sm:text-[11px] sm:tracking-[0.2em]"
         >
-          My Love Pattern · Relationship Pattern Diagnosis
+          <span className="truncate">My Love Pattern · Pattern Diagnosis</span>
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1 }}
-          className="font-serif text-5xl leading-[1.05] text-white text-balance md:text-7xl"
+          className="font-serif text-[2.25rem] leading-[1.05] text-white text-balance sm:text-5xl md:text-7xl"
         >
           You don't have a dating problem.
           <br />
@@ -126,7 +126,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="mt-8 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg"
+          className="mt-6 max-w-2xl text-sm leading-relaxed text-white/75 sm:mt-8 sm:text-base md:text-lg"
         >
           You keep getting pulled into the same kind of connection —
           mixed signals, uncertainty, emotional highs and lows.
@@ -136,17 +136,17 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
+          className="mt-8 flex w-full flex-col items-stretch gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center"
         >
           <a
             href="#diagnosis"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90 sm:px-7"
           >
             Find My Pattern <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
             href="#patterns"
-            className="liquid-glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white"
+            className="liquid-glass inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-white sm:px-7"
           >
             See How It Works
           </a>
@@ -161,24 +161,24 @@ export function Hero() {
 
 export function PatternSection() {
   return (
-    <section id="patterns" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="patterns" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.pattern} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
             // You feel it when they pull away.
           </p>
-          <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+          <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             You've seen this <em className="italic text-white/75">before…</em>
           </h2>
-          <p className="mt-6 text-base leading-relaxed text-white/75">
+          <p className="mt-5 text-sm leading-relaxed text-white/75 sm:mt-6 sm:text-base">
             When the same emotional loop keeps repeating, the problem is not your worth.
             It is the pattern your nervous system keeps following.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:mt-16 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
           {patterns.map((p, i) => {
             const Icon = p.icon;
             return (
@@ -188,18 +188,18 @@ export function PatternSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, delay: i * 0.08 }}
-                className="liquid-glass-strong rounded-3xl p-6"
+                className="liquid-glass-strong rounded-2xl p-5 sm:rounded-3xl sm:p-6"
               >
                 <div className="flex items-center justify-between">
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10">
+                  <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 sm:h-11 sm:w-11">
                     <Icon className="h-5 w-5 text-white" />
                   </span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-white/45">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="mt-5 font-serif text-2xl text-white">{p.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/75">{p.description}</p>
+                <h3 className="mt-4 font-serif text-xl text-white sm:mt-5 sm:text-2xl">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/75 sm:mt-3">{p.description}</p>
               </motion.div>
             );
           })}
@@ -227,23 +227,23 @@ export function Diagnosis() {
   const allAnswered = Object.keys(answers).length === quizQuestions.length;
 
   return (
-    <section id="diagnosis" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="diagnosis" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.diagnosis} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto max-w-4xl px-6">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
             // Now you can see it clearly.
           </p>
-          <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+          <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             This takes 60 seconds.
             <br />
             <em className="italic text-white/75">You'll see your pattern clearly.</em>
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-white/75">
+          <p className="mx-auto mt-5 max-w-xl text-sm text-white/75 sm:mt-6 sm:text-base">
             Answer four questions and get your relationship pattern profile.
           </p>
-          <div className="mx-auto mt-8 h-1 w-64 overflow-hidden rounded-full bg-white/10">
+          <div className="mx-auto mt-6 h-1 w-48 overflow-hidden rounded-full bg-white/10 sm:mt-8 sm:w-64">
             <div
               className="h-full bg-white transition-all duration-500"
               style={{ width: `${progress * 100}%` }}
@@ -251,19 +251,19 @@ export function Diagnosis() {
           </div>
         </div>
 
-        <div className="mt-12">
+        <div className="mt-10 sm:mt-12">
           {!showResult ? (
             <>
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 {quizQuestions.map((q, idx) => (
-                  <div key={q.id} className="liquid-glass-strong rounded-3xl p-6 md:p-8">
+                  <div key={q.id} className="liquid-glass-strong rounded-2xl p-5 sm:rounded-3xl sm:p-6 md:p-8">
                     <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">
                       Question {idx + 1}
                     </p>
-                    <h3 className="mt-2 font-serif text-2xl text-white md:text-3xl">
+                    <h3 className="mt-2 font-serif text-xl text-white sm:text-2xl md:text-3xl">
                       {q.question}
                     </h3>
-                    <div className="mt-5 grid gap-3 md:grid-cols-2">
+                    <div className="mt-4 grid gap-2.5 sm:mt-5 sm:gap-3 md:grid-cols-2">
                       {q.options.map((opt) => {
                         const active = answers[q.id] === opt.pattern;
                         return (
@@ -272,7 +272,7 @@ export function Diagnosis() {
                             onClick={() =>
                               setAnswers((a) => ({ ...a, [q.id]: opt.pattern }))
                             }
-                            className={`rounded-2xl px-4 py-3 text-left text-sm leading-5 transition ${
+                            className={`rounded-xl px-3.5 py-3 text-left text-sm leading-5 transition sm:rounded-2xl sm:px-4 ${
                               active
                                 ? "bg-white text-black"
                                 : "bg-white/[0.04] text-white/80 hover:bg-white/[0.08]"
@@ -299,23 +299,23 @@ export function Diagnosis() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="liquid-glass-strong rounded-3xl p-8 md:p-12"
+              className="liquid-glass-strong rounded-2xl p-6 sm:rounded-3xl sm:p-8 md:p-12"
             >
               <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">
                 Your Love Pattern
               </p>
-              <h3 className="mt-3 font-serif text-4xl text-white md:text-5xl">{result.title}</h3>
-              <p className="mt-4 max-w-2xl text-white/80">{result.description}</p>
+              <h3 className="mt-3 font-serif text-3xl text-white sm:text-4xl md:text-5xl">{result.title}</h3>
+              <p className="mt-4 max-w-2xl text-sm text-white/80 sm:text-base">{result.description}</p>
 
-              <div className="mt-10 grid gap-5 md:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 p-5">
+              <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-5 md:grid-cols-3">
+                <div className="rounded-2xl border border-white/10 p-4 sm:p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">01</p>
                   <p className="mt-2 font-serif text-lg text-white">What's actually happening</p>
                   <p className="mt-2 text-sm text-white/75">
                     You move closer when connection feels uncertain.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 p-5">
+                <div className="rounded-2xl border border-white/10 p-4 sm:p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">02</p>
                   <p className="mt-2 font-serif text-lg text-white">Why it repeats</p>
                   <p className="mt-2 text-sm text-white/75">
@@ -323,7 +323,7 @@ export function Diagnosis() {
                     not something to step away from.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 p-5">
+                <div className="rounded-2xl border border-white/10 p-4 sm:p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">03</p>
                   <p className="mt-2 font-serif text-lg text-white">What changes everything</p>
                   <p className="mt-2 text-sm text-white/75">
@@ -333,7 +333,7 @@ export function Diagnosis() {
                 </div>
               </div>
 
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row">
                 <a
                   href="#toolkit"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black"
@@ -367,65 +367,63 @@ export function Toolkit() {
   ];
 
   return (
-    <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.toolkit} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <p className="mb-6 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
-          // This is where it changes.
-        </p>
-        <div className="grid items-start gap-12 lg:grid-cols-2">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
+        <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-6 sm:text-xs sm:tracking-[0.25em]">// This is where it changes.</p>
+        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
           <div>
-            <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+            <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
               This is where things <em className="italic text-white/75">actually change.</em>
             </h2>
-            <p className="mt-6 max-w-lg text-white/75">
+            <p className="mt-5 max-w-lg text-sm text-white/75 sm:mt-6 sm:text-base">
               You don't need more advice.
               You need a reset you can use in real time.
             </p>
 
-            <ul className="mt-10 space-y-3">
+            <ul className="mt-8 space-y-3 sm:mt-10">
               {transformations.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-base text-white/90">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-white/10">
+                <li key={item} className="flex items-start gap-3 text-sm text-white/90 sm:items-center sm:text-base">
+                  <span className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-white/10 sm:mt-0">
                     <Check className="h-3.5 w-3.5 text-white" />
                   </span>
-                  {item}
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-10 border-t border-white/10 pt-6">
-              <p className="text-xs uppercase tracking-widest text-white/45">Inside</p>
+            <div className="mt-8 border-t border-white/10 pt-6 sm:mt-10">
+              <p className="text-[10px] uppercase tracking-widest text-white/45 sm:text-xs">Inside</p>
               <ul className="mt-4 grid gap-2 text-sm text-white/70 sm:grid-cols-2">
                 {toolkit.map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span className="mt-2 h-1 w-1 rounded-full bg-white/40" />
-                    {item}
+                    <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-white/40" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <div className="liquid-glass-strong rounded-3xl p-8 md:p-10">
-            <div className="flex items-baseline justify-between">
-              <div>
-                <p className="font-serif text-2xl text-white">My Reset</p>
-                <p className="mt-1 text-xs uppercase tracking-widest text-white/45">
+          <div className="liquid-glass-strong rounded-2xl p-6 sm:rounded-3xl sm:p-8 md:p-10">
+            <div className="flex items-baseline justify-between gap-3">
+              <div className="min-w-0">
+                <p className="font-serif text-xl text-white sm:text-2xl">My Reset</p>
+                <p className="mt-1 text-[10px] uppercase tracking-widest text-white/45 sm:text-xs">
                   Lifetime access
                 </p>
               </div>
-              <p className="font-serif text-5xl text-white">€49</p>
+              <p className="font-serif text-4xl text-white sm:text-5xl">€49</p>
             </div>
 
-            <div className="my-8 h-px w-full bg-white/10" />
+            <div className="my-6 h-px w-full bg-white/10 sm:my-8" />
 
             <p className="text-sm text-white/75">
               For people who already know the pattern — and are ready to stop living it.
             </p>
 
-            <button className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-black">
+            <button className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black sm:mt-8 sm:px-6">
               Get My Reset (€49) <ArrowUpRight className="h-4 w-4" />
             </button>
 
@@ -449,18 +447,18 @@ export function ExperiencePortal() {
   ];
 
   return (
-    <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.experience} />
       <div className="absolute inset-0 bg-black/70" />
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
             // You respond differently now.
           </p>
-          <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+          <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             Your Reset <em className="italic text-white/75">Path.</em>
           </h2>
-          <p className="mt-6 max-w-2xl text-white/80">
+          <p className="mt-5 max-w-2xl text-sm text-white/80 sm:mt-6 sm:text-base">
             Move from understanding
             to choosing differently.
           </p>
@@ -469,7 +467,7 @@ export function ExperiencePortal() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
           {modules.map(([title, desc, Icon], i) => (
             <motion.div
               key={title}
@@ -477,10 +475,10 @@ export function ExperiencePortal() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, delay: i * 0.08 }}
-              className="liquid-glass-strong flex flex-col rounded-3xl p-6"
+              className="liquid-glass-strong flex flex-col rounded-2xl p-5 sm:rounded-3xl sm:p-6"
             >
               <div className="flex items-center justify-between">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 sm:h-12 sm:w-12">
                   <Icon className="h-5 w-5 text-white" />
                 </span>
                 <span
@@ -490,9 +488,9 @@ export function ExperiencePortal() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">{title}</h3>
+              <h3 className="mt-4 font-serif text-xl text-white sm:mt-5 sm:text-2xl">{title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-white/75">{desc}</p>
-              <button className="liquid-glass mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-widest text-white">
+              <button className="liquid-glass mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white sm:mt-6 sm:w-auto sm:px-5">
                 Start Module <ArrowUpRight className="h-3.5 w-3.5" />
               </button>
             </motion.div>
@@ -505,27 +503,27 @@ export function ExperiencePortal() {
 
 export function FinalCTA() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.final} />
       <div className="absolute inset-0 bg-black/65" />
-      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-6 text-center">
-        <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-4 text-center sm:px-6">
+        <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
           You already know this pattern.
           <br />
           You've lived it.
           <br />
           <em className="italic text-white/85">Now you can finally change it.</em>
         </h2>
-        <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row">
+        <div className="mt-10 flex w-full flex-col items-stretch gap-3 sm:mt-12 sm:w-auto sm:flex-row sm:items-center">
           <a
             href="#toolkit"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-black transition hover:bg-white/90 sm:px-8"
           >
             Start My Reset <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
             href="#diagnosis"
-            className="liquid-glass inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-white"
+            className="liquid-glass inline-flex items-center justify-center gap-2 rounded-full px-6 py-4 text-sm font-semibold text-white sm:px-8"
           >
             Find My Pattern
           </a>
@@ -533,7 +531,7 @@ export function FinalCTA() {
         <p className="mt-6 text-xs text-white/65">
           Start with the diagnosis. Unlock the reset when you're ready.
         </p>
-        <p className="mt-20 text-xs text-white/40">
+        <p className="mt-16 text-xs text-white/40 sm:mt-20">
           © {new Date().getFullYear()} My Love Pattern. Understand why it keeps happening.
         </p>
       </div>
