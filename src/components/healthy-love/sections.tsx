@@ -453,6 +453,7 @@ export function Toolkit() {
 }
 
 export function ExperiencePortal() {
+  const navigate = useNavigate();
   const modules: [string, string, React.ComponentType<{ className?: string }>][] = [
     ["Pattern Reveal", "Map the repeated dynamic and name what is actually happening.", Heart],
     ["Trigger Reset", "Calm the anxiety spike before it becomes a chase response.", Waves],
@@ -460,6 +461,16 @@ export function ExperiencePortal() {
     ["Boundaries", "Turn your needs into clear words and protected decisions.", Shield],
     ["Relationship Decision", "Choose from evidence instead of chemistry, hope, or fear.", Brain],
   ];
+
+  const handleStartModule = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      navigate({ to: "/auth" });
+      return;
+    }
+    const { data: ok } = await supabase.rpc("has_paid_access", { _user_id: data.session.user.id });
+    navigate({ to: ok ? "/app" : "/checkout" });
+  };
 
   return (
     <section id="experience" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">

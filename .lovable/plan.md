@@ -1,26 +1,18 @@
-# Fix the "Get My Reset (€49)" button
+# Wire the "Start Module" buttons to checkout
 
 ## Problem
-On the landing page pricing card (`src/components/healthy-love/sections.tsx`, line 426), the **Get My Reset (€49)** button is a bare `<button>` with no `onClick` and no link wrapper. Clicking it does nothing.
-
-The checkout route (`/checkout`) and Stripe embedded flow already exist and work — the button just isn't connected.
+On the landing page in the `ExperiencePortal` section (`src/components/healthy-love/sections.tsx`, line 508), each module card has a **Start Module** button rendered as a plain `<button>` with no `onClick`. Clicking does nothing.
 
 ## Fix
+In `ExperiencePortal`, add a `handleStartModule` handler and wire it to all 5 module buttons:
 
-In `src/components/healthy-love/sections.tsx`:
+1. If the user is **not signed in** → navigate to `/auth`.
+2. If the user **is signed in but has not paid** → navigate to `/checkout`.
+3. If the user **is signed in and has paid access** (via the existing `has_paid_access` RPC) → navigate to `/app` to enter the portal.
 
-1. Import `Link` from `@tanstack/react-router` and `supabase` from `@/integrations/supabase/client` (if not already in this file).
-2. Replace the plain `<button>` on line 426 with a smart handler:
-   - If the user has an active Supabase session → navigate to `/checkout`.
-   - If not signed in → navigate to `/auth` with a redirect param so they land on `/checkout` after sign-in.
-3. Keep the existing styling and `ArrowUpRight` icon exactly as-is.
-
-Implementation approach: convert the button to a small client component that calls `supabase.auth.getSession()` on click and uses `useNavigate()` to route accordingly. This avoids hard-coding the auth check at render time and keeps SSR clean.
-
-## Optional follow-up (only if you confirm)
-The CTA at the top of the same section (and any other "Unlock" buttons) should be checked too — let me know if you want me to audit and wire all of them in the same pass.
+The `useNavigate` hook and `supabase` client are already imported at the top of this file (added in the previous fix).
 
 ## Files changed
-- `src/components/healthy-love/sections.tsx` (single button + small handler + 2 imports)
+- `src/components/healthy-love/sections.tsx` — add `handleStartModule` inside `ExperiencePortal` and attach `onClick={handleStartModule}` to the `Start Module` button.
 
-No database, edge function, or schema changes needed.
+No database, schema, or edge function changes.
