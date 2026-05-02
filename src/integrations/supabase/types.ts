@@ -76,6 +76,42 @@ export type Database = {
           },
         ]
       }
+      kit_resources: {
+        Row: {
+          created_at: string
+          description: string | null
+          file_path: string
+          file_type: string | null
+          id: string
+          module: string
+          order_index: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          file_path: string
+          file_type?: string | null
+          id?: string
+          module: string
+          order_index?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          file_path?: string
+          file_type?: string | null
+          id?: string
+          module?: string
+          order_index?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       modules: {
         Row: {
           created_at: string
