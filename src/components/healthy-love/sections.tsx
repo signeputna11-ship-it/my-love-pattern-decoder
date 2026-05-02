@@ -367,65 +367,63 @@ export function Toolkit() {
   ];
 
   return (
-    <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.toolkit} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <p className="mb-6 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
-          // This is where it changes.
-        </p>
-        <div className="grid items-start gap-12 lg:grid-cols-2">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
+        <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-6 sm:text-xs sm:tracking-[0.25em]">// This is where it changes.</p>
+        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
           <div>
-            <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+            <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
               This is where things <em className="italic text-white/75">actually change.</em>
             </h2>
-            <p className="mt-6 max-w-lg text-white/75">
+            <p className="mt-5 max-w-lg text-sm text-white/75 sm:mt-6 sm:text-base">
               You don't need more advice.
               You need a reset you can use in real time.
             </p>
 
-            <ul className="mt-10 space-y-3">
+            <ul className="mt-8 space-y-3 sm:mt-10">
               {transformations.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-base text-white/90">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-white/10">
+                <li key={item} className="flex items-start gap-3 text-sm text-white/90 sm:items-center sm:text-base">
+                  <span className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-white/10 sm:mt-0">
                     <Check className="h-3.5 w-3.5 text-white" />
                   </span>
-                  {item}
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-10 border-t border-white/10 pt-6">
-              <p className="text-xs uppercase tracking-widest text-white/45">Inside</p>
+            <div className="mt-8 border-t border-white/10 pt-6 sm:mt-10">
+              <p className="text-[10px] uppercase tracking-widest text-white/45 sm:text-xs">Inside</p>
               <ul className="mt-4 grid gap-2 text-sm text-white/70 sm:grid-cols-2">
                 {toolkit.map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <span className="mt-2 h-1 w-1 rounded-full bg-white/40" />
-                    {item}
+                    <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-white/40" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <div className="liquid-glass-strong rounded-3xl p-8 md:p-10">
-            <div className="flex items-baseline justify-between">
-              <div>
-                <p className="font-serif text-2xl text-white">My Reset</p>
-                <p className="mt-1 text-xs uppercase tracking-widest text-white/45">
+          <div className="liquid-glass-strong rounded-2xl p-6 sm:rounded-3xl sm:p-8 md:p-10">
+            <div className="flex items-baseline justify-between gap-3">
+              <div className="min-w-0">
+                <p className="font-serif text-xl text-white sm:text-2xl">My Reset</p>
+                <p className="mt-1 text-[10px] uppercase tracking-widest text-white/45 sm:text-xs">
                   Lifetime access
                 </p>
               </div>
-              <p className="font-serif text-5xl text-white">€49</p>
+              <p className="font-serif text-4xl text-white sm:text-5xl">€49</p>
             </div>
 
-            <div className="my-8 h-px w-full bg-white/10" />
+            <div className="my-6 h-px w-full bg-white/10 sm:my-8" />
 
             <p className="text-sm text-white/75">
               For people who already know the pattern — and are ready to stop living it.
             </p>
 
-            <button className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-black">
+            <button className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black sm:mt-8 sm:px-6">
               Get My Reset (€49) <ArrowUpRight className="h-4 w-4" />
             </button>
 
