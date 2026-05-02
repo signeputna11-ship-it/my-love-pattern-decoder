@@ -13,11 +13,11 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "My Love Pattern — Understand why it keeps happening." },
+      { title: "My Love Pattern · Understand why it keeps happening." },
       {
         name: "description",
         content:
-          "You don't have a dating problem — you have a pattern. Find yours in 60 seconds and learn exactly what to do instead.",
+          "You don't have a dating problem. You have a pattern. Find yours in 60 seconds and learn exactly what to do instead.",
       },
       { property: "og:title", content: "My Love Pattern" },
       {

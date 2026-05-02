@@ -75,7 +75,7 @@ async function handleWebhook(req: Request, env: StripeEnv) {
       await upsertPurchaseFromSession(event.data.object, env);
       break;
     case "transaction.completed": {
-      // In case payment provider abstraction sends this — try to extract a session/PI
+      // In case payment provider abstraction sends this. Try to extract a session/PI
       const obj: any = event.data.object;
       if (obj?.id?.startsWith?.("cs_")) await upsertPurchaseFromSession(obj, env);
       break;

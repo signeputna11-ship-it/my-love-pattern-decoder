@@ -91,8 +91,8 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
       });
       if (error) {
         const status = (error as any)?.context?.status;
-        if (status === 429) toast.error("Too many requests — try again in a moment.");
-        else if (status === 402) toast.error("AI credits exhausted — please contact support.");
+        if (status === 429) toast.error("Too many requests. Try again in a moment.");
+        else if (status === 402) toast.error("AI credits exhausted. Please contact support.");
         else toast.error("Couldn't generate guidance. Try again.");
         return;
       }
@@ -277,7 +277,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
                 className="flex items-center justify-center gap-2 rounded-full liquid-glass px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10 disabled:opacity-40"
               >
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                {hasSavedReflection ? "Saved — update" : "Save AI Reflection"}
+                {hasSavedReflection ? "Update reflection" : "Save AI Reflection"}
               </button>
 
               <button

@@ -25,7 +25,7 @@ function iconFor(fileType: string | null) {
 }
 
 type Props = {
-  /** Module slug or identifier — must match the `module` column on kit_resources. */
+  /** Module slug or identifier. Must match the `module` column on kit_resources. */
   moduleKey: string;
 };
 
@@ -45,7 +45,7 @@ export function KitResources({ moduleKey }: Props) {
         .order("order_index", { ascending: true });
       if (!cancelled) {
         if (error) {
-          // No noisy error — likely just no access yet.
+          // No noisy error. Likely just no access yet.
           setResources([]);
         } else {
           setResources((data as KitResource[]) ?? []);

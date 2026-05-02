@@ -128,7 +128,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.2 }}
           className="mt-6 max-w-2xl text-sm leading-relaxed text-white/75 sm:mt-8 sm:text-base md:text-lg"
         >
-          You keep getting pulled into the same kind of connection —
+          You keep getting pulled into the same kind of connection:
           mixed signals, uncertainty, emotional highs and lows.
           This shows you exactly why… and what to do instead.
         </motion.p>
@@ -319,7 +319,7 @@ export function Diagnosis() {
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">02</p>
                   <p className="mt-2 font-serif text-lg text-white">Why it repeats</p>
                   <p className="mt-2 text-sm text-white/75">
-                    Your nervous system reads inconsistency as something to solve —
+                    Your nervous system reads inconsistency as something to solve,
                     not something to step away from.
                   </p>
                 </div>
@@ -420,7 +420,7 @@ export function Toolkit() {
             <div className="my-6 h-px w-full bg-white/10 sm:my-8" />
 
             <p className="text-sm text-white/75">
-              For people who already know the pattern — and are ready to stop living it.
+              For people who already know the pattern, and are ready to stop living it.
             </p>
 
             <button className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black sm:mt-8 sm:px-6">
@@ -463,7 +463,7 @@ export function ExperiencePortal() {
             to choosing differently.
           </p>
           <p className="mt-3 text-xs text-white/55">
-            Most people complete this in 2–3 sittings.
+            Most people complete this in 2 to 3 sittings.
           </p>
         </div>
 

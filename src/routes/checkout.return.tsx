@@ -65,7 +65,7 @@ function CheckoutReturn() {
               <CheckCircle2 className="mx-auto h-10 w-10 text-white" />
               <h1 className="mt-4 font-serif text-4xl">You're in.</h1>
               <p className="mt-2 text-sm text-white/70">
-                The Reset is unlocked. Start with Module 1 — See the Pattern.
+                The Reset is unlocked. Start with Module 1: See the Pattern.
               </p>
               <Link
                 to="/app"
