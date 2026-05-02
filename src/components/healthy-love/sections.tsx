@@ -103,20 +103,20 @@ export function Hero() {
     <section id="top" className="relative min-h-screen overflow-hidden bg-black">
       <BackgroundVideo src={VIDEOS.hero} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 text-center">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-4 pb-16 pt-28 text-center sm:px-6 sm:pt-32">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="liquid-glass mb-8 inline-flex rounded-full px-4 py-1.5 text-[11px] uppercase tracking-[0.2em] text-white/80"
+          className="liquid-glass mb-6 inline-flex max-w-full rounded-full px-3 py-1.5 text-[9px] uppercase tracking-[0.18em] text-white/80 sm:mb-8 sm:px-4 sm:text-[11px] sm:tracking-[0.2em]"
         >
-          My Love Pattern · Relationship Pattern Diagnosis
+          <span className="truncate">My Love Pattern · Pattern Diagnosis</span>
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1 }}
-          className="font-serif text-5xl leading-[1.05] text-white text-balance md:text-7xl"
+          className="font-serif text-[2.25rem] leading-[1.05] text-white text-balance sm:text-5xl md:text-7xl"
         >
           You don't have a dating problem.
           <br />
@@ -126,7 +126,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="mt-8 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg"
+          className="mt-6 max-w-2xl text-sm leading-relaxed text-white/75 sm:mt-8 sm:text-base md:text-lg"
         >
           You keep getting pulled into the same kind of connection —
           mixed signals, uncertainty, emotional highs and lows.
@@ -136,17 +136,17 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
+          className="mt-8 flex w-full flex-col items-stretch gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center"
         >
           <a
             href="#diagnosis"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90 sm:px-7"
           >
             Find My Pattern <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
             href="#patterns"
-            className="liquid-glass inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white"
+            className="liquid-glass inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-white sm:px-7"
           >
             See How It Works
           </a>
