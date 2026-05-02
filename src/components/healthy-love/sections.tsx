@@ -371,15 +371,17 @@ export function Toolkit() {
       <BackgroundVideo src={VIDEOS.toolkit} />
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
+        <p className="mb-6 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          // This is where it changes.
+        </p>
         <div className="grid items-start gap-12 lg:grid-cols-2">
           <div>
             <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
-              This is where things{" "}
-              <em className="italic text-white/75">actually change.</em>
+              This is where things <em className="italic text-white/75">actually change.</em>
             </h2>
             <p className="mt-6 max-w-lg text-white/75">
               You don't need more advice.
-              You need a way to stop repeating the same pattern in real time.
+              You need a reset you can use in real time.
             </p>
 
             <ul className="mt-10 space-y-3">
