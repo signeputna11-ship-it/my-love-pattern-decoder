@@ -104,6 +104,14 @@ export function Hero() {
       <BackgroundVideo src={VIDEOS.hero} />
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="liquid-glass mb-8 inline-flex rounded-full px-4 py-1.5 text-[11px] uppercase tracking-[0.2em] text-white/80"
+        >
+          My Love Pattern · Relationship Pattern Diagnosis
+        </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -144,7 +152,7 @@ export function Hero() {
           </a>
         </motion.div>
         <p className="mt-6 text-xs text-white/55">
-          Most people recognize their pattern in under 2 minutes
+          Most people recognize their pattern in under 2 minutes.
         </p>
       </div>
     </section>
