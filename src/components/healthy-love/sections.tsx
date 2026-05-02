@@ -34,6 +34,33 @@ function BackgroundVideo({ src }: { src: string }) {
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const [hasAccess, setHasAccess] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
+  React.useEffect(() => {
+    let mounted = true;
+    const check = async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      const uid = sess.session?.user.id;
+      if (!mounted) return;
+      setSignedIn(!!uid);
+      if (!uid) {
+        setHasAccess(false);
+        return;
+      }
+      const { data: ok } = await supabase.rpc("has_paid_access", { _user_id: uid });
+      if (!mounted) return;
+      setHasAccess(!!ok);
+    };
+    check();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => check());
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
   const links: { label: string; href: string }[] = [
     { label: "Home", href: "#top" },
     { label: "Patterns", href: "#patterns" },
@@ -67,12 +94,16 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <a
-          href="#diagnosis"
+        <button
+          onClick={() => {
+            if (hasAccess) navigate({ to: "/app" });
+            else if (signedIn) navigate({ to: "/checkout" });
+            else document.getElementById("diagnosis")?.scrollIntoView({ behavior: "smooth" });
+          }}
           className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-black md:inline-flex"
         >
-          Find My Pattern
-        </a>
+          {hasAccess ? "Enter your portal" : "Find My Pattern"}
+        </button>
         <button
           onClick={() => setOpen(!open)}
           aria-label="Open menu"
@@ -94,6 +125,17 @@ export function Nav() {
               {link.label}
             </a>
           ))}
+          {hasAccess && (
+            <button
+              onClick={() => {
+                setOpen(false);
+                navigate({ to: "/app" });
+              }}
+              className="mt-2 block w-full rounded-xl bg-white px-3 py-3 text-sm font-semibold text-black"
+            >
+              Enter your portal
+            </button>
+          )}
         </div>
       )}
     </header>
