@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, CheckCircle2 } from "lucide-react";
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/checkout/return")({
 
 function CheckoutReturn() {
   const { session_id } = Route.useSearch();
+  const navigate = useNavigate();
   const [state, setState] = useState<"checking" | "ready" | "pending">("checking");
 
   useEffect(() => {
@@ -39,6 +40,12 @@ function CheckoutReturn() {
       cancelled = true;
     };
   }, [session_id]);
+
+  useEffect(() => {
+    if (state !== "ready") return;
+    const t = setTimeout(() => navigate({ to: "/app" }), 1800);
+    return () => clearTimeout(t);
+  }, [state, navigate]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-white">
