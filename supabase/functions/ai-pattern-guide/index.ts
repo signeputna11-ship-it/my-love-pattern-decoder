@@ -16,11 +16,12 @@ Hard rules — never break:
 - Do NOT open a chat. You return ONE structured reflection only, via the provided tool.
 - Use the user's own words and the data given. Stay grounded — no speculation about people not described.
 - Tone: calm, descriptive, kind, concrete. Never preachy.
-- If the user mentions self-harm, abuse, or being in danger: keep "noticing" brief and non-clinical, set next_step.type="resource" with label "Reach out to a licensed professional or local support line", reason "This is outside the scope of a self-reflection workbook."
-- Length limits: noticing = 2 to 3 sentences. question = ONE sentence ending with a question mark. reason = 1 short sentence.
+- If the user mentions self-harm, abuse, or being in danger: keep "noticing" brief and non-clinical, set next_step to "Reach out to a licensed professional or local support line", and set recommended_resource_id to null.
+- Length limits: noticing = 2 to 3 sentences, supportive direct grounded tone. question = ONE sentence ending with a question mark. next_step = 1–2 short sentences, concrete and doable.
 - Arrays: max 5 items each, each item 2–6 words, lowercase fragments.
+- Recommend a kit resource only when one is genuinely a fit for what the user wrote — otherwise return recommended_resource_id: null.
 
-You will receive: the user's pattern type, the current module, their saved answers in this module, and the slugs of modules they've already completed plus available modules. Pick next_step.slug from the provided "available_next" list only (unless type="resource").`;
+You will receive: the user's pattern type, the current module, their saved answers in this module, the slugs of completed and available modules, and the available kit_resources for this module. Pick recommended_resource_id from available_kit_resources[].id only (or null).`;
 
 Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -205,7 +206,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     const mergedTriggers = merge((existingMemory as any)?.key_triggers ?? [], parsed.key_triggers ?? []);
     const mergedBehaviors = merge((existingMemory as any)?.repeated_behaviors ?? [], parsed.repeated_behaviors ?? []);
     const mergedBoundaries = merge((existingMemory as any)?.boundaries_needed ?? [], parsed.boundaries_needed ?? []);
-    const mergedNextSteps = merge((existingMemory as any)?.next_steps ?? [], [parsed.next_step.slug]);
+    const mergedNextSteps = merge((existingMemory as any)?.next_steps ?? [], [parsed.next_step]);
 
     const memoryRow = {
       user_id: userId,
@@ -218,7 +219,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
       last_noticing: parsed.noticing,
       last_question: parsed.question,
       summary: parsed.noticing,
-      recommended_next: parsed.next_step.slug,
+      recommended_next: parsed.recommended_resource_id ?? parsed.next_step ?? null,
       updated_at: new Date().toISOString(),
     };
 
