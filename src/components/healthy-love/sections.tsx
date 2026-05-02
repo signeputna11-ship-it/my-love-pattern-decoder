@@ -516,7 +516,10 @@ export function ExperiencePortal() {
               </div>
               <h3 className="mt-4 font-serif text-xl text-white sm:mt-5 sm:text-2xl">{title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-white/75">{desc}</p>
-              <button className="liquid-glass mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white sm:mt-6 sm:w-auto sm:px-5">
+              <button
+                onClick={handleStartModule}
+                className="liquid-glass mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-semibold uppercase tracking-widest text-white transition hover:bg-white/10 sm:mt-6 sm:w-auto sm:px-5"
+              >
                 Start Module <ArrowUpRight className="h-3.5 w-3.5" />
               </button>
             </motion.div>
