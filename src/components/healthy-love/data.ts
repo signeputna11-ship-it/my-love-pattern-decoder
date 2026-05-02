@@ -9,10 +9,11 @@ export type Pattern = {
 };
 
 export const VIDEOS = {
-  hero: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/HEAR%20FLOWERS%20GEMS.mp4",
-  pattern: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEMS%20ISLAND.mp4",
+  hero: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/ROSES%20FAUNA%20CLOSE%20UP.mp4",
+  pattern: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEMS%20ISLAND%20MOTION.mp4",
   diagnosis: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/HEART.mp4",
   toolkit: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEM%20SPARKLE.mp4",
+  experience: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/ROSES%20FAUNA%20CLOSE%20UP.mp4",
 };
 
 export const patterns: Pattern[] = [
