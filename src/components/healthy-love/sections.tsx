@@ -302,7 +302,7 @@ export function Diagnosis() {
               className="liquid-glass-strong rounded-3xl p-8 md:p-12"
             >
               <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">
-                Your Pattern
+                Your Love Pattern
               </p>
               <h3 className="mt-3 font-serif text-4xl text-white md:text-5xl">{result.title}</h3>
               <p className="mt-4 max-w-2xl text-white/80">{result.description}</p>
