@@ -435,7 +435,10 @@ export function Toolkit() {
               For people who already know the pattern, and are ready to stop living it.
             </p>
 
-            <button className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black sm:mt-8 sm:px-6">
+            <button
+              onClick={handleGetReset}
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black transition hover:bg-white/90 sm:mt-8 sm:px-6"
+            >
               Get My Reset (€49) <ArrowUpRight className="h-4 w-4" />
             </button>
 
