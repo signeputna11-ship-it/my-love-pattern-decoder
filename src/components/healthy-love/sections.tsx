@@ -41,14 +41,14 @@ export function Nav() {
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full liquid-glass px-4 py-3">
-        <a href="#top" className="flex items-center gap-2 text-white">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-white/10">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full liquid-glass px-3 py-2.5 sm:px-4 sm:py-3">
+        <a href="#top" className="flex min-w-0 items-center gap-2 text-white">
+          <span className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-full bg-white/10">
             <Sparkles className="h-4 w-4" />
           </span>
-          <span className="flex flex-col leading-tight">
-            <span className="font-serif text-lg">My Love Pattern</span>
+          <span className="flex min-w-0 flex-col leading-tight">
+            <span className="truncate font-serif text-base sm:text-lg">My Love Pattern</span>
             <span className="hidden text-[10px] text-white/55 sm:block">
               Understand why it keeps happening.
             </span>
