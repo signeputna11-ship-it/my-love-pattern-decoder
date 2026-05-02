@@ -68,9 +68,10 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
     if (!mod) return json({ error: "Module not found" }, 404);
 
-    const [{ data: exercises }, { data: answers }] = await Promise.all([
+    const [{ data: exercises }, { data: answers }, { data: kitResources }] = await Promise.all([
       admin.from("exercises").select("id, title, kind, body, position").eq("module_id", (mod as any).id).order("position"),
       admin.from("user_answers").select("exercise_id, answer_text, answer_data").eq("user_id", userId),
+      admin.from("kit_resources").select("id, title, description, file_type, file_path, order_index").eq("module", moduleSlug).order("order_index"),
     ]);
 
     const answerMap = new Map<string, any>();
@@ -89,12 +90,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
     if (moduleAnswers.length === 0) {
       return json({
         empty: true,
-        noticing: "Write at least one answer above first — your reflection is built from your own words.",
-        question: "What's the first thing you noticed when reading the prompts on this page?",
-        next_step: { type: "module", slug: moduleSlug, label: "Answer one prompt above", reason: "We need your words to reflect anything back." },
-        key_triggers: [],
-        repeated_behaviors: [],
-        boundaries_needed: [],
+        message: "Complete at least one answer first so your guide has something real to read.",
       });
     }
 

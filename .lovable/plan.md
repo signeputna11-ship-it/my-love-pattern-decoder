@@ -1,79 +1,69 @@
 ## Goal
 
-Replace the static "Your AI guide" placeholder card on the module page with a live, structured AI reflection powered by a Supabase Edge Function. The guide reads the user's saved answers + pattern + completed modules, and returns three short structured fields (noticing / one question / next step). It never opens a free-form chat.
+Refine the already-deployed `ai-pattern-guide` edge function and `PatternGuideCard` to match the new spec exactly:
+- Response shape: `{ noticing, question, next_step: string, recommended_resource_id }`
+- Model receives `kit_resources` for the current module and may recommend one by ID
+- Empty-state shows the exact copy: *"Complete at least one answer first so your guide has something real to read."*
+- "Open Recommended Tool" deep-links to the recommended `kit_resources` row
+- All AI memory writes already happen — keep them and route arrays through the new shape
 
-## 1. Database migration — extend `ai_memory`
+No DB migration is needed (every column the spec lists already exists on `ai_memory` from the prior turn).
 
-The current `ai_memory` table only stores `user_id, summary, recommended_next, updated_at`. Add columns to match the requested schema:
+## 1. Edge function — `supabase/functions/ai-pattern-guide/index.ts`
 
-- `pattern_type text`
-- `key_triggers text[]`
-- `repeated_behaviors text[]`
-- `boundaries_needed text[]`
-- `next_steps text[]`
-- `last_module_slug text` (so the UI can show "last reflected on X")
-- `last_question text` (the focused question returned)
-- `last_noticing text` (the 2–3 sentence summary)
+Edit in place:
 
-Existing `summary` and `recommended_next` stay for backwards-compat. RLS policies already cover all columns (own-row select/insert/update). No new policies needed.
+**1a. Load kit_resources for the module** — add a third parallel query that fetches `kit_resources` rows where `module = moduleSlug` (id, title, description, file_type, file_path, order_index). Pass them into the user context as `available_kit_resources`.
 
-## 2. Edge Function — `supabase/functions/ai-pattern-guide`
+**1b. Empty-state response** — when `moduleAnswers.length === 0`, return only:
+```json
+{ "empty": true, "message": "Complete at least one answer first so your guide has something real to read." }
+```
+(Drop the placeholder noticing/question/next_step that the prior version returned.)
 
-Create `supabase/functions/ai-pattern-guide/index.ts` (CORS, JWT verified — function runs as the user via their bearer token, then uses service role for the DB read/write to avoid RLS round-trips on aggregates).
+**1c. Tool schema** — replace the structured `next_step` object with the flat shape from the spec:
+```
+noticing: string                  // 2-3 sentences, supportive direct, grounded, no diagnosis
+question: string                  // ONE focused follow-up question
+next_step: string                 // ONE practical next step
+recommended_resource_id: string|null   // restricted via enum to the IDs in available_kit_resources, or null
+key_triggers / repeated_behaviors / boundaries_needed: string[] (max 5)
+```
+Constraining `recommended_resource_id` via `enum` (the actual UUID list + `null`) prevents hallucinated IDs.
 
-Input: `{ moduleSlug: string }`
+**1d. System prompt** — keep existing guardrails (no therapy claims, no diagnosis, no open-ended chat, one clear question, supportive direct grounded tone, recommend only one resource). Add: "Recommend a kit resource only when one is genuinely a fit — otherwise return `recommended_resource_id: null`."
 
-Server work:
-1. Verify JWT, get `user_id`.
-2. Load: `profiles.pattern_type`, current `modules` row by slug, this module's `exercises` + the user's `user_answers` for them, list of completed module slugs from `user_progress`, and existing `ai_memory` row.
-3. Build a strict structured prompt for Lovable AI Gateway (`google/gemini-3-flash-preview`) using **tool calling** to force JSON output with this schema:
-   ```
-   {
-     noticing: string (2–3 sentences, descriptive, no diagnosis),
-     question: string (one focused self-reflection question),
-     next_step: { type: "module" | "resource", slug: string, label: string, reason: string },
-     key_triggers: string[] (max 5),
-     repeated_behaviors: string[] (max 5),
-     boundaries_needed: string[] (max 5)
-   }
-   ```
-4. **System prompt guardrails**: "You are a structured self-reflection guide, not a therapist. Do not diagnose. Do not make medical or mental-health claims. Do not give crisis advice — if user mentions self-harm or abuse, set `next_step.type='resource'` pointing to professional support and keep noticing brief and non-clinical. Use the user's own words. Stay grounded in the answers provided. Output only via the provided tool."
-5. Upsert into `ai_memory`: merge new triggers/behaviors/boundaries with existing arrays (dedupe), set `pattern_type`, `last_module_slug`, `last_noticing`, `last_question`, `next_steps` (append `next_step.slug`), `summary`, `recommended_next`, `updated_at = now()`.
-6. Return the structured object to the client.
-7. Handle 429 / 402 from the gateway with friendly error messages.
+**1e. ai_memory upsert** — same fields as today, but `recommended_next` now stores the `recommended_resource_id` (or `next_step` text fallback if null), and `next_steps` array appends the new `next_step` string. Everything else (`pattern_type`, `key_triggers`, `repeated_behaviors`, `boundaries_needed`, `last_module_slug`, `last_noticing`, `last_question`, `updated_at`) keeps working.
 
-`supabase/config.toml`: add a function block for `ai-pattern-guide` only if non-default settings are needed (default `verify_jwt=true` is what we want — skip the block).
+Auth & RLS: function continues to verify the JWT (so only the logged-in user is touched) and uses the service-role client to read aggregates and upsert memory. Paid-access gating already exists at the route level (`/app/*` is paid-only) and on `kit_resources` via RLS.
 
-## 3. Frontend — replace placeholder card
+## 2. Frontend — `src/components/healthy-love/PatternGuideCard.tsx`
 
-In `src/routes/app.module.$slug.tsx`, replace lines ~287–298 with a new `<PatternGuideCard moduleSlug={module.slug} />` component (new file `src/components/healthy-love/PatternGuideCard.tsx`).
+Rewrite for the new contract:
 
-Card behavior:
-- Liquid-glass styling matching the existing `liquid-glass-strong rounded-3xl` look.
-- Title: **Your Pattern Guide** with `Sparkles` icon.
-- Initial state: subtle "Reflect on what you wrote" CTA + button **Generate reflection** (calls `supabase.functions.invoke('ai-pattern-guide', { body: { moduleSlug } })`). Loading state with spinner.
-- After response, three sections rendered as labeled blocks:
-  1. **What I'm noticing** — the `noticing` text.
-  2. **One question to answer** — `question` shown in a quoted style + small textarea so the user can jot a private note (autosaved to `user_answers` under a synthetic exercise key, OR to local `ai_memory.last_reflection` — we'll store it as a new `last_reflection text` column added in the same migration to keep it simple).
-  3. **Recommended next step** — `next_step.label` + 1-line `reason`.
-- Two buttons at the bottom:
-  - **Save AI Reflection** — persists the textarea note into `ai_memory.last_reflection` (small server fn or direct upsert via the user-scoped client).
-  - **Open Recommended Tool** — `<Link>` to `/app/module/{slug}` if `type='module'`, or scrolls to `KitResources` and highlights the matching resource if `type='resource'`.
-- On mount, if an existing `ai_memory` row exists for this `last_module_slug === moduleSlug`, prefill the card with the saved values so the user sees their last reflection without re-spending a model call.
-- Toast errors for 429 ("Try again in a moment") and 402 ("AI credits exhausted — contact support").
+- **Type**: `Reflection = { noticing; question; next_step: string; recommended_resource_id: string | null; ... }`
+- **Empty state**: when the function returns `{ empty: true, message }`, render that message inside the card with a disabled "Generate Guidance" hint — no fake reflection.
+- **Buttons** (per spec): primary **Generate Guidance** (initial + regenerate state), **Save AI Reflection** (persists the textarea note into `ai_memory.last_reflection`), **Open Recommended Tool**.
+- **Open Recommended Tool**:
+  - If `recommended_resource_id` is set → fetch a 10-min signed URL for that `kit_resources.file_path` (same pattern already used by `KitResources.tsx`) and `window.open(url)`.
+  - If `null` → scroll to `#kit-resources` so the user picks from the bonus tools section.
+- **Sections** (titles unchanged): "What I'm noticing", "One question to answer" (with the same private textarea), "Recommended next step" (renders `next_step` string + a small chip "Open recommended tool" if a resource was picked).
+- **Initial render**: still hydrates from `ai_memory.last_*` on mount so the user sees their previous reflection without re-spending a model call.
+- Toast handling for 429/402 stays.
 
-The existing `<KitResources moduleKey={module.slug} />` stays directly below the card, unchanged.
+## 3. Module page — `src/routes/app.module.$slug.tsx`
 
-## 4. Safety rails (codified in the system prompt + UI copy)
+No changes — `<PatternGuideCard moduleSlug={module.slug} />` is already mounted above `<KitResources>` (which has `id="kit-resources"` for the scroll target). Just verify both still render.
 
-- Card subtitle: *"Structured self-reflection, not therapy or diagnosis."*
-- Footer disclaimer in small text: *"This guide doesn't provide medical or mental health advice. If you're in crisis, contact a licensed professional."*
-- The function rejects (returns a fixed safe response) any request that produces no answers yet — instead it returns a "Write at least one answer above first" message rather than calling the model.
+## 4. Deploy
+
+Redeploy `ai-pattern-guide` after the edits.
 
 ## Technical summary
 
-- **Migration**: ALTER TABLE `ai_memory` ADD the 8 new columns (all nullable).
-- **Edge function**: `supabase/functions/ai-pattern-guide/index.ts` using Lovable AI Gateway with tool-calling for forced structured output, model `google/gemini-3-flash-preview`.
-- **Client**: New `PatternGuideCard` component invoked via `supabase.functions.invoke`. Replaces lines 287–298 of `src/routes/app.module.$slug.tsx`.
-- **No new secrets** required (`LOVABLE_API_KEY` already configured).
-- **Bonus tools section** (`<KitResources />`) remains below the card, untouched.
+- Files touched:
+  - `supabase/functions/ai-pattern-guide/index.ts` — load kit_resources, switch tool schema to flat `next_step` + `recommended_resource_id` enum, tighten empty-state response, adjust ai_memory upsert mapping.
+  - `src/components/healthy-love/PatternGuideCard.tsx` — new types, empty-state copy, Generate Guidance / Save AI Reflection / Open Recommended Tool buttons, signed-URL handling for recommended resource.
+- No DB migration.
+- No new secrets.
+- Auth: edge fn verifies JWT, RLS on `ai_memory` / `user_answers` / `kit_resources` already restricts access to the logged-in paying user.
