@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, CheckCircle2 } from "lucide-react";
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/checkout/return")({
 
 function CheckoutReturn() {
   const { session_id } = Route.useSearch();
+  const navigate = useNavigate();
   const [state, setState] = useState<"checking" | "ready" | "pending">("checking");
 
   useEffect(() => {
@@ -40,6 +41,12 @@ function CheckoutReturn() {
     };
   }, [session_id]);
 
+  useEffect(() => {
+    if (state !== "ready") return;
+    const t = setTimeout(() => navigate({ to: "/app" }), 1800);
+    return () => clearTimeout(t);
+  }, [state, navigate]);
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-white">
       <video
@@ -65,7 +72,7 @@ function CheckoutReturn() {
               <CheckCircle2 className="mx-auto h-10 w-10 text-white" />
               <h1 className="mt-4 font-serif text-4xl">You're in.</h1>
               <p className="mt-2 text-sm text-white/70">
-                The Reset is unlocked. Start with Module 1: See the Pattern.
+                The Reset is unlocked. Taking you to your modules…
               </p>
               <Link
                 to="/app"
