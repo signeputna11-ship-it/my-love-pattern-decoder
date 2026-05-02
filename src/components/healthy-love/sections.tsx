@@ -167,12 +167,15 @@ export function PatternSection() {
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-3xl text-center">
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
-            // You've seen this before…
+            // You feel it when they pull away.
           </p>
           <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
-            One of these is{" "}
-            <em className="italic text-white/75">already yours.</em>
+            You've seen this <em className="italic text-white/75">before…</em>
           </h2>
+          <p className="mt-6 text-base leading-relaxed text-white/75">
+            When the same emotional loop keeps repeating, the problem is not your worth.
+            It is the pattern your nervous system keeps following.
+          </p>
         </div>
 
         <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
