@@ -109,7 +109,13 @@ Deno.serve(async (req: Request): Promise<Response> => {
       pattern_type: profile?.pattern_type ?? "unknown",
       current_module: { slug: (mod as any).slug, title: (mod as any).title, subtitle: (mod as any).subtitle },
       completed_modules: completedSlugList,
-      available_next: availableNext,
+      available_next_modules: availableNext,
+      available_kit_resources: (kitResources ?? []).map((r: any) => ({
+        id: r.id,
+        title: r.title,
+        description: r.description,
+        file_type: r.file_type,
+      })),
       previous_memory: existingMemory
         ? {
             key_triggers: (existingMemory as any).key_triggers ?? [],
@@ -120,6 +126,10 @@ Deno.serve(async (req: Request): Promise<Response> => {
       answers_in_this_module: moduleAnswers,
     };
 
+    const validResourceIds = (kitResources ?? []).map((r: any) => r.id as string);
+    const resourceIdEnum: (string | null)[] =
+      validResourceIds.length > 0 ? [...validResourceIds, null] : [null];
+
     const tool = {
       type: "function",
       function: {
@@ -128,24 +138,30 @@ Deno.serve(async (req: Request): Promise<Response> => {
         parameters: {
           type: "object",
           properties: {
-            noticing: { type: "string", description: "2-3 descriptive sentences using the user's own words. No diagnosis." },
-            question: { type: "string", description: "ONE focused self-reflection question." },
-            next_step: {
-              type: "object",
-              properties: {
-                type: { type: "string", enum: ["module", "resource"] },
-                slug: { type: "string", description: "Module slug from available_next, or short resource slug." },
-                label: { type: "string" },
-                reason: { type: "string" },
-              },
-              required: ["type", "slug", "label", "reason"],
-              additionalProperties: false,
+            noticing: {
+              type: "string",
+              description: "2-3 grounded sentences about the repeated pattern. Supportive, direct, no diagnosis, no therapy claims. Use the user's own words.",
+            },
+            question: { type: "string", description: "ONE focused follow-up question." },
+            next_step: { type: "string", description: "ONE practical next step the user can take this week." },
+            recommended_resource_id: {
+              type: ["string", "null"],
+              description: "ID of ONE kit_resource from available_kit_resources, or null if none fits.",
+              enum: resourceIdEnum,
             },
             key_triggers: { type: "array", items: { type: "string" }, maxItems: 5 },
             repeated_behaviors: { type: "array", items: { type: "string" }, maxItems: 5 },
             boundaries_needed: { type: "array", items: { type: "string" }, maxItems: 5 },
           },
-          required: ["noticing", "question", "next_step", "key_triggers", "repeated_behaviors", "boundaries_needed"],
+          required: [
+            "noticing",
+            "question",
+            "next_step",
+            "recommended_resource_id",
+            "key_triggers",
+            "repeated_behaviors",
+            "boundaries_needed",
+          ],
           additionalProperties: false,
         },
       },
