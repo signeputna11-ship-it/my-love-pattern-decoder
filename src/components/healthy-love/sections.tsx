@@ -94,12 +94,16 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <a
-          href="#diagnosis"
+        <button
+          onClick={() => {
+            if (hasAccess) navigate({ to: "/app" });
+            else if (signedIn) navigate({ to: "/checkout" });
+            else document.getElementById("diagnosis")?.scrollIntoView({ behavior: "smooth" });
+          }}
           className="hidden rounded-full bg-white px-4 py-2 text-sm font-semibold text-black md:inline-flex"
         >
-          Find My Pattern
-        </a>
+          {hasAccess ? "Enter your portal" : "Find My Pattern"}
+        </button>
         <button
           onClick={() => setOpen(!open)}
           aria-label="Open menu"
