@@ -441,11 +441,11 @@ export function Toolkit() {
 
 export function ExperiencePortal() {
   const modules: [string, string, React.ComponentType<{ className?: string }>][] = [
-    ["Pattern Reveal", "Name the dynamic that keeps repeating.", Heart],
-    ["Trigger Reset", "Calm the spike before it becomes a chase.", Waves],
-    ["Self-Worth Rebuild", "Separate your value from being chosen.", Sparkles],
-    ["Boundaries & Standards", "Turn your needs into clear, protected decisions.", Shield],
-    ["Choose Differently", "Read behavior — not chemistry, hope, or fear.", Brain],
+    ["Pattern Reveal", "Map the repeated dynamic and name what is actually happening.", Heart],
+    ["Trigger Reset", "Calm the anxiety spike before it becomes a chase response.", Waves],
+    ["Self-Worth Rebuild", "Separate your value from attention, silence, and being chosen.", Sparkles],
+    ["Boundaries", "Turn your needs into clear words and protected decisions.", Shield],
+    ["Relationship Decision", "Choose from evidence instead of chemistry, hope, or fear.", Brain],
   ];
 
   return (
@@ -454,15 +454,18 @@ export function ExperiencePortal() {
       <div className="absolute inset-0 bg-black/70" />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="max-w-3xl">
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+            // You respond differently now.
+          </p>
           <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
             Your Reset <em className="italic text-white/75">Path.</em>
           </h2>
           <p className="mt-6 max-w-2xl text-white/80">
-            This is where you move from understanding
-            to choosing differently — step by step.
+            Move from understanding
+            to choosing differently.
           </p>
           <p className="mt-3 text-xs text-white/55">
-            Most people complete this in 2–3 sittings
+            Most people complete this in 2–3 sittings.
           </p>
         </div>
 
@@ -474,18 +477,24 @@ export function ExperiencePortal() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, delay: i * 0.08 }}
-              className="liquid-glass-strong rounded-3xl p-6"
+              className="liquid-glass-strong flex flex-col rounded-3xl p-6"
             >
               <div className="flex items-center justify-between">
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10">
                   <Icon className="h-5 w-5 text-white" />
                 </span>
-                <span className="grid h-9 w-9 place-items-center rounded-full border border-white/15 text-[10px] font-mono text-white/55">
+                <span
+                  aria-label="Completion"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-white/20 text-[10px] font-mono text-white/55"
+                >
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
               <h3 className="mt-5 font-serif text-2xl text-white">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/75">{desc}</p>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-white/75">{desc}</p>
+              <button className="liquid-glass mt-6 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-widest text-white">
+                Start Module <ArrowUpRight className="h-3.5 w-3.5" />
+              </button>
             </motion.div>
           ))}
         </div>
@@ -497,8 +506,8 @@ export function ExperiencePortal() {
 export function FinalCTA() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black py-32">
-      <BackgroundVideo src={VIDEOS.hero} />
-      <div className="absolute inset-0 bg-black/50" />
+      <BackgroundVideo src={VIDEOS.final} />
+      <div className="absolute inset-0 bg-black/65" />
       <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-6 text-center">
         <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
           You already know this pattern.
@@ -507,14 +516,23 @@ export function FinalCTA() {
           <br />
           <em className="italic text-white/85">Now you can finally change it.</em>
         </h2>
-        <div className="mt-12">
+        <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row">
           <a
             href="#toolkit"
             className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
           >
             Start My Reset <ArrowUpRight className="h-4 w-4" />
           </a>
+          <a
+            href="#diagnosis"
+            className="liquid-glass inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-white"
+          >
+            Find My Pattern
+          </a>
         </div>
+        <p className="mt-6 text-xs text-white/65">
+          Start with the diagnosis. Unlock the reset when you're ready.
+        </p>
         <p className="mt-20 text-xs text-white/40">
           © {new Date().getFullYear()} My Love Pattern. Understand why it keeps happening.
         </p>
