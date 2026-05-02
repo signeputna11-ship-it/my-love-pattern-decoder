@@ -227,23 +227,23 @@ export function Diagnosis() {
   const allAnswered = Object.keys(answers).length === quizQuestions.length;
 
   return (
-    <section id="diagnosis" className="relative min-h-screen overflow-hidden bg-black py-32">
+    <section id="diagnosis" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.diagnosis} />
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 mx-auto max-w-4xl px-6">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
             // Now you can see it clearly.
           </p>
-          <h2 className="font-serif text-4xl leading-tight text-white md:text-6xl">
+          <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             This takes 60 seconds.
             <br />
             <em className="italic text-white/75">You'll see your pattern clearly.</em>
           </h2>
-          <p className="mx-auto mt-6 max-w-xl text-white/75">
+          <p className="mx-auto mt-5 max-w-xl text-sm text-white/75 sm:mt-6 sm:text-base">
             Answer four questions and get your relationship pattern profile.
           </p>
-          <div className="mx-auto mt-8 h-1 w-64 overflow-hidden rounded-full bg-white/10">
+          <div className="mx-auto mt-6 h-1 w-48 overflow-hidden rounded-full bg-white/10 sm:mt-8 sm:w-64">
             <div
               className="h-full bg-white transition-all duration-500"
               style={{ width: `${progress * 100}%` }}
@@ -251,19 +251,19 @@ export function Diagnosis() {
           </div>
         </div>
 
-        <div className="mt-12">
+        <div className="mt-10 sm:mt-12">
           {!showResult ? (
             <>
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 {quizQuestions.map((q, idx) => (
-                  <div key={q.id} className="liquid-glass-strong rounded-3xl p-6 md:p-8">
+                  <div key={q.id} className="liquid-glass-strong rounded-2xl p-5 sm:rounded-3xl sm:p-6 md:p-8">
                     <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">
                       Question {idx + 1}
                     </p>
-                    <h3 className="mt-2 font-serif text-2xl text-white md:text-3xl">
+                    <h3 className="mt-2 font-serif text-xl text-white sm:text-2xl md:text-3xl">
                       {q.question}
                     </h3>
-                    <div className="mt-5 grid gap-3 md:grid-cols-2">
+                    <div className="mt-4 grid gap-2.5 sm:mt-5 sm:gap-3 md:grid-cols-2">
                       {q.options.map((opt) => {
                         const active = answers[q.id] === opt.pattern;
                         return (
@@ -272,7 +272,7 @@ export function Diagnosis() {
                             onClick={() =>
                               setAnswers((a) => ({ ...a, [q.id]: opt.pattern }))
                             }
-                            className={`rounded-2xl px-4 py-3 text-left text-sm leading-5 transition ${
+                            className={`rounded-xl px-3.5 py-3 text-left text-sm leading-5 transition sm:rounded-2xl sm:px-4 ${
                               active
                                 ? "bg-white text-black"
                                 : "bg-white/[0.04] text-white/80 hover:bg-white/[0.08]"
@@ -299,23 +299,23 @@ export function Diagnosis() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="liquid-glass-strong rounded-3xl p-8 md:p-12"
+              className="liquid-glass-strong rounded-2xl p-6 sm:rounded-3xl sm:p-8 md:p-12"
             >
               <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">
                 Your Love Pattern
               </p>
-              <h3 className="mt-3 font-serif text-4xl text-white md:text-5xl">{result.title}</h3>
-              <p className="mt-4 max-w-2xl text-white/80">{result.description}</p>
+              <h3 className="mt-3 font-serif text-3xl text-white sm:text-4xl md:text-5xl">{result.title}</h3>
+              <p className="mt-4 max-w-2xl text-sm text-white/80 sm:text-base">{result.description}</p>
 
-              <div className="mt-10 grid gap-5 md:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 p-5">
+              <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-5 md:grid-cols-3">
+                <div className="rounded-2xl border border-white/10 p-4 sm:p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">01</p>
                   <p className="mt-2 font-serif text-lg text-white">What's actually happening</p>
                   <p className="mt-2 text-sm text-white/75">
                     You move closer when connection feels uncertain.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 p-5">
+                <div className="rounded-2xl border border-white/10 p-4 sm:p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">02</p>
                   <p className="mt-2 font-serif text-lg text-white">Why it repeats</p>
                   <p className="mt-2 text-sm text-white/75">
@@ -323,7 +323,7 @@ export function Diagnosis() {
                     not something to step away from.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-white/10 p-5">
+                <div className="rounded-2xl border border-white/10 p-4 sm:p-5">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">03</p>
                   <p className="mt-2 font-serif text-lg text-white">What changes everything</p>
                   <p className="mt-2 text-sm text-white/75">
@@ -333,7 +333,7 @@ export function Diagnosis() {
                 </div>
               </div>
 
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row">
                 <a
                   href="#toolkit"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black"
