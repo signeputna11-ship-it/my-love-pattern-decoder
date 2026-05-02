@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowUpRight,
   Heart,
