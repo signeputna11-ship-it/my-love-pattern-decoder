@@ -1,52 +1,26 @@
-## Goal
-Remove every em-dash (—) from the codebase and rephrase the surrounding copy so it still reads naturally. Also normalize en-dashes (–) used in numeric ranges to the word "to" for consistency.
+# Fix the "Get My Reset (€49)" button
 
-## Scope (files touched)
+## Problem
+On the landing page pricing card (`src/components/healthy-love/sections.tsx`, line 426), the **Get My Reset (€49)** button is a bare `<button>` with no `onClick` and no link wrapper. Clicking it does nothing.
 
-**User-facing copy (React)**
-- `src/routes/index.tsx` — title + hero subline
-- `src/routes/auth.tsx` — page title
-- `src/routes/checkout.tsx` — page title
-- `src/routes/checkout.return.tsx` — success body line
-- `src/routes/app.tsx` — page title + CTA price line
-- `src/routes/app.module.$slug.tsx` — empty-answer placeholder + completion button label
-- `src/components/healthy-love/data.ts` — two pattern descriptions
-- `src/components/healthy-love/sections.tsx` — diagnosis copy, nervous-system line, "ready to stop living it" line, "2–3 sittings" line
-- `src/components/healthy-love/KitResources.tsx` — JSDoc + inline comment
-- `src/components/healthy-love/PatternGuideCard.tsx` — two toast messages + save-button label
+The checkout route (`/checkout`) and Stripe embedded flow already exist and work — the button just isn't connected.
 
-**Edge function**
-- `supabase/functions/ai-pattern-guide/index.ts` — system prompt rules and one error message returned to the client
+## Fix
 
-**Build config**
-- `vite.config.ts` — single comment
+In `src/components/healthy-love/sections.tsx`:
 
-**Database (already-seeded copy)**
-The original seed migration (`20260502180151_*.sql`) ran once; editing it does not change live rows. Add a new migration that UPDATEs the affected rows so users see clean copy:
-- `modules.intro` for slugs `see-the-pattern` and `set-the-boundary`
-- `exercises.body` for the two Module 1 prompts that contain em-dashes
+1. Import `Link` from `@tanstack/react-router` and `supabase` from `@/integrations/supabase/client` (if not already in this file).
+2. Replace the plain `<button>` on line 426 with a smart handler:
+   - If the user has an active Supabase session → navigate to `/checkout`.
+   - If not signed in → navigate to `/auth` with a redirect param so they land on `/checkout` after sign-in.
+3. Keep the existing styling and `ArrowUpRight` icon exactly as-is.
 
-## Rewrite approach
+Implementation approach: convert the button to a small client component that calls `supabase.auth.getSession()` on click and uses `useNavigate()` to route accordingly. This avoids hard-coding the auth check at render time and keeps SSR clean.
 
-Each em-dash is replaced with the punctuation that best fits the sentence rhythm — usually a period, comma, or colon — never another dash. Examples:
+## Optional follow-up (only if you confirm)
+The CTA at the top of the same section (and any other "Unlock" buttons) should be checked too — let me know if you want me to audit and wire all of them in the same pass.
 
-- "running — gently, without judgment." → "running. Gently, without judgment."
-- "You give more, faster — hoping it creates security." → "You give more, faster, hoping it creates security."
-- "Saved — update" → "Saved. Update"
-- "Unlock The Reset — €49" → "Unlock The Reset for €49"
-- "Sign in — My Love Pattern" → "Sign in · My Love Pattern" (middle dot for title separators)
-- "AI credits exhausted — please contact support." → "AI credits exhausted. Please contact support."
-- "Most people complete this in 2–3 sittings." → "Most people complete this in 2 to 3 sittings."
-- "noticing = 2 to 3 sentences" (already fine); "1–2 short sentences" → "1 to 2 short sentences"; "2–6 words" → "2 to 6 words"
+## Files changed
+- `src/components/healthy-love/sections.tsx` (single button + small handler + 2 imports)
 
-Page-title separators (where `—` joined a page name and the brand) become `·` (middle dot), which is a common convention and avoids re-introducing a dash.
-
-Comments and JSDoc lines get the same treatment so the rule applies project-wide.
-
-## Verification
-
-After edits, re-run `rg -nP '[\x{2013}\x{2014}]'` across the project (excluding `node_modules`, generated files, and the original seed migration which stays as a historical record but is overridden by the new UPDATE migration). Expect zero matches in source and zero em-dashes in any user-visible string. The new migration's UPDATE statements ensure the live database reflects the cleaned copy.
-
-## Out of scope
-- The historical seed migration file itself is left untouched (migrations are append-only); the new migration supersedes its content for the affected rows.
-- Generated files (`routeTree.gen.ts`, `supabase/types.ts`) and `node_modules` are not scanned or modified.
+No database, edge function, or schema changes needed.

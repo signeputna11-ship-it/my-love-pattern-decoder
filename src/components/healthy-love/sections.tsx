@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowUpRight,
   Heart,
@@ -359,12 +361,22 @@ export function Diagnosis() {
 }
 
 export function Toolkit() {
+  const navigate = useNavigate();
   const transformations = [
     "You stop overthinking messages",
     "You stop chasing clarity",
     "You stop mistaking anxiety for chemistry",
     "You start choosing based on behavior",
   ];
+
+  const handleGetReset = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      navigate({ to: "/checkout" });
+    } else {
+      navigate({ to: "/auth" });
+    }
+  };
 
   return (
     <section id="toolkit" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
@@ -423,7 +435,10 @@ export function Toolkit() {
               For people who already know the pattern, and are ready to stop living it.
             </p>
 
-            <button className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black sm:mt-8 sm:px-6">
+            <button
+              onClick={handleGetReset}
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black transition hover:bg-white/90 sm:mt-8 sm:px-6"
+            >
               Get My Reset (€49) <ArrowUpRight className="h-4 w-4" />
             </button>
 
