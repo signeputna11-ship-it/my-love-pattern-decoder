@@ -1,26 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  Nav,
+  Hero,
+  PatternSection,
+  Diagnosis,
+  Toolkit,
+  Experience,
+  FooterCTA,
+} from "@/components/healthy-love/sections";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Healthy Love Observatory — Relationship Pattern Diagnosis" },
+      {
+        name: "description",
+        content:
+          "A guided self-worth and relationship clarity system. Diagnose your pattern, reset your standards, choose consistency over chemistry.",
+      },
+      { property: "og:title", content: "Healthy Love Observatory" },
+      {
+        property: "og:description",
+        content: "Diagnose your relationship pattern. Reset your standards. Choose consistency.",
+      },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
+function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-black text-white">
+      <Nav />
+      <Hero />
+      <PatternSection />
+      <Diagnosis />
+      <Toolkit />
+      <Experience />
+      <FooterCTA />
     </div>
   );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
 }
