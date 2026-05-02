@@ -6,6 +6,7 @@ import { ArrowLeft, CheckCircle2, Loader2, Save, Download, Sparkles } from "luci
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import { KitResources } from "@/components/healthy-love/KitResources";
+import { PatternGuideCard } from "@/components/healthy-love/PatternGuideCard";
 
 type Module = {
   id: string;
@@ -284,20 +285,11 @@ function ModulePage() {
         })}
       </div>
 
-      <div className="mt-8 liquid-glass-strong rounded-3xl p-5 sm:p-6">
-        <div className="flex items-start gap-3">
-          <Sparkles className="mt-1 h-5 w-5 text-white/70" />
-          <div>
-            <p className="text-xs uppercase tracking-widest text-white/40">Your AI guide</p>
-            <p className="mt-1 text-sm text-white/80">
-              Once you've answered, you'll see a single focused next step here — based on what
-              you wrote. Coming next.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PatternGuideCard moduleSlug={module.slug} />
 
-      <KitResources moduleKey={module.slug} />
+      <div id="kit-resources">
+        <KitResources moduleKey={module.slug} />
+      </div>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <button

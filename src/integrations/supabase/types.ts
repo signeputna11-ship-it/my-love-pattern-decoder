@@ -16,19 +16,46 @@ export type Database = {
     Tables: {
       ai_memory: {
         Row: {
+          boundaries_needed: string[] | null
+          key_triggers: string[] | null
+          last_module_slug: string | null
+          last_noticing: string | null
+          last_question: string | null
+          last_reflection: string | null
+          next_steps: string[] | null
+          pattern_type: string | null
           recommended_next: string | null
+          repeated_behaviors: string[] | null
           summary: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          boundaries_needed?: string[] | null
+          key_triggers?: string[] | null
+          last_module_slug?: string | null
+          last_noticing?: string | null
+          last_question?: string | null
+          last_reflection?: string | null
+          next_steps?: string[] | null
+          pattern_type?: string | null
           recommended_next?: string | null
+          repeated_behaviors?: string[] | null
           summary?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          boundaries_needed?: string[] | null
+          key_triggers?: string[] | null
+          last_module_slug?: string | null
+          last_noticing?: string | null
+          last_question?: string | null
+          last_reflection?: string | null
+          next_steps?: string[] | null
+          pattern_type?: string | null
           recommended_next?: string | null
+          repeated_behaviors?: string[] | null
           summary?: string | null
           updated_at?: string
           user_id?: string
