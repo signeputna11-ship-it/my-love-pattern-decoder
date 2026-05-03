@@ -155,7 +155,11 @@ export function KitResources({ moduleKey }: Props) {
             </div>
 
             <button
-              onClick={() => setActive(r)}
+              onClick={() => {
+                // Defer so the originating click finishes before Radix mounts the overlay,
+                // otherwise the trailing pointerup is treated as an outside-click and auto-closes.
+                setTimeout(() => setActive(r), 0);
+              }}
               className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-white/90"
             >
               <Sparkles className="h-4 w-4" /> Start Tool
