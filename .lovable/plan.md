@@ -1,24 +1,17 @@
-# Fix: `/app` dashboard shows nothing
+## Fix: 403 on `has_paid_access` RPC blocking `/app`
 
-## What's happening
-`src/routes/app.index.tsx` uses the same fragile pattern that broke `/app/module/$slug`:
-- Calls `supabase.auth.getSession()` (no timeout, no error handling).
-- Returns silently if there's no session, leaving `modules` as an empty array.
-- The dashboard then renders an empty state instead of any content, which looks like "nothing loads."
+### Root cause
+The `/app` access check calls `supabase.rpc("has_paid_access", ...)` and gets back `403 permission denied for function has_paid_access`. The function exists and is `SECURITY DEFINER`, but the `authenticated` role does not have `EXECUTE` on it, so PostgREST refuses the call.
 
-If `getSession()` hangs or returns no session (stale local token), the dashboard renders blank — no header tiles, no module list.
+### Fix
+Run a one-line migration granting EXECUTE to the API roles:
 
-## Fix
-Update `src/routes/app.index.tsx` so its `load()`:
-1. Uses `supabase.auth.getUser()` (validates the token, doesn't just read local storage).
-2. Wraps everything in `try/catch` and logs each query's error to the console.
-3. Cancels safely on unmount.
-4. Even if the user query fails, still attempt to fetch `modules` (which is publicly readable to authenticated users) so the 5 module tiles always render.
+```sql
+GRANT EXECUTE ON FUNCTION public.has_paid_access(uuid) TO authenticated, anon;
+```
 
-Also: render a small "Loading your dashboard…" state until `modules` has loaded, and a fallback "We couldn't load your modules — try refreshing" message if the fetch fails. This way the user always sees something instead of a blank page.
+### Files
+- New migration: `supabase/migrations/<timestamp>_grant_has_paid_access.sql`
 
-## File touched
-- `src/routes/app.index.tsx`
-
-## Out of scope
-DB, RLS, modules table — all confirmed correct in the previous fix.
+### Result
+After the migration, the `/app` layout's access check returns `true`/`false` instead of erroring, and signed-in users with a purchase will land on the dashboard. Users without a purchase will see the "One step away" upsell card (correct behavior) instead of "Something went sideways".
