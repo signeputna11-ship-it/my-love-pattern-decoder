@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { BookOpen, FileText, Headphones, Loader2, Lock, PlayCircle } from "lucide-react";
+import { BookOpen, ExternalLink, FileText, Headphones, Loader2, Lock, PlayCircle } from "lucide-react";
 import { toast } from "sonner";
 
 const BUCKET = "secure-response-relationship-kit";
+
+const SLUG_TO_MODULE_KEY: Record<string, string> = {
+  "see-the-pattern": "pattern",
+  "calm-the-trigger": "trigger",
+  "rebuild-self-worth": "self-worth",
+  "set-the-boundary": "boundary",
+  "decide-differently": "decisions",
+};
 
 type KitResource = {
   id: string;
@@ -25,7 +33,7 @@ function iconFor(fileType: string | null) {
 }
 
 type Props = {
-  /** Module slug or identifier. Must match the `module` column on kit_resources. */
+  /** Module slug from the route. Mapped to the `module` column on kit_resources. */
   moduleKey: string;
 };
 
@@ -38,14 +46,14 @@ export function KitResources({ moduleKey }: Props) {
     let cancelled = false;
     const load = async () => {
       setLoading(true);
+      const dbKey = SLUG_TO_MODULE_KEY[moduleKey] ?? moduleKey;
       const { data, error } = await supabase
         .from("kit_resources")
         .select("*")
-        .eq("module", moduleKey)
+        .eq("module", dbKey)
         .order("order_index", { ascending: true });
       if (!cancelled) {
         if (error) {
-          // No noisy error. Likely just no access yet.
           setResources([]);
         } else {
           setResources((data as KitResource[]) ?? []);
@@ -63,10 +71,10 @@ export function KitResources({ moduleKey }: Props) {
     setOpeningId(r.id);
     const { data, error } = await supabase.storage
       .from(BUCKET)
-      .createSignedUrl(r.file_path, 60 * 10); // 10 minutes
+      .createSignedUrl(r.file_path, 60 * 10);
     setOpeningId(null);
     if (error || !data?.signedUrl) {
-      toast.error("Couldn't open this resource. Please try again.");
+      toast.error("Couldn't open this tool. Please try again.");
       return;
     }
     window.open(data.signedUrl, "_blank", "noopener,noreferrer");
@@ -74,14 +82,24 @@ export function KitResources({ moduleKey }: Props) {
 
   if (loading) {
     return (
-      <div className="mt-8 liquid-glass rounded-3xl p-6 flex items-center gap-3 text-white/60">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        <span className="text-sm">Loading your resources…</span>
-      </div>
+      <section className="mt-10">
+        <div className="liquid-glass rounded-3xl p-6 flex items-center gap-3 text-white/60">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span className="text-sm">Loading tools…</span>
+        </div>
+      </section>
     );
   }
 
-  if (resources.length === 0) return null;
+  if (resources.length === 0) {
+    return (
+      <section className="mt-10">
+        <div className="liquid-glass rounded-3xl p-6 text-sm text-white/60">
+          No bonus tools found for this module yet.
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="mt-10">
@@ -100,34 +118,46 @@ export function KitResources({ moduleKey }: Props) {
           const Icon = iconFor(r.file_type);
           const opening = openingId === r.id;
           return (
-            <motion.button
+            <motion.div
               key={r.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              onClick={() => openResource(r)}
-              disabled={opening}
-              className="group text-left liquid-glass rounded-3xl p-5 transition hover:bg-white/[0.06] disabled:opacity-60"
+              className="liquid-glass rounded-3xl p-5 flex flex-col"
             >
               <div className="flex items-start gap-4">
-                <div className="rounded-2xl bg-white/5 p-3 ring-1 ring-white/10 group-hover:ring-white/20">
-                  {opening ? (
-                    <Loader2 className="h-5 w-5 animate-spin text-white/70" />
-                  ) : (
-                    <Icon className="h-5 w-5 text-white/80" />
-                  )}
+                <div className="rounded-2xl bg-white/5 p-3 ring-1 ring-white/10">
+                  <Icon className="h-5 w-5 text-white/80" />
                 </div>
-                <div className="min-w-0">
-                  <h3 className="font-serif text-lg text-white truncate">{r.title}</h3>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-serif text-lg text-white">{r.title}</h3>
                   {r.description && (
-                    <p className="mt-1 text-sm text-white/60 line-clamp-3">{r.description}</p>
+                    <p className="mt-1 text-sm text-white/60">{r.description}</p>
                   )}
-                  <p className="mt-2 text-[10px] uppercase tracking-widest text-white/40">
-                    {opening ? "Opening securely…" : "Tap to open securely"}
-                  </p>
+                  {r.file_type && (
+                    <span className="mt-3 inline-block rounded-full bg-white/5 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white/50 ring-1 ring-white/10">
+                      {r.file_type}
+                    </span>
+                  )}
                 </div>
               </div>
-            </motion.button>
+
+              <button
+                onClick={() => openResource(r)}
+                disabled={opening}
+                className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-white/90 disabled:opacity-60"
+              >
+                {opening ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" /> Opening…
+                  </>
+                ) : (
+                  <>
+                    <ExternalLink className="h-4 w-4" /> Open Tool
+                  </>
+                )}
+              </button>
+            </motion.div>
           );
         })}
       </div>
