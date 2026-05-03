@@ -21,34 +21,78 @@ function Dashboard() {
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [pattern, setPattern] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
+    let cancelled = false;
     const load = async () => {
-      const { data: sess } = await supabase.auth.getSession();
-      const userId = sess.session?.user.id;
-      if (!userId) return;
+      try {
+        const { data: userData, error: userErr } = await supabase.auth.getUser();
+        const userId = userErr ? undefined : userData?.user?.id;
 
-      const [{ data: mods }, { data: prog }, { data: profile }] = await Promise.all([
-        supabase.from("modules").select("*").order("position"),
-        supabase.from("user_progress").select("module_id, completed_at").eq("user_id", userId),
-        supabase
-          .from("profiles")
-          .select("display_name, pattern_type")
-          .eq("user_id", userId)
-          .maybeSingle(),
-      ]);
+        const modsRes = await supabase.from("modules").select("*").order("position");
+        if (cancelled) return;
+        if (modsRes.error) console.error("[modules]", modsRes.error);
+        setModules((modsRes.data as Module[]) ?? []);
 
-      setModules((mods as Module[]) ?? []);
-      setCompletedIds(
-        new Set(
-          ((prog as any[]) ?? []).filter((p) => p.completed_at).map((p) => p.module_id as string),
-        ),
-      );
-      setPattern(profile?.pattern_type ?? null);
-      setName(profile?.display_name ?? "");
+        if (userId) {
+          const [progRes, profileRes] = await Promise.all([
+            supabase.from("user_progress").select("module_id, completed_at").eq("user_id", userId),
+            supabase
+              .from("profiles")
+              .select("display_name, pattern_type")
+              .eq("user_id", userId)
+              .maybeSingle(),
+          ]);
+          if (cancelled) return;
+          if (progRes.error) console.error("[user_progress]", progRes.error);
+          if (profileRes.error) console.error("[profiles]", profileRes.error);
+
+          setCompletedIds(
+            new Set(
+              ((progRes.data as any[]) ?? [])
+                .filter((p) => p.completed_at)
+                .map((p) => p.module_id as string),
+            ),
+          );
+          setPattern(profileRes.data?.pattern_type ?? null);
+          setName(profileRes.data?.display_name ?? "");
+        }
+
+        setStatus("ready");
+      } catch (e) {
+        console.error("[Dashboard.load]", e);
+        if (!cancelled) setStatus("error");
+      }
     };
     load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  if (status === "loading") {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-20 text-center text-sm text-white/60">
+        Loading your dashboard…
+      </div>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-20 text-center">
+        <p className="font-serif text-2xl">We couldn't load your dashboard.</p>
+        <p className="mt-2 text-sm text-white/60">Please refresh the page.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 rounded-full bg-white px-5 py-2 text-sm text-black"
+        >
+          Refresh
+        </button>
+      </div>
+    );
+  }
 
   const completedCount = modules.filter((m) => completedIds.has(m.id)).length;
   const total = modules.length || 5;
