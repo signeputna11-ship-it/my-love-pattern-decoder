@@ -1,17 +1,35 @@
-## Fix: 403 on `has_paid_access` RPC blocking `/app`
+## Fix module resource display in `KitResources.tsx`
 
-### Root cause
-The `/app` access check calls `supabase.rpc("has_paid_access", ...)` and gets back `403 permission denied for function has_paid_access`. The function exists and is `SECURITY DEFINER`, but the `authenticated` role does not have `EXECUTE` on it, so PostgREST refuses the call.
+### Problem
+The component queries `kit_resources.module` using the route slug (e.g. `see-the-pattern`), but the DB stores short keys (`pattern`, `trigger`, `self-worth`, `boundary`, `decisions`). Result: query returns 0 rows and the section silently hides.
 
-### Fix
-Run a one-line migration granting EXECUTE to the API roles:
+### Change (single file: `src/components/healthy-love/KitResources.tsx`)
 
-```sql
-GRANT EXECUTE ON FUNCTION public.has_paid_access(uuid) TO authenticated, anon;
-```
+1. **Slug → module key mapping**
+   ```ts
+   const SLUG_TO_MODULE_KEY: Record<string, string> = {
+     "see-the-pattern": "pattern",
+     "calm-the-trigger": "trigger",
+     "rebuild-self-worth": "self-worth",
+     "set-the-boundary": "boundary",
+     "decide-differently": "decisions",
+   };
+   ```
+   Use `SLUG_TO_MODULE_KEY[moduleKey] ?? moduleKey` in the `.eq("module", ...)` query.
 
-### Files
-- New migration: `supabase/migrations/<timestamp>_grant_has_paid_access.sql`
+2. **Card layout per resource** (liquid-glass, preserves existing styling):
+   - Title
+   - Description
+   - `file_type` tag (small uppercase pill)
+   - "Open Tool" button → calls `supabase.storage.from("secure-response-relationship-kit").createSignedUrl(file_path, 600)` and opens in new tab with `noopener,noreferrer`.
+
+3. **States**
+   - Loading: liquid-glass card showing spinner + `"Loading tools…"`.
+   - Empty (after load, 0 rows): liquid-glass card showing `"No bonus tools found for this module yet."` (replaces current `return null`).
+   - Signed URL failure: `toast.error("Couldn't open this tool. Please try again.")`.
+
+### Out of scope
+No changes to dashboard, landing, Stripe, auth, RLS, bucket, or `app.module.$slug.tsx`.
 
 ### Result
-After the migration, the `/app` layout's access check returns `true`/`false` instead of erroring, and signed-in users with a purchase will land on the dashboard. Users without a purchase will see the "One step away" upsell card (correct behavior) instead of "Something went sideways".
+On `/app/module/see-the-pattern` etc., the "Module resources" section lists matching `kit_resources` rows with an Open Tool button that opens a fresh signed URL in a new tab.
