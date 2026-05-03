@@ -246,7 +246,7 @@ function ModulePage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <div className="mx-auto max-w-3xl px-4 py-10 pb-32 sm:px-6 sm:py-16 sm:pb-32">
       <Link
         to="/app"
         className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50 hover:text-white"
