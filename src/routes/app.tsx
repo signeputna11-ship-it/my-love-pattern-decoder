@@ -125,6 +125,28 @@ function AppLayout() {
     );
   }
 
+  if (state === "error") {
+    return (
+      <CenterCard
+        title="Something went sideways"
+        body={errorMsg || "We couldn't load your reset. Please try again."}
+        cta={
+          <button
+            onClick={check}
+            className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
+          >
+            Try again
+          </button>
+        }
+        footer={
+          <button onClick={signOut} className="text-xs text-white/50 hover:text-white">
+            Sign out
+          </button>
+        }
+      />
+    );
+  }
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-white">
       <video
