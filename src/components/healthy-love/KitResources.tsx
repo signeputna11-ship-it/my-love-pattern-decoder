@@ -172,7 +172,10 @@ export function KitResources({ moduleKey }: Props) {
       </div>
 
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
-        <DialogContent className="liquid-glass-strong border-white/10 text-white sm:max-w-lg">
+        <DialogContent
+          className="liquid-glass-strong border-white/10 text-white sm:max-w-lg"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <DialogTitle className="font-serif text-2xl">{active?.title}</DialogTitle>
             <DialogDescription className="text-white/70">
