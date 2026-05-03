@@ -24,19 +24,17 @@ function AppLayout() {
     setState("loading");
     setErrorMsg("");
     try {
-      const withTimeout = <T,>(p: Promise<T>, ms: number) =>
+      const withTimeout = <T,>(p: PromiseLike<T>, ms: number): Promise<T> =>
         Promise.race<T>([
-          p,
+          Promise.resolve(p),
           new Promise<T>((_, rej) => setTimeout(() => rej(new Error("timeout")), ms)),
         ]);
 
-      const { data: userData, error: userErr } = await withTimeout(
-        supabase.auth.getUser(),
-        6000,
-      );
+      const userRes = await withTimeout(supabase.auth.getUser(), 6000);
+      const userErr = userRes.error;
+      const user = userRes.data?.user;
 
-      if (userErr || !userData?.user) {
-        // Stale/invalid token — clear it so the user can sign in cleanly.
+      if (userErr || !user) {
         if (userErr && /jwt|token|session/i.test(userErr.message ?? "")) {
           await supabase.auth.signOut().catch(() => {});
         }
@@ -44,21 +42,21 @@ function AppLayout() {
         return;
       }
 
-      setEmail(userData.user.email ?? "");
+      setEmail(user.email ?? "");
 
-      const { data: hasAccess, error: rpcErr } = await withTimeout(
-        supabase.rpc("has_paid_access", { _user_id: userData.user.id }),
+      const rpcRes = await withTimeout(
+        supabase.rpc("has_paid_access", { _user_id: user.id }),
         6000,
       );
 
-      if (rpcErr) {
-        console.error("[has_paid_access]", rpcErr);
+      if (rpcRes.error) {
+        console.error("[has_paid_access]", rpcRes.error);
         setErrorMsg("We couldn't verify your access. Please try again.");
         setState("error");
         return;
       }
 
-      setState(hasAccess ? "ready" : "no-access");
+      setState(rpcRes.data ? "ready" : "no-access");
     } catch (e) {
       console.error("[AppLayout.check]", e);
       setErrorMsg("Something blocked your reset from loading. Please try again.");
