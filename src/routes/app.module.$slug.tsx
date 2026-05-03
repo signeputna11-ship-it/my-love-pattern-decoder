@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, CheckCircle2, Loader2, Save, Download, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
-import { KitResources } from "@/components/healthy-love/KitResources";
+import { InAppTools } from "@/components/healthy-love/InAppTools";
 import { PatternGuideCard } from "@/components/healthy-love/PatternGuideCard";
 
 type Module = {
@@ -337,8 +337,8 @@ function ModulePage() {
 
       <PatternGuideCard moduleSlug={module.slug} />
 
-      <div id="kit-resources">
-        <KitResources moduleKey={module.slug} />
+      <div id="in-app-tools">
+        <InAppTools moduleKey={module.slug} />
       </div>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
