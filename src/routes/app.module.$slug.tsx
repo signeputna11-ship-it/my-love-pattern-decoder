@@ -37,58 +37,87 @@ function ModulePage() {
   const [completed, setCompleted] = useState(false);
   const [userId, setUserId] = useState<string>("");
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const saveTimers = useRef<Record<string, any>>({});
 
   useEffect(() => {
+    let cancelled = false;
     const load = async () => {
-      const { data: sess } = await supabase.auth.getSession();
-      const uid = sess.session?.user.id;
-      if (!uid) return;
-      setUserId(uid);
+      setLoadError(null);
+      setNotFound(false);
+      try {
+        const { data: userData, error: userErr } = await supabase.auth.getUser();
+        if (userErr || !userData?.user) {
+          if (!cancelled) setLoadError("Please sign in again to view this module.");
+          return;
+        }
+        const uid = userData.user.id;
+        if (cancelled) return;
+        setUserId(uid);
 
-      const { data: mod } = await supabase
-        .from("modules")
-        .select("*")
-        .eq("slug", slug)
-        .maybeSingle();
-      if (!mod) return;
-      setModule(mod as Module);
+        const { data: mod, error: modErr } = await supabase
+          .from("modules")
+          .select("*")
+          .eq("slug", slug)
+          .maybeSingle();
+        if (modErr) throw modErr;
+        if (!mod) {
+          if (!cancelled) setNotFound(true);
+          return;
+        }
+        if (cancelled) return;
+        setModule(mod as Module);
 
-      const { data: exs } = await supabase
-        .from("exercises")
-        .select("*")
-        .eq("module_id", (mod as any).id)
-        .order("position");
-      setExercises((exs as Exercise[]) ?? []);
+        const { data: exs, error: exErr } = await supabase
+          .from("exercises")
+          .select("*")
+          .eq("module_id", (mod as any).id)
+          .order("position");
+        if (exErr) throw exErr;
+        if (cancelled) return;
+        setExercises((exs as Exercise[]) ?? []);
 
-      const { data: existing } = await supabase
-        .from("user_answers")
-        .select("exercise_id, answer_text, answer_data")
-        .eq("user_id", uid);
+        const { data: existing } = await supabase
+          .from("user_answers")
+          .select("exercise_id, answer_text, answer_data")
+          .eq("user_id", uid);
 
-      const map: Record<string, { text: string; data: any }> = {};
-      ((existing as any[]) ?? []).forEach((a) => {
-        map[a.exercise_id] = { text: a.answer_text ?? "", data: a.answer_data ?? null };
-      });
-      setAnswers(map);
+        const map: Record<string, { text: string; data: any }> = {};
+        ((existing as any[]) ?? []).forEach((a) => {
+          map[a.exercise_id] = { text: a.answer_text ?? "", data: a.answer_data ?? null };
+        });
+        if (cancelled) return;
+        setAnswers(map);
 
-      const { data: prog } = await supabase
-        .from("user_progress")
-        .select("completed_at")
-        .eq("user_id", uid)
-        .eq("module_id", (mod as any).id)
-        .maybeSingle();
-      setCompleted(!!prog?.completed_at);
+        const { data: prog } = await supabase
+          .from("user_progress")
+          .select("completed_at")
+          .eq("user_id", uid)
+          .eq("module_id", (mod as any).id)
+          .maybeSingle();
+        if (cancelled) return;
+        setCompleted(!!prog?.completed_at);
 
-      // mark started
-      await supabase
-        .from("user_progress")
-        .upsert(
-          { user_id: uid, module_id: (mod as any).id, started_at: new Date().toISOString() },
-          { onConflict: "user_id,module_id", ignoreDuplicates: true },
-        );
+        // mark started — fire and forget so a failure here doesn't block render
+        supabase
+          .from("user_progress")
+          .upsert(
+            { user_id: uid, module_id: (mod as any).id, started_at: new Date().toISOString() },
+            { onConflict: "user_id,module_id", ignoreDuplicates: true },
+          )
+          .then(({ error }) => {
+            if (error) console.warn("[mark started]", error);
+          });
+      } catch (e: any) {
+        console.error("[ModulePage.load]", e);
+        if (!cancelled) setLoadError(e?.message ?? "Couldn't load this module.");
+      }
     };
     load();
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   const persist = async (exerciseId: string, text: string, data: any) => {
@@ -186,6 +215,27 @@ function ModulePage() {
 
     doc.save(`${module.slug}-my-love-pattern.pdf`);
   };
+
+  if (loadError || notFound) {
+    return (
+      <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-6 text-center">
+        <h2 className="font-serif text-2xl text-white">
+          {notFound ? "We couldn't find that module" : "We couldn't load this module"}
+        </h2>
+        <p className="mt-2 text-sm text-white/60">
+          {notFound
+            ? "It may have been renamed or moved."
+            : loadError ?? "Please try again in a moment."}
+        </p>
+        <Link
+          to="/app"
+          className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90"
+        >
+          <ArrowLeft className="h-4 w-4" /> Back to dashboard
+        </Link>
+      </div>
+    );
+  }
 
   if (!module) {
     return (

@@ -16,28 +16,58 @@ export const Route = createFileRoute("/app")({
 
 function AppLayout() {
   const navigate = useNavigate();
-  const [state, setState] = useState<"loading" | "no-auth" | "no-access" | "ready">("loading");
+  const [state, setState] = useState<"loading" | "no-auth" | "no-access" | "ready" | "error">("loading");
   const [email, setEmail] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
-  useEffect(() => {
-    let mounted = true;
-    const check = async () => {
-      const { data: sess } = await supabase.auth.getSession();
-      if (!sess.session) {
-        if (mounted) setState("no-auth");
+  const check = async () => {
+    setState("loading");
+    setErrorMsg("");
+    try {
+      const withTimeout = <T,>(p: PromiseLike<T>, ms: number): Promise<T> =>
+        Promise.race<T>([
+          Promise.resolve(p),
+          new Promise<T>((_, rej) => setTimeout(() => rej(new Error("timeout")), ms)),
+        ]);
+
+      const userRes = await withTimeout(supabase.auth.getUser(), 6000);
+      const userErr = userRes.error;
+      const user = userRes.data?.user;
+
+      if (userErr || !user) {
+        if (userErr && /jwt|token|session/i.test(userErr.message ?? "")) {
+          await supabase.auth.signOut().catch(() => {});
+        }
+        setState("no-auth");
         return;
       }
-      setEmail(sess.session.user.email ?? "");
-      const { data: hasAccess } = await supabase.rpc("has_paid_access", {
-        _user_id: sess.session.user.id,
-      });
-      if (!mounted) return;
-      setState(hasAccess ? "ready" : "no-access");
-    };
+
+      setEmail(user.email ?? "");
+
+      const rpcRes = await withTimeout(
+        supabase.rpc("has_paid_access", { _user_id: user.id }),
+        6000,
+      );
+
+      if (rpcRes.error) {
+        console.error("[has_paid_access]", rpcRes.error);
+        setErrorMsg("We couldn't verify your access. Please try again.");
+        setState("error");
+        return;
+      }
+
+      setState(rpcRes.data ? "ready" : "no-access");
+    } catch (e) {
+      console.error("[AppLayout.check]", e);
+      setErrorMsg("Something blocked your reset from loading. Please try again.");
+      setState("error");
+    }
+  };
+
+  useEffect(() => {
     check();
     const { data: sub } = supabase.auth.onAuthStateChange(() => check());
     return () => {
-      mounted = false;
       sub.subscription.unsubscribe();
     };
   }, []);
@@ -85,6 +115,28 @@ function AppLayout() {
           >
             Unlock The Reset for €49
           </Link>
+        }
+        footer={
+          <button onClick={signOut} className="text-xs text-white/50 hover:text-white">
+            Sign out
+          </button>
+        }
+      />
+    );
+  }
+
+  if (state === "error") {
+    return (
+      <CenterCard
+        title="Something went sideways"
+        body={errorMsg || "We couldn't load your reset. Please try again."}
+        cta={
+          <button
+            onClick={check}
+            className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
+          >
+            Try again
+          </button>
         }
         footer={
           <button onClick={signOut} className="text-xs text-white/50 hover:text-white">
