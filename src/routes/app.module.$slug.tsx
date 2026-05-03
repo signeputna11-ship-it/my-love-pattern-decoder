@@ -216,6 +216,27 @@ function ModulePage() {
     doc.save(`${module.slug}-my-love-pattern.pdf`);
   };
 
+  if (loadError || notFound) {
+    return (
+      <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-6 text-center">
+        <h2 className="font-serif text-2xl text-white">
+          {notFound ? "We couldn't find that module" : "We couldn't load this module"}
+        </h2>
+        <p className="mt-2 text-sm text-white/60">
+          {notFound
+            ? "It may have been renamed or moved."
+            : loadError ?? "Please try again in a moment."}
+        </p>
+        <Link
+          to="/app"
+          className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90"
+        >
+          <ArrowLeft className="h-4 w-4" /> Back to dashboard
+        </Link>
+      </div>
+    );
+  }
+
   if (!module) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
