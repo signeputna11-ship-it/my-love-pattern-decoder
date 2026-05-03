@@ -20,8 +20,8 @@ function AppLayout() {
   const [email, setEmail] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
 
-  const check = async () => {
-    setState("loading");
+  const check = async (opts: { silent?: boolean; retry?: boolean } = {}) => {
+    if (!opts.silent) setState("loading");
     setErrorMsg("");
     try {
       const withTimeout = <T,>(p: PromiseLike<T>, ms: number): Promise<T> =>
@@ -30,14 +30,10 @@ function AppLayout() {
           new Promise<T>((_, rej) => setTimeout(() => rej(new Error("timeout")), ms)),
         ]);
 
-      const userRes = await withTimeout(supabase.auth.getUser(), 6000);
-      const userErr = userRes.error;
-      const user = userRes.data?.user;
+      const sessionRes = await withTimeout(supabase.auth.getSession(), 12000);
+      const user = sessionRes.data?.session?.user;
 
-      if (userErr || !user) {
-        if (userErr && /jwt|token|session/i.test(userErr.message ?? "")) {
-          await supabase.auth.signOut().catch(() => {});
-        }
+      if (!user) {
         setState("no-auth");
         return;
       }
@@ -46,7 +42,7 @@ function AppLayout() {
 
       const rpcRes = await withTimeout(
         supabase.rpc("has_paid_access", { _user_id: user.id }),
-        6000,
+        12000,
       );
 
       if (rpcRes.error) {
@@ -59,6 +55,12 @@ function AppLayout() {
       setState(rpcRes.data ? "ready" : "no-access");
     } catch (e) {
       console.error("[AppLayout.check]", e);
+      // Soft retry once before showing the error card — guards against transient
+      // auth-lock timeouts when called near a token refresh.
+      if (!opts.retry) {
+        setTimeout(() => check({ silent: true, retry: true }), 250);
+        return;
+      }
       setErrorMsg("Something blocked your reset from loading. Please try again.");
       setState("error");
     }
@@ -66,7 +68,14 @@ function AppLayout() {
 
   useEffect(() => {
     check();
-    const { data: sub } = supabase.auth.onAuthStateChange(() => check());
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      // Only re-check on meaningful events. Ignore TOKEN_REFRESHED / INITIAL_SESSION
+      // to avoid deadlocking on the auth lock (calling supabase methods inside the
+      // callback can stall until the 5s lock timeout fires).
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      // Defer out of the callback so the auth lock can release first.
+      setTimeout(() => check({ silent: true }), 0);
+    });
     return () => {
       sub.subscription.unsubscribe();
     };

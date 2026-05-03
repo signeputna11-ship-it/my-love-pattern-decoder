@@ -1,71 +1,38 @@
-## Goal
-Make module resources feel like native in-app tools (not a download list) and move the per-module action buttons into a sticky bottom liquid-glass bar.
+## Problem
 
-Scope: only `src/components/healthy-love/KitResources.tsx` and `src/routes/app.module.$slug.tsx`. No changes to storage, RLS, Stripe, auth, exercises, or signed URL logic.
+On `/app/*` routes, users intermittently see:
 
----
+> Something went sideways
+> Something blocked your reset from loading. Please try again.
 
-## 1. `src/components/healthy-love/KitResources.tsx`
+Console shows repeated `[AppLayout.check] Error: timeout` thrown from the 6s race in `src/routes/app.tsx`. Network logs confirm `auth/v1/user` and `rpc/has_paid_access` actually return 200 — so requests succeed, but our `check()` is firing inside Supabase's auth lock and timing out.
 
-### Section header
-- Rename heading from **"Bonus tools for this module"** → **"Your in-app tools"**.
-- Keep the small "Module resources" eyebrow + the "Private to you" lock chip.
+## Root cause
 
-### Tool card (replace current file-style card)
-Each `kit_resource` renders as a liquid-glass card with:
-- Generic tool icon in a soft glass tile (no file-type icon switching — drop `iconFor` and the `Headphones`/`PlayCircle`/`BookOpen`/`FileText` differentiation).
-- **Title** (resource title).
-- **Short description**.
-- Small tag pill: **"Guided tool"** (replaces the uppercase `file_type` pill — `file_type` is no longer rendered anywhere).
-- Primary button: **"Start Tool"** (full width on mobile).
-- Secondary small text under the button: **"Opens securely"** in muted white.
+In `src/routes/app.tsx`:
 
-No "Open Tool" / "Open in new tab" wording. No "PDF" / "DOCX" labels visible.
+```ts
+supabase.auth.onAuthStateChange(() => check());
+```
 
-### Click behavior — open in-app modal first
-On **Start Tool** click, open an in-app modal (use existing `Dialog` from `@/components/ui/dialog`, styled with `liquid-glass-strong` to match the app):
+`check()` calls `supabase.auth.getUser()` synchronously inside the auth state change callback. Supabase's gotrue client holds an internal lock during that callback; calling another auth method from inside it deadlocks until the 5s lock timeout fires (we see the warning: `Lock "lock:sb-...-auth-token" was not released within 5000ms`). Our 6s race then rejects with `timeout`, flipping state to `error`. This happens on every `TOKEN_REFRESHED` event (~hourly), and on tab refocus.
 
-- Modal title = resource title.
-- Body = description (fallback friendly copy if null).
-- Three actions stacked (or 1-row on sm+):
-  1. **"Open secure original"** — fetches a fresh signed URL via `supabase.storage.from("secure-response-relationship-kit").createSignedUrl(file_path, 600)` and opens in a new tab (`noopener,noreferrer`).
-  2. **"Download original"** — same signed URL flow but triggers a download (anchor with `download` attribute on the signed URL, opened in a new tab as fallback).
-  3. **"Use this inside the module"** — primary CTA, labeled as an app tool (not a PDF). For now, this also opens the signed URL in a new tab, but the button copy stays app-tool framed (e.g. caption underneath: "Launches the guided tool"). No mention of file type.
+## Fix (single file: `src/routes/app.tsx`)
 
-All three actions reuse the existing signed URL helper. Loading + error states preserved:
-- Per-action loading spinner on the clicked button.
-- On signed URL failure: existing `toast.error("Couldn't open this tool. Please try again.")`.
+1. Defer the re-check out of the auth callback with `setTimeout(..., 0)` so the lock releases first.
+2. Only re-run `check()` for meaningful events (`SIGNED_IN`, `SIGNED_OUT`, `USER_UPDATED`). Skip `TOKEN_REFRESHED` and `INITIAL_SESSION` — the session is already valid; no need to re-verify access on every silent refresh.
+3. Use the `session` provided by the callback instead of re-calling `getUser()` when possible (use `session.user` directly for `SIGNED_IN`).
+4. Increase the timeout race from 6s to 12s as a safety net for slow networks, and treat a `timeout` while a session is known-present as a soft retry rather than a hard error (single silent retry before showing the error card).
 
-Keep current loading state ("Loading tools…") and empty state ("No bonus tools found for this module yet.") exactly as they are.
+Nothing else changes — no styling, dashboard, Stripe, auth flow, RLS, or storage changes.
 
-### Removed
-- `iconFor` helper and the `Headphones`, `PlayCircle`, `BookOpen`, `FileText` imports (use a single neutral icon like `Sparkles` or `Wand2` from lucide for all cards).
-- Visible `file_type` pill.
-- "Open Tool" / `ExternalLink` button on the card itself (action moves into modal; card CTA is "Start Tool").
+## Why this is safe
 
----
+- Initial mount still calls `check()` once (unchanged).
+- Sign-in / sign-out still trigger re-check.
+- Token refreshes no longer cause a UI flip; the existing session remains valid and the next user action will revalidate naturally.
+- The deferred callback pattern (`setTimeout 0`) is the documented Supabase workaround for "do not call supabase methods inside onAuthStateChange".
 
-## 2. `src/routes/app.module.$slug.tsx`
+## Files touched
 
-### Sticky action bar
-Move the existing **"Save progress"** and **"Download my answers"** buttons out of the inline button row into a new sticky bottom bar:
-
-- Fixed positioning: `fixed bottom-4 left-1/2 -translate-x-1/2 z-40` with safe inner max-width (`max-w-3xl w-[calc(100%-1.5rem)]`).
-- `liquid-glass` rounded-full container, padded, flex row with the two buttons.
-- Order: `Save progress` (ghost glass) · `Download my answers` (ghost glass).
-- Saving spinner indicator preserved (reuses existing `savingId` UX is per-exercise, no change there).
-
-### "Mark module complete" button
-Stays in the inline section at the bottom of the page (it's a milestone action, not an always-on utility). Add bottom padding (`pb-28`) to the page container so the sticky bar never overlaps the complete CTA or the kit resources.
-
-No other layout, copy, or behavioral changes on the module page.
-
----
-
-## Technical notes
-- Reuse `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter` from `@/components/ui/dialog`.
-- State additions in `KitResources`: `activeResource: KitResource | null`, `actionLoading: "open" | "download" | "use" | null`.
-- Single `getSignedUrl(r)` helper inside the component to dedupe the three action handlers.
-- Download action: create signed URL, then `const a = document.createElement("a"); a.href = url; a.download = ""; a.rel = "noopener noreferrer"; a.target = "_blank"; a.click();`.
-- No changes to `kit_resources` schema, bucket, or RLS.
-- No changes to `app.module.$slug.tsx` data flow, exercises, PDF export, or completion logic.
+- `src/routes/app.tsx` (the `useEffect` subscription + `check()` timeout handling only)
