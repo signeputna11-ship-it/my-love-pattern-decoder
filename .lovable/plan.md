@@ -1,28 +1,34 @@
 ## Diagnosis
 
-Your purchase is fully recorded — two paid sessions in the database with `has_access: true`. So access works. The issue is purely navigation: you didn't land on `/app` after checkout, and the "Lifetime access. 5 modules…" copy you're seeing is the marketing pitch on the checkout/landing page, not a button.
+`/app` shows nothing because the CSS bundle fails to compile. The dev server logs show:
 
-The auto-redirect from `/checkout/return` → `/app` exists but may not have triggered if you closed the tab or the polling timed out before the webhook synced.
+```
+[vite:css][postcss] @import must precede all other statements
+4121 | @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif...
+```
+
+In `src/styles.css` the Google Fonts `@import url(...)` sits on line 4, after `@import "tailwindcss"` and `@source "../src"`. Once Tailwind inlines its base styles, that font `@import` ends up after thousands of CSS rules — which violates the spec, so PostCSS aborts and no styles (or app shell) render. The route mounts but the page looks blank/broken.
+
+(The `tailwind.config.ts` esbuild error in the same log is a separate, harmless internal generator warning — Tailwind v4 doesn't use that file. Not the cause.)
 
 ## Fix
 
-Two small, safe changes:
+One small change to `src/styles.css`:
 
-### 1. Make `/app` the entry point — always
-Right now if anyone is signed in with paid access and lands anywhere ambiguous, there's no global "go to your modules" shortcut. Add a clear path from the landing page header: when a signed-in user with access visits `/`, show a prominent **"Enter your portal"** button in the nav (replacing or alongside the sign-in CTA).
+- Move the Google Fonts `@import url(...)` line to be the **very first line** of the file, before `@import "tailwindcss"` and `@import "tw-animate-css"`.
+- Optionally, replace it with a `<link rel="stylesheet">` in `src/routes/__root.tsx` head so it never collides with Tailwind ordering again. (I'll do the inline `<link>` approach — more robust.)
 
-### 2. Harden the checkout return page
-In `src/routes/checkout.return.tsx`:
-- Increase the polling window from 12 attempts (~18s) to 20 attempts (~30s) so slower webhook syncs don't fall through to the "pending" state.
-- If the user lands on `/checkout/return` WITHOUT a `session_id` but already has access, send them straight to `/app` — covers the case where they navigated back manually.
-- Keep the existing 1.8s success → `/app` auto-redirect.
+### Concrete edits
+1. `src/styles.css` — remove line 4 (`@import url('https://fonts.googleapis.com/...')`).
+2. `src/routes/__root.tsx` — add to `head().links`:
+   ```ts
+   { rel: "preconnect", href: "https://fonts.googleapis.com" },
+   { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
+   { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" },
+   ```
 
-## Right now (no code needed)
-
-You can access your modules immediately by going to **`/app`** in the URL bar, or I can ship the fix above and add an "Enter portal" button to the landing page so this never happens again.
+No DB, route, or auth changes. Once CSS compiles, `/app` will render the dashboard you already built (modules grid, progress, "Enter your portal" flow).
 
 ## Files touched
-- `src/routes/checkout.return.tsx` — longer polling, fallback redirect
-- `src/routes/index.tsx` (or wherever the landing nav lives) — conditional "Enter portal" CTA for signed-in paid users
-
-No DB changes. No breaking changes to checkout or webhook.
+- `src/styles.css` — drop the misplaced font `@import`
+- `src/routes/__root.tsx` — load fonts via `<link>` in head
