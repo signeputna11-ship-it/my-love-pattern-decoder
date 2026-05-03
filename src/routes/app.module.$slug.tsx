@@ -246,7 +246,7 @@ function ModulePage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
+    <div className="mx-auto max-w-3xl px-4 py-10 pb-32 sm:px-6 sm:py-16 sm:pb-32">
       <Link
         to="/app"
         className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50 hover:text-white"
@@ -341,19 +341,7 @@ function ModulePage() {
         <KitResources moduleKey={module.slug} />
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <button
-          onClick={saveAll}
-          className="flex items-center justify-center gap-2 rounded-full liquid-glass px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
-        >
-          <Save className="h-4 w-4" /> Save progress
-        </button>
-        <button
-          onClick={downloadPdf}
-          className="flex items-center justify-center gap-2 rounded-full liquid-glass px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
-        >
-          <Download className="h-4 w-4" /> Download my answers
-        </button>
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <button
           onClick={markComplete}
           className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black hover:bg-white/90"
@@ -361,6 +349,24 @@ function ModulePage() {
           <CheckCircle2 className="h-4 w-4" />
           {completed ? "Completed. Re-confirm" : "Mark module complete"}
         </button>
+      </div>
+
+      <div className="fixed bottom-4 left-1/2 z-40 w-[calc(100%-1.5rem)] max-w-xl -translate-x-1/2">
+        <div className="liquid-glass flex items-center justify-center gap-2 rounded-full px-3 py-2 shadow-2xl backdrop-blur">
+          <button
+            onClick={saveAll}
+            className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+          >
+            <Save className="h-4 w-4" /> Save progress
+          </button>
+          <div className="h-6 w-px bg-white/10" />
+          <button
+            onClick={downloadPdf}
+            className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+          >
+            <Download className="h-4 w-4" /> Download my answers
+          </button>
+        </div>
       </div>
     </div>
   );
