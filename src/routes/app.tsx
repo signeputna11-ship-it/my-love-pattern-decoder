@@ -141,7 +141,7 @@ function AppLayout() {
         body={errorMsg || "We couldn't load your reset. Please try again."}
         cta={
           <button
-            onClick={check}
+            onClick={() => check()}
             className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
           >
             Try again
