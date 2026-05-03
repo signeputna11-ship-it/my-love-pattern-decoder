@@ -16,28 +16,60 @@ export const Route = createFileRoute("/app")({
 
 function AppLayout() {
   const navigate = useNavigate();
-  const [state, setState] = useState<"loading" | "no-auth" | "no-access" | "ready">("loading");
+  const [state, setState] = useState<"loading" | "no-auth" | "no-access" | "ready" | "error">("loading");
   const [email, setEmail] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
-  useEffect(() => {
-    let mounted = true;
-    const check = async () => {
-      const { data: sess } = await supabase.auth.getSession();
-      if (!sess.session) {
-        if (mounted) setState("no-auth");
+  const check = async () => {
+    setState("loading");
+    setErrorMsg("");
+    try {
+      const withTimeout = <T,>(p: Promise<T>, ms: number) =>
+        Promise.race<T>([
+          p,
+          new Promise<T>((_, rej) => setTimeout(() => rej(new Error("timeout")), ms)),
+        ]);
+
+      const { data: userData, error: userErr } = await withTimeout(
+        supabase.auth.getUser(),
+        6000,
+      );
+
+      if (userErr || !userData?.user) {
+        // Stale/invalid token — clear it so the user can sign in cleanly.
+        if (userErr && /jwt|token|session/i.test(userErr.message ?? "")) {
+          await supabase.auth.signOut().catch(() => {});
+        }
+        setState("no-auth");
         return;
       }
-      setEmail(sess.session.user.email ?? "");
-      const { data: hasAccess } = await supabase.rpc("has_paid_access", {
-        _user_id: sess.session.user.id,
-      });
-      if (!mounted) return;
+
+      setEmail(userData.user.email ?? "");
+
+      const { data: hasAccess, error: rpcErr } = await withTimeout(
+        supabase.rpc("has_paid_access", { _user_id: userData.user.id }),
+        6000,
+      );
+
+      if (rpcErr) {
+        console.error("[has_paid_access]", rpcErr);
+        setErrorMsg("We couldn't verify your access. Please try again.");
+        setState("error");
+        return;
+      }
+
       setState(hasAccess ? "ready" : "no-access");
-    };
+    } catch (e) {
+      console.error("[AppLayout.check]", e);
+      setErrorMsg("Something blocked your reset from loading. Please try again.");
+      setState("error");
+    }
+  };
+
+  useEffect(() => {
     check();
     const { data: sub } = supabase.auth.onAuthStateChange(() => check());
     return () => {
-      mounted = false;
       sub.subscription.unsubscribe();
     };
   }, []);
