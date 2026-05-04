@@ -70,6 +70,15 @@ function ModulePage() {
         if (cancelled) return;
         setModule(mod as Module);
 
+        supabase
+          .from("modules")
+          .select("*")
+          .order("position")
+          .then(({ data, error }) => {
+            if (error) console.warn("[modules list]", error);
+            if (!cancelled) setAllModules((data as Module[]) ?? []);
+          });
+
         const { data: exs, error: exErr } = await supabase
           .from("exercises")
           .select("*")
