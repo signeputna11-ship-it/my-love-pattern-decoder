@@ -476,7 +476,7 @@ export function Toolkit() {
                   Lifetime access
                 </p>
               </div>
-              <p className="font-serif text-4xl text-white sm:text-5xl">€49</p>
+              <p className="font-serif text-4xl text-white sm:text-5xl">$49</p>
             </div>
 
             <div className="my-6 h-px w-full bg-white/10 sm:my-8" />
@@ -489,7 +489,7 @@ export function Toolkit() {
               onClick={handleGetReset}
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-4 text-sm font-semibold text-black transition hover:bg-white/90 sm:mt-8 sm:px-6"
             >
-              Get My Reset (€49) <ArrowUpRight className="h-4 w-4" />
+              Get My Reset ($49) <ArrowUpRight className="h-4 w-4" />
             </button>
 
             <p className="mt-4 text-center text-[11px] text-white/50">

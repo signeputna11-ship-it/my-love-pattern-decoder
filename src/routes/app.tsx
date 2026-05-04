@@ -133,13 +133,13 @@ function AppLayout() {
     return (
       <CenterCard
         title="One step away"
-        body="The Reset is unlocked after purchase. Get lifetime access for €49."
+        body="The Reset is unlocked after purchase. Get lifetime access for $49."
         cta={
           <Link
             to="/checkout"
             className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
           >
-            Unlock The Reset for €49
+            Unlock The Reset for $49
           </Link>
         }
         footer={
