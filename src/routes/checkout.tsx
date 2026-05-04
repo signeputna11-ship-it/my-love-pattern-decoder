@@ -65,6 +65,14 @@ function CheckoutPage() {
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Back
         </Link>
+        <div className="mt-6 overflow-hidden rounded-3xl ring-1 ring-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
+          <img
+            src={coverImage}
+            alt="My Love Pattern — The Reset cover"
+            className="h-auto w-full object-cover"
+            loading="eager"
+          />
+        </div>
         <h1 className="mt-6 font-serif text-4xl sm:text-5xl">Unlock The Reset</h1>
         <p className="mt-2 text-sm text-white/70">
           Lifetime access. 5 modules. Workbook, AI guide, downloadable answers. $49.
