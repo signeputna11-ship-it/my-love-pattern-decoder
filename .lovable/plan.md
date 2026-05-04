@@ -1,26 +1,42 @@
-## Problem
+## Goal
 
-Clicking **Open Recommended Tool** calls `supabase.storage.from("secure-response-relationship-kit").createSignedUrl(...)`. That bucket is private and protected by an RLS policy:
+Stop opening PDFs from "Open Recommended Tool". Instead, the button should scroll the user to the matching **in-app tool** in the "Module resources" section and open it automatically.
 
-```
-(bucket_id = 'secure-response-relationship-kit') AND has_paid_access(auth.uid())
-```
+## Why the current flow is wrong
 
-The DB shows EXECUTE on `public.has_paid_access(uuid)` is currently only granted to `sandbox_exec` — **not** `authenticated`. So when a logged-in paid user requests a signed URL, Postgres throws `permission denied for function has_paid_access`, the storage call returns an error, and the UI shows "Couldn't open the recommended tool."
+Today the AI recommends a row from `kit_resources` (a PDF in the secure storage bucket) and the button generates a signed URL to open that PDF in a new tab. The user wants to stay inside the app and use the guided in-app tools that already render in `<InAppTools>`.
 
-(The earlier grant migrations didn't stick on this signature — likely the function was redefined afterward, which resets privileges.)
+The in-app tools live in a different table (`tools`, with `slug` and `module` keys), and that's what the "Module resources" section shows.
 
-## Fix
+## Changes
 
-One small migration:
+### 1. Edge function `supabase/functions/ai-pattern-guide/index.ts`
+- Stop fetching `kit_resources`. Fetch from `tools` instead, filtered by the same module key the page uses (`SLUG_TO_MODULE_KEY` map: `see-the-pattern → pattern`, etc.).
+- Pass the available tools (`id`, `slug`, `title`, `description`, `kind`) into the AI context as `available_tools`.
+- Rename the tool-call field `recommended_resource_id` → `recommended_tool_slug` (string slug, or null). Constrain the enum to the actual tool slugs for this module.
+- Persist `recommended_next` as the chosen tool slug (or null).
 
-1. `GRANT EXECUTE ON FUNCTION public.has_paid_access(uuid) TO authenticated;`
-2. Keep `REVOKE` from `anon, public` so it stays locked down.
+### 2. `src/components/healthy-love/PatternGuideCard.tsx`
+- Replace the `kit_resources` lookup with a `tools` lookup keyed by `slug` + module key (using the same `SLUG_TO_MODULE_KEY` map as InAppTools).
+- Replace the storage `createSignedUrl` flow with:
+  1. Dispatch a custom event `open-in-app-tool` with the recommended tool slug (and id as backup).
+  2. Smooth-scroll to `#in-app-tools`.
+- Update the suggestion chip text to show the in-app tool title.
 
-## Verify
+### 3. `src/components/healthy-love/InAppTools.tsx`
+- Listen for the `open-in-app-tool` window event. When fired, find the tool whose `slug` matches and call `setActiveId(tool.id)` so it opens (the existing `useEffect` already scrolls the panel into view).
 
-After the migration:
-- Re-check `information_schema.routine_privileges` shows `authenticated` has EXECUTE.
-- In the preview, click **Open Recommended Tool** — the PDF should open in a new tab.
+### 4. Type field rename
+- `Reflection.recommended_resource_id` → `recommended_tool_slug` in the card's local type.
 
-No code changes needed — this is purely a database permission fix.
+## What the user will experience
+
+1. Click **Generate Guidance** → AI returns a reflection plus a suggested in-app tool slug for this module.
+2. Suggested-tool chip shows the matching tool's title.
+3. Click **Open Recommended Tool** → page smooth-scrolls to "Module resources" and the recommended tool card auto-opens its guided runner. No PDF, no new tab.
+4. If the AI returns no recommendation (or the slug doesn't match any tool), the button just scrolls to the resources section.
+
+## Out of scope
+
+- Leaving the existing `kit_resources` table and storage bucket untouched (they may still be used elsewhere).
+- No DB migration needed — the `tools` table and `recommended_next` column already exist.

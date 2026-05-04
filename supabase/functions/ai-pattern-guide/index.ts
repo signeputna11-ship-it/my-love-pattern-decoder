@@ -19,9 +19,9 @@ Hard rules. Never break:
 - If the user mentions self-harm, abuse, or being in danger: keep "noticing" brief and non-clinical, set next_step to "Reach out to a licensed professional or local support line", and set recommended_resource_id to null.
 - Length limits: noticing = 2 to 3 sentences, supportive direct grounded tone. question = ONE sentence ending with a question mark. next_step = 1 to 2 short sentences, concrete and doable.
 - Arrays: max 5 items each, each item 2 to 6 words, lowercase fragments.
-- Recommend a kit resource only when one is genuinely a fit for what the user wrote. Otherwise return recommended_resource_id: null.
+- Recommend an in-app tool only when one is genuinely a fit for what the user wrote. Otherwise return recommended_tool_slug: null.
 
-You will receive: the user's pattern type, the current module, their saved answers in this module, the slugs of completed and available modules, and the available kit_resources for this module. Pick recommended_resource_id from available_kit_resources[].id only (or null).`;
+You will receive: the user's pattern type, the current module, their saved answers in this module, the slugs of completed and available modules, and the available in-app tools for this module. Pick recommended_tool_slug from available_tools[].slug only (or null).`;
 
 Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -69,10 +69,19 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
     if (!mod) return json({ error: "Module not found" }, 404);
 
-    const [{ data: exercises }, { data: answers }, { data: kitResources }] = await Promise.all([
+    const SLUG_TO_MODULE_KEY: Record<string, string> = {
+      "see-the-pattern": "pattern",
+      "calm-the-trigger": "trigger",
+      "rebuild-self-worth": "self-worth",
+      "set-the-boundary": "boundary",
+      "decide-differently": "decisions",
+    };
+    const toolModuleKey = SLUG_TO_MODULE_KEY[moduleSlug] ?? moduleSlug;
+
+    const [{ data: exercises }, { data: answers }, { data: availableTools }] = await Promise.all([
       admin.from("exercises").select("id, title, kind, body, position").eq("module_id", (mod as any).id).order("position"),
       admin.from("user_answers").select("exercise_id, answer_text, answer_data").eq("user_id", userId),
-      admin.from("kit_resources").select("id, title, description, file_type, file_path, order_index").eq("module", moduleSlug).order("order_index"),
+      admin.from("tools").select("id, slug, title, description, kind, order_index").eq("module", toolModuleKey).order("order_index"),
     ]);
 
     const answerMap = new Map<string, any>();
@@ -111,11 +120,11 @@ Deno.serve(async (req: Request): Promise<Response> => {
       current_module: { slug: (mod as any).slug, title: (mod as any).title, subtitle: (mod as any).subtitle },
       completed_modules: completedSlugList,
       available_next_modules: availableNext,
-      available_kit_resources: (kitResources ?? []).map((r: any) => ({
-        id: r.id,
+      available_tools: (availableTools ?? []).map((r: any) => ({
+        slug: r.slug,
         title: r.title,
         description: r.description,
-        file_type: r.file_type,
+        kind: r.kind,
       })),
       previous_memory: existingMemory
         ? {
@@ -127,9 +136,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
       answers_in_this_module: moduleAnswers,
     };
 
-    const validResourceIds = (kitResources ?? []).map((r: any) => r.id as string);
-    const resourceIdEnum: (string | null)[] =
-      validResourceIds.length > 0 ? [...validResourceIds, null] : [null];
+    const validToolSlugs = (availableTools ?? []).map((r: any) => r.slug as string);
+    const toolSlugEnum: (string | null)[] =
+      validToolSlugs.length > 0 ? [...validToolSlugs, null] : [null];
 
     const tool = {
       type: "function",
@@ -145,10 +154,10 @@ Deno.serve(async (req: Request): Promise<Response> => {
             },
             question: { type: "string", description: "ONE focused follow-up question." },
             next_step: { type: "string", description: "ONE practical next step the user can take this week." },
-            recommended_resource_id: {
+            recommended_tool_slug: {
               type: ["string", "null"],
-              description: "ID of ONE kit_resource from available_kit_resources, or null if none fits.",
-              enum: resourceIdEnum,
+              description: "Slug of ONE tool from available_tools, or null if none fits.",
+              enum: toolSlugEnum,
             },
             key_triggers: { type: "array", items: { type: "string" }, maxItems: 5 },
             repeated_behaviors: { type: "array", items: { type: "string" }, maxItems: 5 },
@@ -158,7 +167,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
             "noticing",
             "question",
             "next_step",
-            "recommended_resource_id",
+            "recommended_tool_slug",
             "key_triggers",
             "repeated_behaviors",
             "boundaries_needed",
@@ -219,7 +228,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
       last_noticing: parsed.noticing,
       last_question: parsed.question,
       summary: parsed.noticing,
-      recommended_next: parsed.recommended_resource_id ?? parsed.next_step ?? null,
+      recommended_next: parsed.recommended_tool_slug ?? parsed.next_step ?? null,
       updated_at: new Date().toISOString(),
     };
 

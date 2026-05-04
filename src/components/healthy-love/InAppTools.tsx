@@ -88,6 +88,18 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
     }
   }, [active]);
 
+  // Listen for external requests to open a specific tool by slug (e.g. from the AI Pattern Guide)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const slug = (e as CustomEvent<{ slug?: string }>).detail?.slug;
+      if (!slug) return;
+      const match = tools.find((t) => t.slug === slug);
+      if (match) setActiveId(match.id);
+    };
+    window.addEventListener("open-in-app-tool", handler as EventListener);
+    return () => window.removeEventListener("open-in-app-tool", handler as EventListener);
+  }, [tools]);
+
   if (loading) {
     return (
       <section className="mt-10">
