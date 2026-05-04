@@ -32,6 +32,7 @@ export const Route = createFileRoute("/app/module/$slug")({
 function ModulePage() {
   const { slug } = useParams({ from: "/app/module/$slug" });
   const [module, setModule] = useState<Module | null>(null);
+  const [allModules, setAllModules] = useState<Module[]>([]);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [answers, setAnswers] = useState<Record<string, { text: string; data: any }>>({});
   const [completed, setCompleted] = useState(false);
