@@ -8,13 +8,21 @@ type Reflection = {
   noticing: string;
   question: string;
   next_step: string;
-  recommended_resource_id: string | null;
+  recommended_tool_slug: string | null;
   key_triggers?: string[];
   repeated_behaviors?: string[];
   boundaries_needed?: string[];
 };
 
-type ResourceMeta = { id: string; title: string; file_path: string; file_type: string | null };
+type ToolMeta = { id: string; slug: string; title: string };
+
+const SLUG_TO_MODULE_KEY: Record<string, string> = {
+  "see-the-pattern": "pattern",
+  "calm-the-trigger": "trigger",
+  "rebuild-self-worth": "self-worth",
+  "set-the-boundary": "boundary",
+  "decide-differently": "decisions",
+};
 
 export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
   const [loading, setLoading] = useState(false);
@@ -23,8 +31,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [hasSavedReflection, setHasSavedReflection] = useState(false);
-  const [recommended, setRecommended] = useState<ResourceMeta | null>(null);
-  const [openingTool, setOpeningTool] = useState(false);
+  const [recommended, setRecommended] = useState<ToolMeta | null>(null);
 
   // Hydrate from previous ai_memory row for this module
   useEffect(() => {
@@ -40,15 +47,16 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
         .maybeSingle();
       if (cancelled || !data) return;
       if (data.last_module_slug === moduleSlug && data.last_noticing && data.last_question) {
-        const recId =
-          data.recommended_next && /^[0-9a-f-]{36}$/i.test(data.recommended_next)
+        // recommended_next may be a tool slug or fallback text
+        const candidateSlug =
+          data.recommended_next && /^[a-z0-9-]+$/i.test(data.recommended_next)
             ? data.recommended_next
             : null;
         setReflection({
           noticing: data.last_noticing,
           question: data.last_question,
-          next_step: recId ? "Open the recommended tool below." : data.recommended_next ?? "",
-          recommended_resource_id: recId,
+          next_step: candidateSlug ? "Open the recommended tool below." : data.recommended_next ?? "",
+          recommended_tool_slug: candidateSlug,
         });
         setNote(data.last_reflection ?? "");
         setHasSavedReflection(!!data.last_reflection);
@@ -60,27 +68,29 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
     };
   }, [moduleSlug]);
 
-  // When a reflection has a recommended_resource_id, fetch its title for the button label
+  // When a reflection has a recommended_tool_slug, look up the tool for the chip label
   useEffect(() => {
     let cancelled = false;
-    const fetchResource = async () => {
-      const id = reflection?.recommended_resource_id;
-      if (!id) {
+    const fetchTool = async () => {
+      const slug = reflection?.recommended_tool_slug;
+      if (!slug) {
         setRecommended(null);
         return;
       }
+      const moduleKey = SLUG_TO_MODULE_KEY[moduleSlug] ?? moduleSlug;
       const { data } = await supabase
-        .from("kit_resources")
-        .select("id, title, file_path, file_type")
-        .eq("id", id)
+        .from("tools")
+        .select("id, slug, title")
+        .eq("module", moduleKey)
+        .eq("slug", slug)
         .maybeSingle();
-      if (!cancelled) setRecommended((data as ResourceMeta) ?? null);
+      if (!cancelled) setRecommended((data as ToolMeta) ?? null);
     };
-    fetchResource();
+    fetchTool();
     return () => {
       cancelled = true;
     };
-  }, [reflection?.recommended_resource_id]);
+  }, [reflection?.recommended_tool_slug, moduleSlug]);
 
   const generate = async () => {
     setLoading(true);
@@ -140,27 +150,16 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
     }
   };
 
-  const openRecommendedTool = async () => {
-    if (!recommended) {
-      const el = document.getElementById("kit-resources");
-      el?.scrollIntoView({ behavior: "smooth", block: "start" });
-      return;
-    }
-    setOpeningTool(true);
-    try {
-      const { data, error } = await supabase.storage
-        .from("secure-response-relationship-kit")
-        .createSignedUrl(recommended.file_path, 600);
-      if (error || !data?.signedUrl) {
-        toast.error("Couldn't open the recommended tool.");
-        return;
-      }
-      window.open(data.signedUrl, "_blank", "noopener,noreferrer");
-    } catch (e) {
-      console.error(e);
-      toast.error("Couldn't open the recommended tool.");
-    } finally {
-      setOpeningTool(false);
+  const openRecommendedTool = () => {
+    const el = document.getElementById("in-app-tools");
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (recommended?.slug) {
+      // Slight delay so the section has scrolled into view first
+      setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent("open-in-app-tool", { detail: { slug: recommended.slug } }),
+        );
+      }, 250);
     }
   };
 
@@ -282,11 +281,10 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
 
               <button
                 onClick={openRecommendedTool}
-                disabled={openingTool}
-                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90 disabled:opacity-60"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90"
               >
-                {openingTool ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
-                Open Recommended Tool
+                <ArrowRight className="h-4 w-4" />
+                {recommended ? "Open Recommended Tool" : "Go to Module Resources"}
               </button>
             </div>
           </motion.div>
