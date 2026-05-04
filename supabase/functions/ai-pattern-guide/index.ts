@@ -19,9 +19,9 @@ Hard rules. Never break:
 - If the user mentions self-harm, abuse, or being in danger: keep "noticing" brief and non-clinical, set next_step to "Reach out to a licensed professional or local support line", and set recommended_resource_id to null.
 - Length limits: noticing = 2 to 3 sentences, supportive direct grounded tone. question = ONE sentence ending with a question mark. next_step = 1 to 2 short sentences, concrete and doable.
 - Arrays: max 5 items each, each item 2 to 6 words, lowercase fragments.
-- Recommend a kit resource only when one is genuinely a fit for what the user wrote. Otherwise return recommended_resource_id: null.
+- Recommend an in-app tool only when one is genuinely a fit for what the user wrote. Otherwise return recommended_tool_slug: null.
 
-You will receive: the user's pattern type, the current module, their saved answers in this module, the slugs of completed and available modules, and the available kit_resources for this module. Pick recommended_resource_id from available_kit_resources[].id only (or null).`;
+You will receive: the user's pattern type, the current module, their saved answers in this module, the slugs of completed and available modules, and the available in-app tools for this module. Pick recommended_tool_slug from available_tools[].slug only (or null).`;
 
 Deno.serve(async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
