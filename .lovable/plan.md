@@ -1,30 +1,38 @@
-## Problem
+## Goal
 
-When you submit the email/password signup form on `/auth`, it looks like nothing happens. In reality, signup **succeeds** — the auth logs confirm a `user_confirmation_requested` event with HTTP 200, and Supabase queues a confirmation email. The code calls `toast.success("Check your email to confirm your account.")`, but **`<Toaster />` is never mounted anywhere in the app**, so the toast renders to nothing. The form just sits there silently, so it feels broken.
+The fresh auth email templates were scaffolded but (a) have a build error and (b) lost the My Love Pattern branding. Fix both.
 
-A second contributing factor: even with a working toast, a small disappearing notification is easy to miss for a "check your email" instruction. Users expect a clear in-page state change.
+## Changes
 
-## Fix
+### 1. Fix build errors (`renderAsync` no longer exists)
 
-1. **Mount `<Toaster />` globally** in `src/routes/__root.tsx` so every `toast.*` call across the app is visible (this also fixes silent toasts on `/app`, `/checkout`, etc.).
-   - Import the existing styled wrapper from `@/components/ui/sonner` and render it inside `RootComponent` next to `<Outlet />`.
+In current `@react-email/components`, `renderAsync` was removed — `render` is now async. Replace in 2 files:
 
-2. **Add inline post-signup confirmation UI** in `src/routes/auth.tsx` so the result is unmistakable even if the toast is missed:
-   - Add a `signupSuccess` state that flips true after a successful `supabase.auth.signUp` (when no error and `data.user` exists).
-   - When `signupSuccess` is true, replace the form with a clear panel: heading "Check your email", body "We sent a confirmation link to **{email}**. Click it to activate your account, then return here to sign in.", plus a "Back to sign in" button that resets state to `mode: "signin"`.
-   - Keep the existing toast as a secondary signal.
+- `src/routes/lovable/email/auth/webhook.ts` — change `renderAsync` import + 2 call sites to `render`
+- `src/routes/lovable/email/auth/preview.ts` — change `renderAsync` import + 1 call site to `render`
 
-3. **Surface duplicate-account errors clearly.** If `supabase.auth.signUp` returns `data.user` with an empty `identities` array (Supabase's signal that the email is already registered), show a specific message: "An account with this email already exists. Try signing in instead." instead of a generic success.
+### 2. Rebrand all 6 auth email templates
 
-## Out of scope
+The existing brand layout already lives at `src/lib/email-templates/_layout.tsx` (white bg, MLP circular logo at top, Georgia serif headings, black pill buttons, "With love, Signe Putna · Founder, My Love Pattern" signature block).
 
-- No change to the email-confirmation requirement itself (auto-confirm stays off, per project rules).
-- No change to Google OAuth flow.
-- No change to the `/app` redirect or session handling.
+Rewrite each template to use `EmailLayout` + the shared `styles` from `_layout.tsx`, keeping the existing prop signatures (so the webhook keeps working) and the existing copy intent:
+
+- **`signup.tsx`** — "Confirm your email" heading, intro mentioning the site, Verify Email button, ignore-if-not-you footer.
+- **`magic-link.tsx`** — "Your sign-in link" heading, Sign In button, expires-shortly footer.
+- **`recovery.tsx`** — "Reset your password" heading, Reset Password button, ignore-if-not-you footer.
+- **`invite.tsx`** — "You've been invited" heading, Accept Invitation button.
+- **`email-change.tsx`** — "Confirm your email change" heading, shows old → new email, Confirm Email Change button, security warning footer.
+- **`reauthentication.tsx`** — "Your verification code" heading, large code block (using `styles.code`), expires-shortly footer.
+
+All templates remain default-exported and named-exported with the same names the webhook imports (`SignupEmail`, `MagicLinkEmail`, `RecoveryEmail`, `InviteEmail`, `EmailChangeEmail`, `ReauthenticationEmail`) and accept the same prop shapes the webhook passes.
+
+### 3. No infrastructure changes
+
+- No npm installs (`@react-email/components` is already present)
+- No vite.config.ts changes (already configured from prior scaffolding run)
+- No middleware changes (already configured)
+- Server routes auto-deploy with the app
 
 ## Verification
 
-- Sign up with a new email → form is replaced by the "Check your email" panel, toast appears top-right.
-- Sign up with an existing email → clear "account already exists" message, no false success.
-- Sign in with wrong password → existing toast error is now actually visible.
-- Confirm via the email link → returns to `/app` and proceeds normally (unchanged).
+After approval, preview the signup template via `Cloud → Emails` to confirm the MLP logo, serif heading, and signature block render correctly. Repeat for recovery and magic-link.
