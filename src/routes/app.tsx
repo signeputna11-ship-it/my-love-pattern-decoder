@@ -55,8 +55,16 @@ function AppLayout() {
 
       if (rpcRes.error) {
         console.error("[has_paid_access]", rpcRes.error);
-        setErrorMsg("We couldn't verify your access. Please try again.");
-        setState("error");
+        // Soft retry once before falling back — guards against transient
+        // auth races right after OAuth redirect.
+        if (!opts.retry) {
+          setTimeout(() => check({ silent: true, retry: true }), 250);
+          return;
+        }
+        // Don't trap the user on an error screen — the access check is an
+        // upsell gate, not a security boundary (RLS enforces real access).
+        // Default to the upsell screen so they have a path forward.
+        setState("no-access");
         return;
       }
 
