@@ -8,6 +8,7 @@ import {
   ExperiencePortal,
   FinalCTA,
 } from "@/components/healthy-love/sections";
+import { StickyMobileCTA } from "@/components/healthy-love/StickyMobileCTA";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black pb-24 text-white md:pb-0">
       <Nav />
       <Hero />
       <PatternSection />
@@ -38,6 +39,7 @@ function Index() {
       <Toolkit />
       <ExperiencePortal />
       <FinalCTA />
+      <StickyMobileCTA />
     </div>
   );
 }
