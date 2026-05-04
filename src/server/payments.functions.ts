@@ -24,7 +24,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     if (!prices.data.length) throw new Error("Price not found");
     const stripePrice = prices.data[0];
 
-    // Flat €49 — no tax added on top. Seller handles any tax obligations themselves.
+    // Flat $49 — no tax added on top. Seller handles any tax obligations themselves.
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: stripePrice.id, quantity: 1 }],
       mode: "payment",

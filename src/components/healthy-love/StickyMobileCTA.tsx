@@ -53,7 +53,7 @@ export function StickyMobileCTA() {
     }
   };
 
-  const label = hasAccess ? "Open My Reset" : "Unlock My Pattern · €49";
+  const label = hasAccess ? "Open My Reset" : "Unlock My Pattern · $49";
 
   return (
     <div

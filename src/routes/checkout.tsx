@@ -11,7 +11,7 @@ export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
       { title: "Unlock The Reset · My Love Pattern" },
-      { name: "description", content: "Lifetime access to The Reset for €49." },
+      { name: "description", content: "Lifetime access to The Reset for $49." },
     ],
   }),
 });
@@ -35,7 +35,7 @@ function CheckoutPage() {
   const fetchClientSecret = async (): Promise<string> => {
     const secret = await createCheckoutSession({
       data: {
-        priceId: "reset_lifetime_eur",
+        priceId: "reset_lifetime_usd",
         customerEmail: user?.email,
         userId: user?.id,
         returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
@@ -66,7 +66,7 @@ function CheckoutPage() {
         </Link>
         <h1 className="mt-6 font-serif text-4xl sm:text-5xl">Unlock The Reset</h1>
         <p className="mt-2 text-sm text-white/70">
-          Lifetime access. 5 modules. Workbook, AI guide, downloadable answers. €49.
+          Lifetime access. 5 modules. Workbook, AI guide, downloadable answers. $49.
         </p>
 
         <div className="mt-8 liquid-glass-strong overflow-hidden rounded-3xl p-2">
