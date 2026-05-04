@@ -43,6 +43,11 @@ function AppLayout() {
 
       setEmail(user.email ?? "");
 
+      // Admin check (best-effort, never blocks)
+      checkIsAdmin()
+        .then((r) => setIsAdmin(!!r?.isAdmin))
+        .catch(() => setIsAdmin(false));
+
       const rpcRes = await withTimeout(
         supabase.rpc("has_paid_access", { _user_id: user.id }),
         12000,
@@ -76,6 +81,7 @@ function AppLayout() {
       // to avoid deadlocking on the auth lock (calling supabase methods inside the
       // callback can stall until the 5s lock timeout fires).
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      if (event === "SIGNED_OUT") setIsAdmin(false);
       // Defer out of the callback so the auth lock can release first.
       setTimeout(() => check({ silent: true }), 0);
     });

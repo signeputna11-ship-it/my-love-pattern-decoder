@@ -33,6 +33,19 @@ export const EmailLayout = ({ preview, children }: EmailLayoutProps) => (
           />
         </Section>
         <Section style={content}>{children}</Section>
+        <Section style={signatureSection}>
+          <Text style={signWith}>With love,</Text>
+          <Text style={signName}>Signe Putna</Text>
+          <Text style={signRole}>Founder, My Love Pattern</Text>
+          <Text style={signLinks}>
+            mylovepattern.com
+            <br />
+            <a href="mailto:hello@mylovepattern.com" style={signMail}>
+              hello@mylovepattern.com
+            </a>
+          </Text>
+          <Text style={signNote}>Private sessions available on request</Text>
+        </Section>
         <Section style={footerSection}>
           <Text style={footerText}>
             My Love Pattern
@@ -129,5 +142,44 @@ const footerText = {
 const footerSubtext = {
   fontSize: '11px',
   color: '#aaaaaa',
+  margin: 0,
+}
+const signatureSection = {
+  borderTop: '1px solid #ececec',
+  marginTop: '32px',
+  paddingTop: '24px',
+}
+const signWith = {
+  fontSize: '14px',
+  color: '#55575d',
+  margin: '0 0 4px',
+  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontStyle: 'italic' as const,
+}
+const signName = {
+  fontSize: '16px',
+  color: '#000000',
+  margin: '0 0 2px',
+  fontFamily: 'Georgia, "Times New Roman", serif',
+}
+const signRole = {
+  fontSize: '13px',
+  color: '#55575d',
+  margin: '0 0 14px',
+}
+const signLinks = {
+  fontSize: '13px',
+  color: '#55575d',
+  margin: '0 0 14px',
+  lineHeight: '1.6',
+}
+const signMail = {
+  color: '#000000',
+  textDecoration: 'underline',
+}
+const signNote = {
+  fontSize: '12px',
+  color: '#999999',
+  fontStyle: 'italic' as const,
   margin: 0,
 }
