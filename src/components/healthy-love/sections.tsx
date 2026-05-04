@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
@@ -254,6 +254,15 @@ export function PatternSection() {
 export function Diagnosis() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
+  const resultRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (showResult) {
+      requestAnimationFrame(() => {
+        resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, [showResult]);
 
   const result = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -335,16 +344,20 @@ export function Diagnosis() {
             </>
           ) : (
             <motion.div
+              ref={resultRef}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="liquid-glass-strong rounded-2xl p-6 sm:rounded-3xl sm:p-8 md:p-12"
+              className="liquid-glass-strong scroll-mt-24 rounded-2xl p-6 sm:rounded-3xl sm:p-8 md:p-12"
             >
-              <p className="font-mono text-[10px] uppercase tracking-widest text-white/45">
-                Your Love Pattern
+              <p className="font-mono text-[10px] uppercase tracking-widest text-white/55">
+                Your result is ready
               </p>
               <h3 className="mt-3 font-serif text-3xl text-white sm:text-4xl md:text-5xl">{result.title}</h3>
-              <p className="mt-4 max-w-2xl text-sm text-white/80 sm:text-base">{result.description}</p>
+              <p className="mt-4 max-w-2xl font-serif text-base italic text-white/85 sm:text-lg">
+                This is not random. Your nervous system is repeating a loop.
+              </p>
+              <p className="mt-3 max-w-2xl text-sm text-white/75 sm:text-base">{result.description}</p>
 
               <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-5 md:grid-cols-3">
                 <div className="rounded-2xl border border-white/10 p-4 sm:p-5">
@@ -566,7 +579,7 @@ export function ExperiencePortal() {
 
 export function FinalCTA() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
+    <section id="final-cta" className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-32">
       <BackgroundVideo src={VIDEOS.final} />
       <div className="absolute inset-0 bg-black/65" />
       <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-4 text-center sm:px-6">
