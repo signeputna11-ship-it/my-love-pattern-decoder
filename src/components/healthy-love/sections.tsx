@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { patterns, toolkit, quizQuestions, VIDEOS } from "./data";
+import mlpLogo from "@/assets/mlp-logo.png";
 
 function BackgroundVideo({ src }: { src: string }) {
   return (
@@ -73,8 +74,8 @@ export function Nav() {
     <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-4 sm:pt-4">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full liquid-glass px-2.5 py-2 sm:px-4 sm:py-3">
         <a href="#top" className="flex min-w-0 flex-1 items-center gap-2 text-white">
-          <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-white/10 sm:h-8 sm:w-8">
-            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="grid h-7 w-7 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-white sm:h-8 sm:w-8">
+            <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
           </span>
           <span className="flex min-w-0 flex-col leading-tight">
             <span className="truncate font-serif text-sm sm:text-lg">My Love Pattern</span>
@@ -210,9 +211,6 @@ export function PatternSection() {
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
-            // You feel it when they pull away.
-          </p>
           <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             You've seen this <em className="italic text-white/75">before…</em>
           </h2>
@@ -276,9 +274,6 @@ export function Diagnosis() {
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
-            // Now you can see it clearly.
-          </p>
           <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             This takes 60 seconds.
             <br />
@@ -425,7 +420,7 @@ export function Toolkit() {
       <BackgroundVideo src={VIDEOS.toolkit} />
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-6 sm:text-xs sm:tracking-[0.25em]">// This is where it changes.</p>
+        
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
           <div>
             <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
@@ -520,9 +515,6 @@ export function ExperiencePortal() {
       <div className="absolute inset-0 bg-black/70" />
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:mb-4 sm:text-xs sm:tracking-[0.25em]">
-            // You respond differently now.
-          </p>
           <h2 className="font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
             Your Reset <em className="italic text-white/75">Path.</em>
           </h2>

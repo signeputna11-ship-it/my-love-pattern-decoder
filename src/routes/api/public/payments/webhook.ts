@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
 import { type StripeEnv, verifyWebhook, createStripeClient } from "@/lib/stripe.server";
+import { enqueueTransactionalEmailAsService } from "@/server/email.server";
 
 let _supabase: any = null;
 function getSupabase(): any {
@@ -52,6 +53,28 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
     },
     { onConflict: "stripe_session_id" },
   );
+
+  // Send purchase confirmation email (idempotent on stripe_session_id).
+  const recipient: string | null =
+    session.customer_details?.email ?? session.customer_email ?? null;
+  if (recipient) {
+    const amount =
+      typeof session.amount_total === "number"
+        ? (session.amount_total / 100).toFixed(2)
+        : undefined;
+    try {
+      await enqueueTransactionalEmailAsService({
+        templateName: "purchase-confirmation",
+        recipientEmail: recipient,
+        idempotencyKey: `purchase-confirm-${session.id}`,
+        templateData: { amount, currency: session.currency ?? undefined },
+      });
+    } catch (e) {
+      console.error("Failed to enqueue purchase confirmation:", e);
+    }
+  } else {
+    console.warn("No recipient email on session", session.id);
+  }
 }
 
 async function revokeAccessByPaymentIntent(paymentIntentId: string, env: StripeEnv) {

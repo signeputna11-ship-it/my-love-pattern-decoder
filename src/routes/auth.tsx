@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
+import { sendTransactionalEmail } from "@/lib/email/send";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -16,6 +17,32 @@ export const Route = createFileRoute("/auth")({
   }),
 });
 
+async function maybeSendWelcome(userId: string, email: string | null) {
+  if (!email) return;
+  try {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("welcome_sent_at, display_name")
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (profile?.welcome_sent_at) return;
+    const result = await sendTransactionalEmail({
+      templateName: "welcome",
+      recipientEmail: email,
+      idempotencyKey: `welcome-${userId}`,
+      templateData: { name: profile?.display_name ?? undefined },
+    });
+    if (result.success) {
+      await supabase
+        .from("profiles")
+        .update({ welcome_sent_at: new Date().toISOString() })
+        .eq("user_id", userId);
+    }
+  } catch (e) {
+    console.warn("welcome send failed", e);
+  }
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -25,7 +52,11 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/app" });
+      if (data.session) {
+        const u = data.session.user;
+        maybeSendWelcome(u.id, u.email ?? null);
+        navigate({ to: "/app" });
+      }
     });
   }, [navigate]);
 
@@ -71,6 +102,20 @@ function AuthPage() {
       setLoading(false);
     }
   };
+
+  // Send password-reset followup email after a recovery-driven password update.
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "USER_UPDATED" && session?.user?.email) {
+        sendTransactionalEmail({
+          templateName: "password-reset-followup",
+          recipientEmail: session.user.email,
+          idempotencyKey: `pwd-reset-followup-${session.user.id}-${Date.now()}`,
+        }).catch(() => {});
+      }
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-white">
