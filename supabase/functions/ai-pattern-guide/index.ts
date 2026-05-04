@@ -69,10 +69,19 @@ Deno.serve(async (req: Request): Promise<Response> => {
 
     if (!mod) return json({ error: "Module not found" }, 404);
 
-    const [{ data: exercises }, { data: answers }, { data: kitResources }] = await Promise.all([
+    const SLUG_TO_MODULE_KEY: Record<string, string> = {
+      "see-the-pattern": "pattern",
+      "calm-the-trigger": "trigger",
+      "rebuild-self-worth": "self-worth",
+      "set-the-boundary": "boundary",
+      "decide-differently": "decisions",
+    };
+    const toolModuleKey = SLUG_TO_MODULE_KEY[moduleSlug] ?? moduleSlug;
+
+    const [{ data: exercises }, { data: answers }, { data: availableTools }] = await Promise.all([
       admin.from("exercises").select("id, title, kind, body, position").eq("module_id", (mod as any).id).order("position"),
       admin.from("user_answers").select("exercise_id, answer_text, answer_data").eq("user_id", userId),
-      admin.from("kit_resources").select("id, title, description, file_type, file_path, order_index").eq("module", moduleSlug).order("order_index"),
+      admin.from("tools").select("id, slug, title, description, kind, order_index").eq("module", toolModuleKey).order("order_index"),
     ]);
 
     const answerMap = new Map<string, any>();
