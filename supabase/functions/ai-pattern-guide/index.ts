@@ -120,11 +120,11 @@ Deno.serve(async (req: Request): Promise<Response> => {
       current_module: { slug: (mod as any).slug, title: (mod as any).title, subtitle: (mod as any).subtitle },
       completed_modules: completedSlugList,
       available_next_modules: availableNext,
-      available_kit_resources: (kitResources ?? []).map((r: any) => ({
-        id: r.id,
+      available_tools: (availableTools ?? []).map((r: any) => ({
+        slug: r.slug,
         title: r.title,
         description: r.description,
-        file_type: r.file_type,
+        kind: r.kind,
       })),
       previous_memory: existingMemory
         ? {
@@ -136,9 +136,9 @@ Deno.serve(async (req: Request): Promise<Response> => {
       answers_in_this_module: moduleAnswers,
     };
 
-    const validResourceIds = (kitResources ?? []).map((r: any) => r.id as string);
-    const resourceIdEnum: (string | null)[] =
-      validResourceIds.length > 0 ? [...validResourceIds, null] : [null];
+    const validToolSlugs = (availableTools ?? []).map((r: any) => r.slug as string);
+    const toolSlugEnum: (string | null)[] =
+      validToolSlugs.length > 0 ? [...validToolSlugs, null] : [null];
 
     const tool = {
       type: "function",
