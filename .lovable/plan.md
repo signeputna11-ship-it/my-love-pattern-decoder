@@ -1,36 +1,30 @@
-## Switch checkout to USD only
+## Problem
 
-Currently the app sells The Reset at €49 via the `reset_lifetime_eur` Stripe price. You want to switch everything to USD only — single currency, no toggle.
+When you submit the email/password signup form on `/auth`, it looks like nothing happens. In reality, signup **succeeds** — the auth logs confirm a `user_confirmation_requested` event with HTTP 200, and Supabase queues a confirmation email. The code calls `toast.success("Check your email to confirm your account.")`, but **`<Toaster />` is never mounted anywhere in the app**, so the toast renders to nothing. The form just sits there silently, so it feels broken.
 
-### Steps
+A second contributing factor: even with a working toast, a small disappearing notification is easy to miss for a "check your email" instruction. Users expect a clear in-page state change.
 
-1. **Create a USD price in Stripe**
-   - Product: existing Reset product
-   - New price ID: `reset_lifetime_usd`, amount `4900` cents, currency `usd`, one-time, qty 1/1
-   - Use `payments--create_price` (auto-syncs to live on publish)
+## Fix
 
-2. **Update checkout to use the USD price**
-   - `src/routes/checkout.tsx`: change `priceId: "reset_lifetime_eur"` → `"reset_lifetime_usd"`
-   - Update copy: "Lifetime access. 5 modules. Workbook, AI guide, downloadable answers. **$49**."
+1. **Mount `<Toaster />` globally** in `src/routes/__root.tsx` so every `toast.*` call across the app is visible (this also fixes silent toasts on `/app`, `/checkout`, etc.).
+   - Import the existing styled wrapper from `@/components/ui/sonner` and render it inside `RootComponent` next to `<Outlet />`.
 
-3. **Update all €49 references to $49 across the landing page**
-   - `src/components/healthy-love/StickyMobileCTA.tsx`: label `Unlock My Pattern · $49`
-   - `src/components/healthy-love/sections.tsx`: any `€49` strings → `$49`
-   - `src/components/healthy-love/data.ts`: same
-   - `src/routes/index.tsx`: any `€49` → `$49`
-   - Any meta description mentioning €49 (checkout head, etc.)
+2. **Add inline post-signup confirmation UI** in `src/routes/auth.tsx` so the result is unmistakable even if the toast is missed:
+   - Add a `signupSuccess` state that flips true after a successful `supabase.auth.signUp` (when no error and `data.user` exists).
+   - When `signupSuccess` is true, replace the form with a clear panel: heading "Check your email", body "We sent a confirmation link to **{email}**. Click it to activate your account, then return here to sign in.", plus a "Back to sign in" button that resets state to `mode: "signin"`.
+   - Keep the existing toast as a secondary signal.
 
-4. **Leave existing EUR purchases alone**
-   - The old `reset_lifetime_eur` price stays in Stripe (any past purchase records remain valid; `has_paid_access` checks the `purchases` table regardless of currency)
-   - No DB migration needed
-   - Webhook already records whatever currency Stripe returns — no change
+3. **Surface duplicate-account errors clearly.** If `supabase.auth.signUp` returns `data.user` with an empty `identities` array (Supabase's signal that the email is already registered), show a specific message: "An account with this email already exists. Try signing in instead." instead of a generic success.
 
-### Out of scope
-- No currency toggle, no auto-detect, no second price
-- No changes to auth, RLS, or `has_paid_access`
-- No refunds/migration of past EUR buyers
+## Out of scope
 
-### Verification
-- `/checkout` opens Stripe embedded form showing **$49 USD**
-- Landing page, sticky CTA, and final CTA all show **$49**
-- Test card `4242 4242 4242 4242` completes → return page → `/app` unlocks
+- No change to the email-confirmation requirement itself (auto-confirm stays off, per project rules).
+- No change to Google OAuth flow.
+- No change to the `/app` redirect or session handling.
+
+## Verification
+
+- Sign up with a new email → form is replaced by the "Check your email" panel, toast appears top-right.
+- Sign up with an existing email → clear "account already exists" message, no false success.
+- Sign in with wrong password → existing toast error is now actually visible.
+- Confirm via the email link → returns to `/app` and proceeds normally (unchanged).
