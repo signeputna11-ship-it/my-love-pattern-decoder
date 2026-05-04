@@ -154,10 +154,10 @@ Deno.serve(async (req: Request): Promise<Response> => {
             },
             question: { type: "string", description: "ONE focused follow-up question." },
             next_step: { type: "string", description: "ONE practical next step the user can take this week." },
-            recommended_resource_id: {
+            recommended_tool_slug: {
               type: ["string", "null"],
-              description: "ID of ONE kit_resource from available_kit_resources, or null if none fits.",
-              enum: resourceIdEnum,
+              description: "Slug of ONE tool from available_tools, or null if none fits.",
+              enum: toolSlugEnum,
             },
             key_triggers: { type: "array", items: { type: "string" }, maxItems: 5 },
             repeated_behaviors: { type: "array", items: { type: "string" }, maxItems: 5 },
@@ -167,7 +167,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
             "noticing",
             "question",
             "next_step",
-            "recommended_resource_id",
+            "recommended_tool_slug",
             "key_triggers",
             "repeated_behaviors",
             "boundaries_needed",
