@@ -103,6 +103,20 @@ function AuthPage() {
     }
   };
 
+  // Send password-reset followup email after a recovery-driven password update.
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "USER_UPDATED" && session?.user?.email) {
+        sendTransactionalEmail({
+          templateName: "password-reset-followup",
+          recipientEmail: session.user.email,
+          idempotencyKey: `pwd-reset-followup-${session.user.id}-${Date.now()}`,
+        }).catch(() => {});
+      }
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-white">
       <video
