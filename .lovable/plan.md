@@ -1,43 +1,58 @@
-## 1. Hide the "Edit with Lovable" badge
+## Problem
 
-Toggle the project setting `hide_badge = true` via `publish_settings--set_badge_visibility`. This removes the badge from the published site at `mylovepattern.com` and `heart-pattern-decoder.lovable.app`. Requires Pro plan or higher (Lovable will surface a billing prompt on approval if not on Pro). No code change.
+A new user (Nicolas, signed up via Google a few minutes ago) was redirected to `/app` after OAuth, but instead of seeing the upsell screen (“One step away — Unlock The Reset for €49”), they got the **error screen** — “Something went sideways / We couldn’t verify your access.”
 
-Note: the badge does not appear in the Lovable editor preview — only on published deployments — so it will keep showing in your editor view, that is expected.
+Confirmed in DB:
+- The user’s account exists (`profiles` row created at signup).
+- They have no `purchases` row, so `has_paid_access()` correctly returns `false`.
+- The DB function itself works.
 
-## 2. Landing-page conversion quick wins
+So the error screen is being shown not because access really failed, but because the `has_paid_access` RPC call from the browser **errored or timed out** right after the OAuth redirect — a known race window where the Supabase client is briefly between sessions / token refreshes.
 
-Heads up: your funnel has no actual modal or popup component. The "popup" is the inline quiz/result block inside `Diagnosis` in `src/components/healthy-love/sections.tsx`. The Tailwind `items-start` / `fixed inset-0` snippets you pasted assume a modal that does not exist here. I'll adapt the spirit of those fixes to the inline structure.
+## Where the bug is
 
-### 2a. Auto-scroll to result + tighter reveal copy (Diagnosis section)
+`src/routes/app.tsx` — `AppLayout.check()`:
 
-In `src/components/healthy-love/sections.tsx` `Diagnosis`:
+- The `try/catch` retries once on *thrown* errors (timeout, network).
+- But when `supabase.rpc(...)` returns `{ error }` (e.g. transient auth error after redirect), the code **immediately** sets `state = "error"` with no retry. That’s the path that hit the new signup.
+- A first-load failure of the access check shouldn’t block the upsell — even if the RPC truly fails, treating the user as “no-access” is safer than trapping them on an error screen with no path forward.
 
-- When `showResult` flips to `true`, scroll the result card into view smoothly so users see it instantly (`useEffect` watching `showResult`, calling `resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })`).
-- Add a short "Your result is ready" eyebrow above the pattern title (psychological progress cue).
-- Tighten the result intro to lead with a 2-line punch: pattern title, then one-sentence emotional hook ("This is not random. Your nervous system is repeating a loop."), then CTA — current 3-card grid stays below for users who want detail.
-- Replace soft verbs in the primary CTAs on this section: "Unlock My Reset" stays, but the secondary "explore" / "discover" wording (where present) becomes "See your pattern" / "Understand why this keeps happening".
+## Fix
 
-### 2b. Sticky mobile CTA bar on landing
+Edit `src/routes/app.tsx` only. No DB changes, no auth changes.
 
-Add a new component `StickyMobileCTA` rendered from `src/routes/index.tsx` (so it lives only on `/`, not inside `/app` or `/checkout`). Behavior:
+1. **Retry the RPC once on `rpcRes.error`**, mirroring the existing soft-retry in the `catch` block. Use the same 250 ms delay + `retry: true` guard so we don’t loop.
+2. **After the retry still fails, fall through to `no-access` instead of `error`** when the user is authenticated. Rationale: the access check is an upsell gate, not a security boundary — the real gate lives in RLS on the course content tables. Showing the “Unlock for €49” card is the correct, useful screen even if the RPC briefly misbehaves; if they actually paid, the next navigation revalidates.
+3. Keep the existing `error` state as a fallback for the truly-broken case (e.g. session totally missing on retry), so the “Try again / Sign out” card still exists.
+4. Keep `checkIsAdmin()` best-effort as today.
 
-- Visible only on screens `< md` (mobile/tablet).
-- Fixed to the bottom of the viewport with safe-area padding.
-- Single button: "Unlock My Pattern €49" → routes to `/checkout` if signed in with no paid access, `/auth?redirect=/checkout` if signed out, `/app` if already paid (mirrors the Nav CTA logic in `sections.tsx`).
-- Hidden once the user scrolls past the FinalCTA section (so it doesn't double up with the in-page CTA at the bottom). Use an IntersectionObserver on the `#final-cta` anchor.
-- Add `pb-24 md:pb-0` to the landing page wrapper so the sticky bar never covers the last section's content.
+### Technical detail
 
-No changes to the auth or payment flow — login still happens before checkout, as it does today. (You picked "Quick wins + sticky mobile CTA" so I'm not moving login after payment in this pass.)
+In `check()`:
 
-## Files touched
+```ts
+if (rpcRes.error) {
+  console.error("[has_paid_access]", rpcRes.error);
+  if (!opts.retry) {
+    setTimeout(() => check({ silent: true, retry: true }), 250);
+    return;
+  }
+  // After retry: don't trap the user. Default to the upsell screen.
+  setState("no-access");
+  return;
+}
+```
 
-- `src/components/healthy-love/sections.tsx` — auto-scroll on result reveal, eyebrow + tightened reveal copy, copy nits.
-- `src/components/healthy-love/StickyMobileCTA.tsx` — new component (mobile-only sticky buy bar with auth-aware routing).
-- `src/routes/index.tsx` — mount `StickyMobileCTA` and add `pb-24 md:pb-0` wrapper padding.
-- Project setting: `hide_badge = true` (no file change).
+No other files change.
 
-## Not in scope this pass
+## Out of scope
 
-- Pay-then-create-account rework (you opted out — would require guest Stripe checkout + webhook account provisioning + auth refactor; happy to plan separately).
-- New modal/Dialog component (none exists; not needed for these fixes).
-- Stripe €49 inclusive-tax pricing — already flat €49 from previous change.
+- No changes to `auth.tsx`, OAuth flow, or Supabase config.
+- No changes to RLS, `has_paid_access`, or purchases.
+- No UI redesign of the error/upsell cards.
+
+## Verification
+
+- New Google signup with no purchase → lands on `/app` → sees “One step away / Unlock The Reset for €49” (not the error card), even if the first RPC call has a transient hiccup.
+- Existing paid user (Signe) → still sees the full reset portal.
+- True signed-out state → still routed to “Sign in to continue”.
