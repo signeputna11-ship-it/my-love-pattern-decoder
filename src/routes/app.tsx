@@ -1,8 +1,10 @@
 import { createFileRoute, Outlet, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, Shield } from "lucide-react";
 import { toast } from "sonner";
+import mlpLogo from "@/assets/mlp-logo.png";
+import { checkIsAdmin } from "@/server/admin-emails.functions";
 
 export const Route = createFileRoute("/app")({
   component: AppLayout,
@@ -19,6 +21,7 @@ function AppLayout() {
   const [state, setState] = useState<"loading" | "no-auth" | "no-access" | "ready" | "error">("loading");
   const [email, setEmail] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const check = async (opts: { silent?: boolean; retry?: boolean } = {}) => {
     if (!opts.silent) setState("loading");
@@ -170,11 +173,22 @@ function AppLayout() {
 
       <header className="relative z-10 flex items-center justify-between px-4 pt-4 sm:px-6">
         <Link to="/app" className="flex items-center gap-2 text-sm">
+          <span className="grid h-7 w-7 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-white">
+            <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
+          </span>
           <span className="font-serif italic text-base">My Love Pattern</span>
           <span className="hidden text-xs text-white/40 sm:inline">/ Reset Portal</span>
         </Link>
         <div className="flex items-center gap-3 text-xs text-white/60">
           <span className="hidden truncate max-w-[160px] sm:inline">{email}</span>
+          {isAdmin && (
+            <Link
+              to="/app/admin/emails"
+              className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
+            >
+              <Shield className="h-3.5 w-3.5" /> Admin
+            </Link>
+          )}
           <button
             onClick={signOut}
             className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"

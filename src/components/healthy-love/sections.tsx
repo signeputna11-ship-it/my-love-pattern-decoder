@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { patterns, toolkit, quizQuestions, VIDEOS } from "./data";
+import mlpLogo from "@/assets/mlp-logo.png";
 
 function BackgroundVideo({ src }: { src: string }) {
   return (
@@ -73,8 +74,8 @@ export function Nav() {
     <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-4 sm:pt-4">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full liquid-glass px-2.5 py-2 sm:px-4 sm:py-3">
         <a href="#top" className="flex min-w-0 flex-1 items-center gap-2 text-white">
-          <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-white/10 sm:h-8 sm:w-8">
-            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="grid h-7 w-7 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-white sm:h-8 sm:w-8">
+            <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
           </span>
           <span className="flex min-w-0 flex-col leading-tight">
             <span className="truncate font-serif text-sm sm:text-lg">My Love Pattern</span>
