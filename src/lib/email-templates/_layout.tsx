@@ -10,7 +10,7 @@ import {
   Text,
 } from '@react-email/components'
 
-const LOGO_URL = 'https://heart-pattern-decoder.lovable.app/mlp-logo.png'
+const LOGO_URL = 'https://mylovepattern.com/mlp-logo.png'
 
 interface EmailLayoutProps {
   preview: string
