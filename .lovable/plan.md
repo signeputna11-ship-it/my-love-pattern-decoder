@@ -1,58 +1,36 @@
-## Problem
+## Switch checkout to USD only
 
-A new user (Nicolas, signed up via Google a few minutes ago) was redirected to `/app` after OAuth, but instead of seeing the upsell screen (“One step away — Unlock The Reset for €49”), they got the **error screen** — “Something went sideways / We couldn’t verify your access.”
+Currently the app sells The Reset at €49 via the `reset_lifetime_eur` Stripe price. You want to switch everything to USD only — single currency, no toggle.
 
-Confirmed in DB:
-- The user’s account exists (`profiles` row created at signup).
-- They have no `purchases` row, so `has_paid_access()` correctly returns `false`.
-- The DB function itself works.
+### Steps
 
-So the error screen is being shown not because access really failed, but because the `has_paid_access` RPC call from the browser **errored or timed out** right after the OAuth redirect — a known race window where the Supabase client is briefly between sessions / token refreshes.
+1. **Create a USD price in Stripe**
+   - Product: existing Reset product
+   - New price ID: `reset_lifetime_usd`, amount `4900` cents, currency `usd`, one-time, qty 1/1
+   - Use `payments--create_price` (auto-syncs to live on publish)
 
-## Where the bug is
+2. **Update checkout to use the USD price**
+   - `src/routes/checkout.tsx`: change `priceId: "reset_lifetime_eur"` → `"reset_lifetime_usd"`
+   - Update copy: "Lifetime access. 5 modules. Workbook, AI guide, downloadable answers. **$49**."
 
-`src/routes/app.tsx` — `AppLayout.check()`:
+3. **Update all €49 references to $49 across the landing page**
+   - `src/components/healthy-love/StickyMobileCTA.tsx`: label `Unlock My Pattern · $49`
+   - `src/components/healthy-love/sections.tsx`: any `€49` strings → `$49`
+   - `src/components/healthy-love/data.ts`: same
+   - `src/routes/index.tsx`: any `€49` → `$49`
+   - Any meta description mentioning €49 (checkout head, etc.)
 
-- The `try/catch` retries once on *thrown* errors (timeout, network).
-- But when `supabase.rpc(...)` returns `{ error }` (e.g. transient auth error after redirect), the code **immediately** sets `state = "error"` with no retry. That’s the path that hit the new signup.
-- A first-load failure of the access check shouldn’t block the upsell — even if the RPC truly fails, treating the user as “no-access” is safer than trapping them on an error screen with no path forward.
+4. **Leave existing EUR purchases alone**
+   - The old `reset_lifetime_eur` price stays in Stripe (any past purchase records remain valid; `has_paid_access` checks the `purchases` table regardless of currency)
+   - No DB migration needed
+   - Webhook already records whatever currency Stripe returns — no change
 
-## Fix
+### Out of scope
+- No currency toggle, no auto-detect, no second price
+- No changes to auth, RLS, or `has_paid_access`
+- No refunds/migration of past EUR buyers
 
-Edit `src/routes/app.tsx` only. No DB changes, no auth changes.
-
-1. **Retry the RPC once on `rpcRes.error`**, mirroring the existing soft-retry in the `catch` block. Use the same 250 ms delay + `retry: true` guard so we don’t loop.
-2. **After the retry still fails, fall through to `no-access` instead of `error`** when the user is authenticated. Rationale: the access check is an upsell gate, not a security boundary — the real gate lives in RLS on the course content tables. Showing the “Unlock for €49” card is the correct, useful screen even if the RPC briefly misbehaves; if they actually paid, the next navigation revalidates.
-3. Keep the existing `error` state as a fallback for the truly-broken case (e.g. session totally missing on retry), so the “Try again / Sign out” card still exists.
-4. Keep `checkIsAdmin()` best-effort as today.
-
-### Technical detail
-
-In `check()`:
-
-```ts
-if (rpcRes.error) {
-  console.error("[has_paid_access]", rpcRes.error);
-  if (!opts.retry) {
-    setTimeout(() => check({ silent: true, retry: true }), 250);
-    return;
-  }
-  // After retry: don't trap the user. Default to the upsell screen.
-  setState("no-access");
-  return;
-}
-```
-
-No other files change.
-
-## Out of scope
-
-- No changes to `auth.tsx`, OAuth flow, or Supabase config.
-- No changes to RLS, `has_paid_access`, or purchases.
-- No UI redesign of the error/upsell cards.
-
-## Verification
-
-- New Google signup with no purchase → lands on `/app` → sees “One step away / Unlock The Reset for €49” (not the error card), even if the first RPC call has a transient hiccup.
-- Existing paid user (Signe) → still sees the full reset portal.
-- True signed-out state → still routed to “Sign in to continue”.
+### Verification
+- `/checkout` opens Stripe embedded form showing **$49 USD**
+- Landing page, sticky CTA, and final CTA all show **$49**
+- Test card `4242 4242 4242 4242` completes → return page → `/app` unlocks
