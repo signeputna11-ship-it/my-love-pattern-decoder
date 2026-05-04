@@ -5,6 +5,7 @@ import { getStripe, getStripeEnvironment } from "@/lib/stripe";
 import { createCheckoutSession } from "@/server/payments.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import coverImage from "@/assets/my-love-pattern-cover.png";
 
 export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
