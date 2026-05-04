@@ -351,15 +351,40 @@ function ModulePage() {
         <InAppTools moduleKey={module.slug} />
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <button
-          onClick={markComplete}
-          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black hover:bg-white/90"
-        >
-          <CheckCircle2 className="h-4 w-4" />
-          {completed ? "Completed. Re-confirm" : "Mark module complete"}
-        </button>
-      </div>
+      {(() => {
+        const nextModule = allModules
+          .filter((m) => m.position > module.position)
+          .sort((a, b) => a.position - b.position)[0];
+        return (
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <button
+              onClick={markComplete}
+              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black hover:bg-white/90"
+            >
+              <CheckCircle2 className="h-4 w-4" />
+              {completed ? "Completed. Re-confirm" : "Mark module complete"}
+            </button>
+            {nextModule ? (
+              <Link
+                to="/app/module/$slug"
+                params={{ slug: nextModule.slug }}
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/30 bg-transparent px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
+              >
+                <span className="truncate">Go to next module: {nextModule.title}</span>
+                <ArrowRight className="h-4 w-4 shrink-0" />
+              </Link>
+            ) : (
+              <Link
+                to="/app"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/30 bg-transparent px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
+              >
+                Back to dashboard
+                <ArrowRight className="h-4 w-4 shrink-0" />
+              </Link>
+            )}
+          </div>
+        );
+      })()}
 
       <div className="fixed bottom-4 left-1/2 z-40 w-[calc(100%-1.5rem)] max-w-xl -translate-x-1/2">
         <div className="liquid-glass flex items-center justify-center gap-2 rounded-full px-3 py-2 shadow-2xl backdrop-blur">
