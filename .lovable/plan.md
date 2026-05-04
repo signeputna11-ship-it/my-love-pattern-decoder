@@ -1,57 +1,43 @@
-# Plan
+## 1. Hide the "Edit with Lovable" badge
 
-## 1. Finish wiring admin link visibility
+Toggle the project setting `hide_badge = true` via `publish_settings--set_badge_visibility`. This removes the badge from the published site at `mylovepattern.com` and `heart-pattern-decoder.lovable.app`. Requires Pro plan or higher (Lovable will surface a billing prompt on approval if not on Pro). No code change.
 
-In `src/routes/app.tsx`, the `isAdmin` state exists and the `Shield` link renders conditionally, but `checkIsAdmin()` is never called.
+Note: the badge does not appear in the Lovable editor preview — only on published deployments — so it will keep showing in your editor view, that is expected.
 
-- After the session check confirms a user, call `checkIsAdmin()` and set `isAdmin` from `result.isAdmin`.
-- Wrap in try/catch so a non-admin (or RPC error) silently keeps `isAdmin = false`.
-- Reset `isAdmin` to false on `SIGNED_OUT`.
+## 2. Landing-page conversion quick wins
 
-Result: the "Admin" pill appears in the app header only for users in `user_roles` with role `admin`.
+Heads up: your funnel has no actual modal or popup component. The "popup" is the inline quiz/result block inside `Diagnosis` in `src/components/healthy-love/sections.tsx`. The Tailwind `items-start` / `fixed inset-0` snippets you pasted assume a modal that does not exist here. I'll adapt the spirit of those fixes to the inline structure.
 
-## 2. Charge a flat €49 with no tax added on top
+### 2a. Auto-scroll to result + tighter reveal copy (Diagnosis section)
 
-Currently `createCheckoutSession` uses `managed_payments: { enabled: true }`, which tells Stripe to calculate and add tax on top of the €49 price. The user wants €49 to be the total at checkout.
+In `src/components/healthy-love/sections.tsx` `Diagnosis`:
 
-Change in `src/server/payments.functions.ts`:
-- Remove `managed_payments: { enabled: true }` from `checkout.sessions.create`.
-- Remove the `managed_payments: "true"` metadata flag.
-- Remove the `ensureProductTaxCode` call and helper (no longer needed for the checkout path; tax handling is off).
-- Keep everything else (line item, embedded mode, return URL, userId metadata).
+- When `showResult` flips to `true`, scroll the result card into view smoothly so users see it instantly (`useEffect` watching `showResult`, calling `resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })`).
+- Add a short "Your result is ready" eyebrow above the pattern title (psychological progress cue).
+- Tighten the result intro to lead with a 2-line punch: pattern title, then one-sentence emotional hook ("This is not random. Your nervous system is repeating a loop."), then CTA — current 3-card grid stays below for users who want detail.
+- Replace soft verbs in the primary CTAs on this section: "Unlock My Reset" stays, but the secondary "explore" / "discover" wording (where present) becomes "See your pattern" / "Understand why this keeps happening".
 
-This makes the €49 price the exact amount charged. Stripe will not add VAT/tax on top, and the user is responsible for any tax obligations themselves (consistent with their request).
+### 2b. Sticky mobile CTA bar on landing
 
-Note: this opts out of Stripe's end-to-end tax compliance handling. If they later want tax included in the €49 (inclusive pricing), we'd need to mark the price as `tax_behavior: "inclusive"` in Stripe — call out as a follow-up only.
+Add a new component `StickyMobileCTA` rendered from `src/routes/index.tsx` (so it lives only on `/`, not inside `/app` or `/checkout`). Behavior:
 
-## 3. Add the founder signature to all email templates
+- Visible only on screens `< md` (mobile/tablet).
+- Fixed to the bottom of the viewport with safe-area padding.
+- Single button: "Unlock My Pattern €49" → routes to `/checkout` if signed in with no paid access, `/auth?redirect=/checkout` if signed out, `/app` if already paid (mirrors the Nav CTA logic in `sections.tsx`).
+- Hidden once the user scrolls past the FinalCTA section (so it doesn't double up with the in-page CTA at the bottom). Use an IntersectionObserver on the `#final-cta` anchor.
+- Add `pb-24 md:pb-0` to the landing page wrapper so the sticky bar never covers the last section's content.
 
-Add the signature once in the shared `EmailLayout` footer (`src/lib/email-templates/_layout.tsx`) so every auth and transactional email automatically includes it. No per-template edits needed.
-
-Signature block (rendered above the existing "My Love Pattern / mylovepattern.com" line):
-
-```
-With love,
-Signe Putna
-Founder, My Love Pattern
-
-mylovepattern.com
-hello@mylovepattern.com
-
-Private sessions available on request
-```
-
-Implementation details:
-- Add a new `signatureSection` above `footerSection` in the layout.
-- Use serif italic for "With love," and "Signe Putna" matching brand voice.
-- "hello@mylovepattern.com" rendered as a `mailto:` link.
-- Small muted text for the "Private sessions available on request" line.
-- Keep the existing minimal "My Love Pattern / mylovepattern.com" footer below as the legal/brand footer.
+No changes to the auth or payment flow — login still happens before checkout, as it does today. (You picked "Quick wins + sticky mobile CTA" so I'm not moving login after payment in this pass.)
 
 ## Files touched
 
-- `src/routes/app.tsx` — call `checkIsAdmin()` after auth resolves; reset on sign-out.
-- `src/server/payments.functions.ts` — remove `managed_payments` and tax-code helper so €49 is the exact charge.
-- `src/lib/email-templates/_layout.tsx` — add founder signature block to footer.
+- `src/components/healthy-love/sections.tsx` — auto-scroll on result reveal, eyebrow + tightened reveal copy, copy nits.
+- `src/components/healthy-love/StickyMobileCTA.tsx` — new component (mobile-only sticky buy bar with auth-aware routing).
+- `src/routes/index.tsx` — mount `StickyMobileCTA` and add `pb-24 md:pb-0` wrapper padding.
+- Project setting: `hide_badge = true` (no file change).
 
-No DB migrations, no new routes, no new dependencies.
+## Not in scope this pass
+
+- Pay-then-create-account rework (you opted out — would require guest Stripe checkout + webhook account provisioning + auth refactor; happy to plan separately).
+- New modal/Dialog component (none exists; not needed for these fixes).
+- Stripe €49 inclusive-tax pricing — already flat €49 from previous change.
