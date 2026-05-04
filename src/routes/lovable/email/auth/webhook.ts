@@ -31,7 +31,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "heart-pattern-decoder"
+const SITE_NAME = "My Love Pattern"
 const SENDER_DOMAIN = "notify.mylovepattern.com"
 const ROOT_DOMAIN = "mylovepattern.com"
 const FROM_DOMAIN = "mylovepattern.com"
