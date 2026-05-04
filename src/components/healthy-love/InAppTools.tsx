@@ -278,15 +278,15 @@ function ToolRunner({ tool, onClose }: { tool: Tool; onClose: () => void }) {
       const scenarios = tool.schema.scenarios ?? [];
       scenarios.forEach((s: any, i: number) => {
         const mine = data[`s_${i}`] ?? "";
-        if (mine) writeBlock(`My version — ${s.title}`, mine);
+        if (mine) writeBlock(`My version: ${s.title}`, mine);
       });
     } else if (tool.kind === "planner") {
       const days = tool.schema.days ?? 14;
       for (let d = 0; d < days; d++) {
         const dd = data[`day_${d}`] ?? {};
         if (isNonEmpty(dd)) {
-          writeBlock(`Day ${d + 1} — Intention`, dd.intention ?? "");
-          if (dd.note) writeBlock(`Day ${d + 1} — Note`, dd.note);
+          writeBlock(`Day ${d + 1}: Intention`, dd.intention ?? "");
+          if (dd.note) writeBlock(`Day ${d + 1}: Note`, dd.note);
         }
       }
     }
@@ -558,7 +558,7 @@ function TrackerRunner({
                 {fields.map((f) => (
                   <div key={f.key}>
                     <span className="text-white/50">{f.label}: </span>
-                    <span>{String(e[f.key] ?? "—")}</span>
+                    <span>{String(e[f.key] ?? "-")}</span>
                   </div>
                 ))}
               </div>
