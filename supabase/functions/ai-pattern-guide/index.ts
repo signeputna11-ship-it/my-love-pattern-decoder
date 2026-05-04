@@ -228,7 +228,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
       last_noticing: parsed.noticing,
       last_question: parsed.question,
       summary: parsed.noticing,
-      recommended_next: parsed.recommended_resource_id ?? parsed.next_step ?? null,
+      recommended_next: parsed.recommended_tool_slug ?? parsed.next_step ?? null,
       updated_at: new Date().toISOString(),
     };
 
