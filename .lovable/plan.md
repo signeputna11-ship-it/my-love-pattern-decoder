@@ -1,28 +1,19 @@
 ## Goal
 
-Under (next to) the "Mark module complete" button on `/app/module/$slug`, add a "Go to next module" button that navigates the user to the next module in sequence.
+Change the email signature line from "With love," to "Warm regards," across all transactional and auth emails.
 
-## Changes
+## Change
 
-### `src/routes/app.module.$slug.tsx`
+### `src/lib/email-templates/_layout.tsx`
 
-1. **Load module list for sequencing.** In the existing `load` effect (or a small follow-up fetch), fetch `modules` ordered by `position` and store as `allModules` state. Compute `nextModule` = the module with `position > current.position` (lowest such), or `null` if this is the last one.
+Update the `signatureSection` text:
+- Line "With love," → "Warm regards,"
+- Keep everything else identical: name (Signe Putna), role (Founder, My Love Pattern), links (mylovepattern.com, hello@mylovepattern.com), and the note (Private sessions available on request).
 
-2. **Add the button.** In the action row (currently just the "Mark module complete" button at lines 344–352), add a second button `Go to next module` styled as a secondary/outline button (transparent bg, white border, white text) so it pairs with the primary white button. The two should sit side-by-side on `sm:` and stack on mobile (the row already does `flex-col gap-3 sm:flex-row`).
-
-3. **Behavior:**
-   - If `nextModule` exists: render a `<Link to="/app/module/$slug" params={{ slug: nextModule.slug }}>` styled as a button with `ArrowRight` icon and label `Go to next module: {nextModule.title}` (truncated on small screens).
-   - If this is the last module: render a `<Link to="/app">` labeled `Back to dashboard` instead.
-   - The button is always visible (not gated on completion) so users can move on whenever they want. Clicking it does NOT auto-mark the current module complete — completion stays an explicit choice via the existing button.
-
-4. **Make "Mark module complete" auto-advance optional touch:** after `markComplete` succeeds, if `nextModule` exists, show the toast as today and leave navigation to the user (they can click "Go to next module"). No automatic redirect — keeps user in control.
-
-### Imports
-
-Add `ArrowRight` to the existing `lucide-react` import.
+This single edit propagates to every email that uses `EmailLayout` (welcome, purchase confirmation, course notification, password reset, magic link, signup, invite, recovery, email change, reauthentication).
 
 ## Out of scope
 
-- No DB/schema changes.
-- No changes to PatternGuideCard, InAppTools, or the sticky save/download bar.
-- No reordering logic — uses existing `position` column.
+- No styling changes.
+- No changes to logo, footer, or per-template content.
+- No changes to auth-email-hook templates if they exist separately under `supabase/functions/_shared/email-templates/` (none currently scaffolded based on file listing).
