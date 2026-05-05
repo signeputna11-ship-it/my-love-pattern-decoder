@@ -34,7 +34,7 @@ export const EmailLayout = ({ preview, children }: EmailLayoutProps) => (
         </Section>
         <Section style={content}>{children}</Section>
         <Section style={signatureSection}>
-          <Text style={signWith}>With love,</Text>
+          <Text style={signWith}>Warm regards,</Text>
           <Text style={signName}>Signe Putna</Text>
           <Text style={signRole}>Founder, My Love Pattern</Text>
           <Text style={signLinks}>
