@@ -13,6 +13,7 @@ export const Route = createFileRoute("/checkout")({
     meta: [
       { title: "Unlock The Reset · My Love Pattern" },
       { name: "description", content: "Lifetime access to The Reset for $49." },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
 });
