@@ -80,8 +80,9 @@ export function DeepResetPopup() {
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
-            className="liquid-glass-strong relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-3xl bg-black/85 p-6 text-white sm:p-8"
+            className="liquid-glass-strong relative flex max-h-[92vh] w-full max-w-lg flex-col rounded-3xl bg-black/85 text-white"
           >
+          <div className="overflow-y-auto p-6 sm:p-8">
             <button
               onClick={close}
               aria-label="Close"
