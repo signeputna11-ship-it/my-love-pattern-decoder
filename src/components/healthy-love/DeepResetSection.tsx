@@ -9,7 +9,15 @@ export function DeepResetSection() {
       id="deep-reset"
       className="relative overflow-hidden bg-black py-20 sm:py-32"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black" />
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 z-0 h-full w-full object-cover opacity-40"
+        src="https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEM%20SPARKLE.mp4"
+      />
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/70 via-black/75 to-black/85" />
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
         <p className="text-center font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:text-xs">
           For when you're ready to go all the way
@@ -69,9 +77,6 @@ export function DeepResetSection() {
           <p className="mt-3 text-center text-[11px] text-white/50">
             The discovery call is a short conversation to make sure this is the
             right fit for you. Signe responds personally within 48 hours.
-          </p>
-          <p className="mt-2 text-center text-[11px] text-white/55">
-            Signe reviews every booking personally. Limited spots each month.
           </p>
         </div>
       </div>
