@@ -71,8 +71,10 @@ function Index() {
       <Diagnosis />
       <Toolkit />
       <ExperiencePortal />
+      <DeepResetSection />
       <FinalCTA />
       <StickyMobileCTA />
+      <DeepResetPopup />
     </div>
   );
 }
