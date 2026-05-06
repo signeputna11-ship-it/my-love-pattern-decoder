@@ -26,6 +26,37 @@ export const Route = createFileRoute("/")({
         content: "Understand why it keeps happening. Find your pattern in 60 seconds.",
       },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "My Love Pattern",
+          url: "https://mylovepattern.com",
+          description:
+            "You don't have a dating problem. You have a pattern. My Love Pattern helps you identify your exact love pattern and reset it.",
+          sameAs: [],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          name: "My Love Pattern Reset Kit",
+          description:
+            "A self-guided digital toolkit to identify your love pattern, reset self-worth, and choose healthier committed relationships.",
+          offers: {
+            "@type": "Offer",
+            price: "49.00",
+            priceCurrency: "USD",
+            availability: "https://schema.org/InStock",
+            url: "https://mylovepattern.com",
+          },
+        }),
+      },
+    ],
   }),
 });
 
