@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 
 const MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Session%20Request&body=Hi%20Signe%2C%20I%20would%20like%20to%20book%20a%20Deep%20Pattern%20Reset%20session.%20My%20name%20is%3A";
+  "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Discovery%20Call&body=Hi%20Signe%2C%20I%20am%20interested%20in%20the%20Deep%20Pattern%20Reset%20session.%20I%20would%20love%20to%20arrange%20a%20discovery%20call.%20My%20name%20is%3A";
 
 export function DeepResetSection() {
   return (
@@ -64,11 +64,11 @@ export function DeepResetSection() {
             href={MAILTO}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
           >
-            Book My Deep Pattern Reset <ArrowUpRight className="h-4 w-4" />
+            Email Signe to arrange a discovery call <ArrowUpRight className="h-4 w-4" />
           </a>
           <p className="mt-3 text-center text-[11px] text-white/50">
-            This opens your email directly to Signe. She responds to every
-            message personally within 48 hours.
+            The discovery call is a short conversation to make sure this is the
+            right fit for you. Signe responds personally within 48 hours.
           </p>
           <p className="mt-2 text-center text-[11px] text-white/55">
             Signe reviews every booking personally. Limited spots each month.
