@@ -9,6 +9,8 @@ import {
   FinalCTA,
 } from "@/components/healthy-love/sections";
 import { StickyMobileCTA } from "@/components/healthy-love/StickyMobileCTA";
+import { DeepResetSection } from "@/components/healthy-love/DeepResetSection";
+import { DeepResetPopup } from "@/components/healthy-love/DeepResetPopup";
 
 export const Route = createFileRoute("/")({
   component: Index,
