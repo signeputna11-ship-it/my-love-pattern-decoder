@@ -3,9 +3,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight } from "lucide-react";
 
 const MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Session%20Request&body=Hi%20Signe%2C%20I%20would%20like%20to%20book%20a%20Deep%20Pattern%20Reset%20session.%20My%20name%20is%3A";
+  "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Discovery%20Call&body=Hi%20Signe%2C%20I%20am%20interested%20in%20the%20Deep%20Pattern%20Reset%20session.%20I%20would%20love%20to%20arrange%20a%20discovery%20call.%20My%20name%20is%3A";
 
 const STORAGE_KEY = "mlp_deep_reset_popup_dismissed_v1";
+
+declare global {
+  interface Window {
+    dataLayer?: Record<string, unknown>[];
+  }
+}
+
+function pushDataLayer(payload: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(payload);
+}
 
 export function DeepResetPopup() {
   const [open, setOpen] = useState(false);
@@ -19,6 +31,7 @@ export function DeepResetPopup() {
       if (shown) return;
       shown = true;
       setOpen(true);
+      pushDataLayer({ event: "popup_open", popup_name: "deep_pattern_reset" });
     };
 
     const timer = setTimeout(show, 60_000);
@@ -36,9 +49,18 @@ export function DeepResetPopup() {
 
   const close = () => {
     setOpen(false);
+    pushDataLayer({ event: "popup_close", popup_name: "deep_pattern_reset" });
     try {
       sessionStorage.setItem(STORAGE_KEY, "1");
     } catch {}
+  };
+
+  const handleCtaClick = () => {
+    pushDataLayer({
+      event: "popup_cta_click",
+      popup_name: "deep_pattern_reset",
+      cta_label: "email_signe_discovery_call",
+    });
   };
 
   return (
@@ -81,16 +103,16 @@ export function DeepResetPopup() {
                 The Deep Pattern Reset is a private 1:1 session with Signe.
               </p>
               <p>
-                In 90 minutes, you will enter a deeply relaxed, meditative state
-                — the kind where the mind slows down enough to actually release
+                In 90 minutes, you will enter a deeply relaxed, meditative state.
+                The kind where the mind slows down enough to actually release
                 what it has been holding. From that place, we work directly on
                 the beliefs driving your pattern: the ones about your worth,
                 your lovability, and what you believe you are allowed to want.
               </p>
               <p>
                 This is not talk therapy. It is not coaching. It is a targeted
-                reset of the story your nervous system has been running on —
-                often since childhood — using a deep, evidence-informed approach
+                reset of the story your nervous system has been running on,
+                often since childhood, using a deep, evidence-informed approach
                 that works at the level where the pattern actually lives.
               </p>
               <p>
@@ -124,24 +146,21 @@ export function DeepResetPopup() {
             </div>
 
             <p className="mt-4 text-xs italic text-white/60">
-              Signe takes a limited number of sessions each month. This is not a
-              funnel. It is a real conversation with a real person who has done
-              this work herself.
+              Signe takes a limited number of sessions each month. If you feel
+              the pull toward this, that feeling is worth following.
             </p>
 
             <a
               href={MAILTO}
+              onClick={handleCtaClick}
               className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
             >
-              Book My Deep Pattern Reset <ArrowUpRight className="h-4 w-4" />
+              Email Signe to arrange a discovery call{" "}
+              <ArrowUpRight className="h-4 w-4" />
             </a>
             <p className="mt-3 text-center text-[11px] text-white/50">
-              This opens your email directly to Signe. She responds to every
-              message personally within 48 hours.
-            </p>
-            <p className="mt-1.5 text-center text-[11px] text-white/45">
-              You will be taken to a short intake form. Signe reviews every
-              application personally.
+              The discovery call is a short conversation to make sure this is
+              the right fit for you. Signe responds personally within 48 hours.
             </p>
           </motion.div>
         </motion.div>
