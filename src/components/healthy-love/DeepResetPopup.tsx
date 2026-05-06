@@ -150,19 +150,22 @@ export function DeepResetPopup() {
               Signe takes a limited number of sessions each month. If you feel
               the pull toward this, that feeling is worth following.
             </p>
+            </div>
 
-            <a
-              href={MAILTO}
-              onClick={handleCtaClick}
-              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
-            >
-              Email Signe to arrange a discovery call{" "}
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <p className="mt-3 text-center text-[11px] text-white/50">
-              The discovery call is a short conversation to make sure this is
-              the right fit for you. Signe responds personally within 48 hours.
-            </p>
+            <div className="border-t border-white/10 bg-black/85 p-6 sm:p-8 sm:pt-6 rounded-b-3xl">
+              <a
+                href={MAILTO}
+                onClick={handleCtaClick}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
+              >
+                Email Signe to arrange a discovery call{" "}
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <p className="mt-3 text-center text-[11px] text-white/50">
+                The discovery call is a short conversation to make sure this is
+                the right fit for you. Signe responds personally within 48 hours.
+              </p>
+            </div>
           </motion.div>
         </motion.div>
       )}
