@@ -13,6 +13,7 @@ export const Route = createFileRoute("/auth")({
     meta: [
       { title: "Sign in · My Love Pattern" },
       { name: "description", content: "Sign in to access your private reset path." },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
 });

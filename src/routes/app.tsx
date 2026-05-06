@@ -12,6 +12,7 @@ export const Route = createFileRoute("/app")({
     meta: [
       { title: "Your Reset · My Love Pattern" },
       { name: "description", content: "Your private reset path." },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
 });
