@@ -49,12 +49,50 @@ export const Route = createFileRoute("/")({
           name: "My Love Pattern Reset Kit",
           description:
             "A self-guided digital toolkit to identify your love pattern, reset self-worth, and choose healthier committed relationships.",
+          image: "https://mylovepattern.com/og-image.png",
+          brand: {
+            "@type": "Brand",
+            name: "My Love Pattern",
+          },
           offers: {
             "@type": "Offer",
             price: "49.00",
             priceCurrency: "USD",
             availability: "https://schema.org/InStock",
             url: "https://mylovepattern.com",
+            shippingDetails: {
+              "@type": "OfferShippingDetails",
+              shippingRate: {
+                "@type": "MonetaryAmount",
+                value: "0",
+                currency: "USD",
+              },
+              deliveryTime: {
+                "@type": "ShippingDeliveryTime",
+                handlingTime: {
+                  "@type": "QuantitativeValue",
+                  minValue: 0,
+                  maxValue: 0,
+                  unitCode: "DAY",
+                },
+                transitTime: {
+                  "@type": "QuantitativeValue",
+                  minValue: 0,
+                  maxValue: 0,
+                  unitCode: "DAY",
+                },
+              },
+              shippingDestination: {
+                "@type": "DefinedRegion",
+                addressCountry: "US",
+              },
+            },
+            hasMerchantReturnPolicy: {
+              "@type": "MerchantReturnPolicy",
+              applicableCountry: "US",
+              returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+              merchantReturnDays: 0,
+            },
           },
         }),
       },
