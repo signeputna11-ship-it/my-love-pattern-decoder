@@ -42,6 +42,7 @@ export const Route = createRootRoute({
       { name: "twitter:description", content: "You don’t have a dating problem. You have a pattern. Understand it and choose differently." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/MO71nkDPtYdsU8NlEZ6WHLRHw3y2/social-images/social-1777891817337-MY_LOVE_PATTERN_LOGO_2.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/MO71nkDPtYdsU8NlEZ6WHLRHw3y2/social-images/social-1777891817337-MY_LOVE_PATTERN_LOGO_2.webp" },
+      { name: "p:domain_verify", content: "5d4626f7cb981d9ff2e5140ba729030a" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
