@@ -229,7 +229,7 @@ function Index() {
       <DeepResetSection />
       <FinalCTA />
       <StickyMobileCTA />
-      <DeepResetPopup />
+      {/* <DeepResetPopup /> disabled */}
     </div>
   );
 }
