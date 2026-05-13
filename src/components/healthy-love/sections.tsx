@@ -68,6 +68,15 @@ export function Nav() {
     { label: "Diagnosis", href: "#diagnosis" },
     { label: "Reset", href: "#toolkit" },
     { label: "Path", href: "#experience" },
+    { label: "About", href: "/about" },
+    { label: "Blog", href: "/blog" },
+  ];
+
+  const patternLinks: { label: string; href: string }[] = [
+    { label: "The Over-Investor", href: "/the-over-investor" },
+    { label: "The Unavailable Chaser", href: "/the-unavailable-chaser" },
+    { label: "The Validator Seeker", href: "/the-validator-seeker" },
+    { label: "The Boundary Softener", href: "/the-boundary-softener" },
   ];
 
   return (
