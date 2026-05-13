@@ -15,7 +15,7 @@ export function DeepResetSection() {
         muted
         playsInline
         className="absolute inset-0 z-0 h-full w-full object-cover opacity-40"
-        src="https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/GEM%20SPARKLE.mp4"
+        src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/GEM%20SPARKLE.mp4"
       />
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/70 via-black/75 to-black/85" />
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">

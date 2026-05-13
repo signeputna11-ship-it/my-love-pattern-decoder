@@ -9,12 +9,12 @@ export type Pattern = {
 };
 
 export const VIDEOS = {
-  hero: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4",
-  pattern: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4",
-  diagnosis: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/FLOWER%20AND%20CRYSTALS%20ISLAND%20TOP%20VIEW.mp4",
-  toolkit: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL.mp4",
-  experience: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL%20BALL.mp4",
-  final: "https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/ROSES%20FAUNA%20CLOSE%20UP.mp4",
+  hero: "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4",
+  pattern: "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4",
+  diagnosis: "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20TOP%20VIEW.mp4",
+  toolkit: "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL.mp4",
+  experience: "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL%20BALL.mp4",
+  final: "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/ROSES%20FAUNA%20CLOSE%20UP.mp4",
 };
 
 export const patterns: Pattern[] = [
