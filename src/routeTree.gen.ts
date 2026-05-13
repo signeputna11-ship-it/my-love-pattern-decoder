@@ -13,6 +13,7 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TheValidatorSeekerRouteImport } from './routes/the-validator-seeker'
 import { Route as TheUnavailableChaserRouteImport } from './routes/the-unavailable-chaser'
 import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
+import { Route as TheBoundarySoftenerRouteImport } from './routes/the-boundary-softener'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -52,6 +53,11 @@ const TheUnavailableChaserRoute = TheUnavailableChaserRouteImport.update({
 const TheOverInvestorRoute = TheOverInvestorRouteImport.update({
   id: '/the-over-investor',
   path: '/the-over-investor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheBoundarySoftenerRoute = TheBoundarySoftenerRouteImport.update({
+  id: '/the-boundary-softener',
+  path: '/the-boundary-softener',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -166,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-boundary-softener'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-boundary-softener'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-boundary-softener'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
@@ -324,6 +336,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CheckoutRoute: typeof CheckoutRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TheBoundarySoftenerRoute: typeof TheBoundarySoftenerRoute
   TheOverInvestorRoute: typeof TheOverInvestorRoute
   TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
   TheValidatorSeekerRoute: typeof TheValidatorSeekerRoute
@@ -368,6 +381,13 @@ declare module '@tanstack/react-router' {
       path: '/the-over-investor'
       fullPath: '/the-over-investor'
       preLoaderRoute: typeof TheOverInvestorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-boundary-softener': {
+      id: '/the-boundary-softener'
+      path: '/the-boundary-softener'
+      fullPath: '/the-boundary-softener'
+      preLoaderRoute: typeof TheBoundarySoftenerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -546,6 +566,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CheckoutRoute: CheckoutRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TheBoundarySoftenerRoute: TheBoundarySoftenerRoute,
   TheOverInvestorRoute: TheOverInvestorRoute,
   TheUnavailableChaserRoute: TheUnavailableChaserRoute,
   TheValidatorSeekerRoute: TheValidatorSeekerRoute,
