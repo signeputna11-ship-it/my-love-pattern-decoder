@@ -58,7 +58,7 @@ function CheckoutReturn() {
         muted
         playsInline
         className="absolute inset-0 z-0 h-full w-full object-cover opacity-50"
-        src="https://uxovrditgykjwrienwbx.supabase.co/storage/v1/object/public/VIDEOS/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4"
+        src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4"
       />
       <div className="absolute inset-0 z-[1] bg-black/65" />
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4">
