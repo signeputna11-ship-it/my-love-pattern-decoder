@@ -68,6 +68,15 @@ export function Nav() {
     { label: "Diagnosis", href: "#diagnosis" },
     { label: "Reset", href: "#toolkit" },
     { label: "Path", href: "#experience" },
+    { label: "About", href: "/about" },
+    { label: "Blog", href: "/blog" },
+  ];
+
+  const patternLinks: { label: string; href: string }[] = [
+    { label: "The Over-Investor", href: "/the-over-investor" },
+    { label: "The Unavailable Chaser", href: "/the-unavailable-chaser" },
+    { label: "The Validator Seeker", href: "/the-validator-seeker" },
+    { label: "The Boundary Softener", href: "/the-boundary-softener" },
   ];
 
   return (
@@ -94,6 +103,24 @@ export function Nav() {
               {link.label}
             </a>
           ))}
+          <div className="relative group">
+            <button className="text-sm text-white/70 transition hover:text-white">
+              Patterns ▾
+            </button>
+            <div className="absolute right-0 top-full hidden min-w-[220px] pt-2 group-hover:block">
+              <div className="rounded-2xl liquid-glass p-2">
+                {patternLinks.map((p) => (
+                  <a
+                    key={p.href}
+                    href={p.href}
+                    className="block rounded-xl px-3 py-2 text-sm text-white/85 hover:bg-white/10"
+                  >
+                    {p.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
         </nav>
         <button
           onClick={() => {
@@ -124,6 +151,16 @@ export function Nav() {
               className="block rounded-xl px-3 py-3 text-sm text-white/85"
             >
               {link.label}
+            </a>
+          ))}
+          {patternLinks.map((p) => (
+            <a
+              key={p.href}
+              onClick={() => setOpen(false)}
+              href={p.href}
+              className="block rounded-xl px-3 py-3 text-sm text-white/85"
+            >
+              {p.label}
             </a>
           ))}
           {hasAccess && (
