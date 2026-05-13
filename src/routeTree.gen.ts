@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -34,6 +35,11 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
   path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheOverInvestorRoute = TheOverInvestorRouteImport.update({
+  id: '/the-over-investor',
+  path: '/the-over-investor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-over-investor': typeof TheOverInvestorRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-over-investor': typeof TheOverInvestorRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-over-investor': typeof TheOverInvestorRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-over-investor'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-over-investor'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-over-investor'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CheckoutRoute: typeof CheckoutRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TheOverInvestorRoute: typeof TheOverInvestorRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   BlogTheOverInvestorRoute: typeof BlogTheOverInvestorRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -308,6 +321,13 @@ declare module '@tanstack/react-router' {
       path: '/unsubscribe'
       fullPath: '/unsubscribe'
       preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-over-investor': {
+      id: '/the-over-investor'
+      path: '/the-over-investor'
+      fullPath: '/the-over-investor'
+      preLoaderRoute: typeof TheOverInvestorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -486,6 +506,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CheckoutRoute: CheckoutRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TheOverInvestorRoute: TheOverInvestorRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   BlogTheOverInvestorRoute: BlogTheOverInvestorRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
