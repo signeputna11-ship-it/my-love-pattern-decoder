@@ -10,14 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as TheValidatorSeekerRouteImport } from './routes/the-validator-seeker'
+import { Route as TheUnavailableChaserRouteImport } from './routes/the-unavailable-chaser'
+import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
+import { Route as TheBoundarySoftenerRouteImport } from './routes/the-boundary-softener'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as BlogTheOverInvestorRouteImport } from './routes/blog.the-over-investor'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AppModuleSlugRouteImport } from './routes/app.module.$slug'
 import { Route as AppAdminEmailsRouteImport } from './routes/app.admin.emails'
@@ -31,6 +38,26 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
   path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheValidatorSeekerRoute = TheValidatorSeekerRouteImport.update({
+  id: '/the-validator-seeker',
+  path: '/the-validator-seeker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheUnavailableChaserRoute = TheUnavailableChaserRouteImport.update({
+  id: '/the-unavailable-chaser',
+  path: '/the-unavailable-chaser',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheOverInvestorRoute = TheOverInvestorRouteImport.update({
+  id: '/the-over-investor',
+  path: '/the-over-investor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheBoundarySoftenerRoute = TheBoundarySoftenerRouteImport.update({
+  id: '/the-boundary-softener',
+  path: '/the-boundary-softener',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -53,9 +80,19 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -72,6 +109,11 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   id: '/return',
   path: '/return',
   getParentRoute: () => CheckoutRoute,
+} as any)
+const BlogTheOverInvestorRoute = BlogTheOverInvestorRouteImport.update({
+  id: '/blog/the-over-investor',
+  path: '/blog/the-over-investor',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
@@ -125,14 +167,21 @@ const ApiPublicPaymentsWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-boundary-softener': typeof TheBoundarySoftenerRoute
+  '/the-over-investor': typeof TheOverInvestorRoute
+  '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
+  '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app/': typeof AppIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -145,13 +194,20 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-boundary-softener': typeof TheBoundarySoftenerRoute
+  '/the-over-investor': typeof TheOverInvestorRoute
+  '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
+  '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app': typeof AppIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -165,14 +221,21 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/the-boundary-softener': typeof TheBoundarySoftenerRoute
+  '/the-over-investor': typeof TheOverInvestorRoute
+  '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
+  '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app/': typeof AppIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -187,14 +250,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/app'
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-boundary-softener'
+    | '/the-over-investor'
+    | '/the-unavailable-chaser'
+    | '/the-validator-seeker'
     | '/unsubscribe'
+    | '/blog/the-over-investor'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app/'
+    | '/blog/'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/lovable/email/suppression'
@@ -207,13 +277,20 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-boundary-softener'
+    | '/the-over-investor'
+    | '/the-unavailable-chaser'
+    | '/the-validator-seeker'
     | '/unsubscribe'
+    | '/blog/the-over-investor'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app'
+    | '/blog'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/lovable/email/suppression'
@@ -226,14 +303,21 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/app'
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/the-boundary-softener'
+    | '/the-over-investor'
+    | '/the-unavailable-chaser'
+    | '/the-validator-seeker'
     | '/unsubscribe'
+    | '/blog/the-over-investor'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app/'
+    | '/blog/'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/lovable/email/suppression'
@@ -247,12 +331,19 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   CheckoutRoute: typeof CheckoutRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TheBoundarySoftenerRoute: typeof TheBoundarySoftenerRoute
+  TheOverInvestorRoute: typeof TheOverInvestorRoute
+  TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
+  TheValidatorSeekerRoute: typeof TheValidatorSeekerRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  BlogTheOverInvestorRoute: typeof BlogTheOverInvestorRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -269,6 +360,34 @@ declare module '@tanstack/react-router' {
       path: '/unsubscribe'
       fullPath: '/unsubscribe'
       preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-validator-seeker': {
+      id: '/the-validator-seeker'
+      path: '/the-validator-seeker'
+      fullPath: '/the-validator-seeker'
+      preLoaderRoute: typeof TheValidatorSeekerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-unavailable-chaser': {
+      id: '/the-unavailable-chaser'
+      path: '/the-unavailable-chaser'
+      fullPath: '/the-unavailable-chaser'
+      preLoaderRoute: typeof TheUnavailableChaserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-over-investor': {
+      id: '/the-over-investor'
+      path: '/the-over-investor'
+      fullPath: '/the-over-investor'
+      preLoaderRoute: typeof TheOverInvestorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-boundary-softener': {
+      id: '/the-boundary-softener'
+      path: '/the-boundary-softener'
+      fullPath: '/the-boundary-softener'
+      preLoaderRoute: typeof TheBoundarySoftenerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -299,11 +418,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -326,6 +459,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/checkout/return'
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof CheckoutRoute
+    }
+    '/blog/the-over-investor': {
+      id: '/blog/the-over-investor'
+      path: '/blog/the-over-investor'
+      fullPath: '/blog/the-over-investor'
+      preLoaderRoute: typeof BlogTheOverInvestorRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
@@ -421,12 +561,19 @@ const CheckoutRouteWithChildren = CheckoutRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   CheckoutRoute: CheckoutRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TheBoundarySoftenerRoute: TheBoundarySoftenerRoute,
+  TheOverInvestorRoute: TheOverInvestorRoute,
+  TheUnavailableChaserRoute: TheUnavailableChaserRoute,
+  TheValidatorSeekerRoute: TheValidatorSeekerRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  BlogTheOverInvestorRoute: BlogTheOverInvestorRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
+  BlogIndexRoute: BlogIndexRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
@@ -438,12 +585,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

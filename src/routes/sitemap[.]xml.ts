@@ -7,6 +7,13 @@ export const Route = createFileRoute("/sitemap.xml")({
         const today = new Date().toISOString().split("T")[0];
         const urls = [
           "https://mylovepattern.com/",
+          "https://mylovepattern.com/about",
+          "https://mylovepattern.com/blog",
+          "https://mylovepattern.com/blog/the-over-investor",
+          "https://mylovepattern.com/the-over-investor",
+          "https://mylovepattern.com/the-unavailable-chaser",
+          "https://mylovepattern.com/the-validator-seeker",
+          "https://mylovepattern.com/the-boundary-softener",
         ];
         const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
