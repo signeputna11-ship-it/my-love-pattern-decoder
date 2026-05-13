@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as TheValidatorSeekerRouteImport } from './routes/the-validator-seeker'
 import { Route as TheUnavailableChaserRouteImport } from './routes/the-unavailable-chaser'
 import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -36,6 +37,11 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
   path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheValidatorSeekerRoute = TheValidatorSeekerRouteImport.update({
+  id: '/the-validator-seeker',
+  path: '/the-validator-seeker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TheUnavailableChaserRoute = TheUnavailableChaserRouteImport.update({
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
+  '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
+  '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
+  '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
+    | '/the-validator-seeker'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
+    | '/the-validator-seeker'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -288,6 +299,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
+    | '/the-validator-seeker'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -314,6 +326,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TheOverInvestorRoute: typeof TheOverInvestorRoute
   TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
+  TheValidatorSeekerRoute: typeof TheValidatorSeekerRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   BlogTheOverInvestorRoute: typeof BlogTheOverInvestorRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -334,6 +347,13 @@ declare module '@tanstack/react-router' {
       path: '/unsubscribe'
       fullPath: '/unsubscribe'
       preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-validator-seeker': {
+      id: '/the-validator-seeker'
+      path: '/the-validator-seeker'
+      fullPath: '/the-validator-seeker'
+      preLoaderRoute: typeof TheValidatorSeekerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/the-unavailable-chaser': {
@@ -528,6 +548,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TheOverInvestorRoute: TheOverInvestorRoute,
   TheUnavailableChaserRoute: TheUnavailableChaserRoute,
+  TheValidatorSeekerRoute: TheValidatorSeekerRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   BlogTheOverInvestorRoute: BlogTheOverInvestorRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
