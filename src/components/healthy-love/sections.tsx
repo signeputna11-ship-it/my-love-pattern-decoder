@@ -153,6 +153,16 @@ export function Nav() {
               {link.label}
             </a>
           ))}
+          {patternLinks.map((p) => (
+            <a
+              key={p.href}
+              onClick={() => setOpen(false)}
+              href={p.href}
+              className="block rounded-xl px-3 py-3 text-sm text-white/85"
+            >
+              {p.label}
+            </a>
+          ))}
           {hasAccess && (
             <button
               onClick={() => {
