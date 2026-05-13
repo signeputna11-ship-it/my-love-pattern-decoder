@@ -103,6 +103,24 @@ export function Nav() {
               {link.label}
             </a>
           ))}
+          <div className="relative group">
+            <button className="text-sm text-white/70 transition hover:text-white">
+              Patterns ▾
+            </button>
+            <div className="absolute right-0 top-full hidden min-w-[220px] pt-2 group-hover:block">
+              <div className="rounded-2xl liquid-glass p-2">
+                {patternLinks.map((p) => (
+                  <a
+                    key={p.href}
+                    href={p.href}
+                    className="block rounded-xl px-3 py-2 text-sm text-white/85 hover:bg-white/10"
+                  >
+                    {p.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
         </nav>
         <button
           onClick={() => {
