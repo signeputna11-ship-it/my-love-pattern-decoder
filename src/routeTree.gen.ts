@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as TheUnavailableChaserRouteImport } from './routes/the-unavailable-chaser'
 import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -35,6 +36,11 @@ import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/publi
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
   path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheUnavailableChaserRoute = TheUnavailableChaserRouteImport.update({
+  id: '/the-unavailable-chaser',
+  path: '/the-unavailable-chaser',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TheOverInvestorRoute = TheOverInvestorRouteImport.update({
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/the-over-investor': typeof TheOverInvestorRoute
+  '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/the-over-investor': typeof TheOverInvestorRoute
+  '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -203,6 +211,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/the-over-investor': typeof TheOverInvestorRoute
+  '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -229,6 +238,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/sitemap.xml'
     | '/the-over-investor'
+    | '/the-unavailable-chaser'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/sitemap.xml'
     | '/the-over-investor'
+    | '/the-unavailable-chaser'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/sitemap.xml'
     | '/the-over-investor'
+    | '/the-unavailable-chaser'
     | '/unsubscribe'
     | '/blog/the-over-investor'
     | '/checkout/return'
@@ -301,6 +313,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TheOverInvestorRoute: typeof TheOverInvestorRoute
+  TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   BlogTheOverInvestorRoute: typeof BlogTheOverInvestorRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -321,6 +334,13 @@ declare module '@tanstack/react-router' {
       path: '/unsubscribe'
       fullPath: '/unsubscribe'
       preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/the-unavailable-chaser': {
+      id: '/the-unavailable-chaser'
+      path: '/the-unavailable-chaser'
+      fullPath: '/the-unavailable-chaser'
+      preLoaderRoute: typeof TheUnavailableChaserRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/the-over-investor': {
@@ -507,6 +527,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TheOverInvestorRoute: TheOverInvestorRoute,
+  TheUnavailableChaserRoute: TheUnavailableChaserRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   BlogTheOverInvestorRoute: BlogTheOverInvestorRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
