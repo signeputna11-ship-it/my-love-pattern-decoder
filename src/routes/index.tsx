@@ -16,13 +16,13 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "My Love Pattern — Discover Your Relationship Pattern in 60 Seconds" },
+      { title: "My Love Pattern, Discover Your Relationship Pattern in 60 Seconds" },
       {
         name: "description",
         content:
-          "You don't have a dating problem. You have a pattern. Take the free 60-second quiz to discover which of the four love patterns is shaping your relationships — and what to do instead.",
+          "You don't have a dating problem. You have a pattern. Take the free 60-second quiz to discover which of the four love patterns is shaping your relationships, and what to do instead.",
       },
-      { property: "og:title", content: "My Love Pattern — Discover Your Relationship Pattern in 60 Seconds" },
+      { property: "og:title", content: "My Love Pattern, Discover Your Relationship Pattern in 60 Seconds" },
       {
         property: "og:description",
         content: "Free 60-second quiz: discover which of the four love patterns is shaping your relationships, and what shifts it.",

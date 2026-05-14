@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
 
 const URL = "https://mylovepattern.com/the-validator-seeker";
-const TITLE = "Why One Unanswered Text Wrecks You — The Validator Seeker Pattern";
+const TITLE = "Why One Unanswered Text Wrecks You, The Validator Seeker Pattern";
 const DESC = "When attention comes you feel calm. When it goes quiet you feel anxious about everything. This is the Validator Seeker love pattern and what shifts it.";
 
 export const Route = createFileRoute("/the-validator-seeker")({
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/the-validator-seeker")({
             {
               "@type": "Question",
               name: "Why does one unanswered text affect me so much?",
-              acceptedAnswer: { "@type": "Answer", text: "Because your sense of being okay became tied to external signals — a response, a choice, a look, a text back. Your nervous system learned to scan for approval constantly, so the absence of a reply feels like the absence of safety." },
+              acceptedAnswer: { "@type": "Answer", text: "Because your sense of being okay became tied to external signals, a response, a choice, a look, a text back. Your nervous system learned to scan for approval constantly, so the absence of a reply feels like the absence of safety." },
             },
             {
               "@type": "Question",

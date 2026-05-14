@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
 
 const URL = "https://mylovepattern.com/the-over-investor";
-const TITLE = "Why You Over-Give in Relationships — The Over-Investor Pattern";
+const TITLE = "Why You Over-Give in Relationships, The Over-Investor Pattern";
 const DESC = "If you over-invest in relationships and pick people who never match your effort, this is the Over-Investor love pattern. Where it comes from and what actually shifts it.";
 
 export const Route = createFileRoute("/the-over-investor")({
