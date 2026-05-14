@@ -4,9 +4,37 @@ import { ArrowUpRight } from "lucide-react";
 const SIGNE_MAILTO =
   "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Discovery%20Call&body=Hi%20Signe%2C%20I%20am%20interested%20in%20the%20Deep%20Pattern%20Reset%20session.%20I%20would%20love%20to%20arrange%20a%20discovery%20call.%20My%20name%20is%3A";
 
-export function SiteFooter() {
+type PatternSlug =
+  | "/the-over-investor"
+  | "/the-unavailable-chaser"
+  | "/the-validator-seeker"
+  | "/the-boundary-softener";
+
+const PATTERN_LABELS: Record<PatternSlug, string> = {
+  "/the-over-investor": "The Over-Investor",
+  "/the-unavailable-chaser": "The Unavailable Chaser",
+  "/the-validator-seeker": "The Validator Seeker",
+  "/the-boundary-softener": "The Boundary Softener",
+};
+
+export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } = {}) {
   return (
     <footer className="mt-16 border-t border-border bg-background">
+      {relatedPattern && (
+        <section className="border-b border-border bg-accent/40">
+          <div className="mx-auto max-w-6xl px-6 py-6 text-sm">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              Related pattern
+            </span>
+            <Link
+              to={relatedPattern}
+              className="ml-3 inline-flex items-center gap-1 text-foreground underline underline-offset-4"
+            >
+              Read about {PATTERN_LABELS[relatedPattern]} →
+            </Link>
+          </div>
+        </section>
+      )}
       {/* Dual CTA preview */}
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="grid gap-5 md:grid-cols-2">

@@ -119,6 +119,6 @@ function PostPage() {
         <Link to="/blog" className="text-foreground underline">← Back to all posts</Link>
         <Link to="/the-over-investor" className="text-foreground underline">Read the full pattern page: The Over-Investor →</Link>
       </nav>
-    </main><SiteFooter /></>
+    </main><SiteFooter relatedPattern="/the-over-investor" /></>
   );
 }
