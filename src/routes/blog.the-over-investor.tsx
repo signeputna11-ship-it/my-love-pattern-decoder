@@ -22,6 +22,35 @@ export const Route = createFileRoute("/blog/the-over-investor")({
         content:
           "The Over-Investor pattern makes you give everything before anything is established. Here is where it comes from and what actually shifts it.",
       },
+      { property: "og:url", content: "https://mylovepattern.com/blog/the-over-investor" },
+      { property: "og:type", content: "article" },
+    ],
+    links: [{ rel: "canonical", href: "https://mylovepattern.com/blog/the-over-investor" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: "The Over-Investor: why you give everything before anything is real",
+          description: "The Over-Investor pattern makes you give everything before anything is established. Here is where it comes from and what actually shifts it.",
+          author: { "@type": "Person", name: "Signe Putna" },
+          publisher: { "@type": "Organization", name: "My Love Pattern", url: "https://mylovepattern.com" },
+          mainEntityOfPage: "https://mylovepattern.com/blog/the-over-investor",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://mylovepattern.com/" },
+            { "@type": "ListItem", position: 2, name: "Blog", item: "https://mylovepattern.com/blog" },
+            { "@type": "ListItem", position: 3, name: "The Over-Investor", item: "https://mylovepattern.com/blog/the-over-investor" },
+          ],
+        }),
+      },
     ],
   }),
   component: PostPage,
