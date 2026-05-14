@@ -115,6 +115,10 @@ function PostPage() {
           Find your exact pattern in 60 seconds at <Link to="/" className="text-foreground underline">mylovepattern.com</Link>
         </p>
       </div>
+      <nav className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6 text-sm">
+        <Link to="/blog" className="text-foreground underline">← Back to all posts</Link>
+        <Link to="/the-over-investor" className="text-foreground underline">Read the full pattern page: The Over-Investor →</Link>
+      </nav>
     </main><SiteFooter /></>
   );
 }
