@@ -1,19 +1,56 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
+
+const URL = "https://mylovepattern.com/the-boundary-softener";
+const TITLE = "Why You Lose Your Boundaries When You Like Someone — The Boundary Softener Pattern";
+const DESC = "You know your standards until you like someone. This is the Boundary Softener love pattern — where the people-pleasing comes from and what shifts it.";
 
 export const Route = createFileRoute("/the-boundary-softener")({
   head: () => ({
     meta: [
-      { title: "The Boundary Softener Love Pattern" },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:url", content: URL },
+      { property: "og:type", content: "article" },
+    ],
+    links: [{ rel: "canonical", href: URL }],
+    scripts: [
       {
-        name: "description",
-        content:
-          "You know your standards until you like someone. This is the Boundary Softener pattern.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Why do I lose my boundaries when I like someone?",
+              acceptedAnswer: { "@type": "Answer", text: "Because expressing needs created conflict early on, so you learned to shrink them. Saying yes when you mean no became safety. You called it flexibility. It was actually a survival strategy that has outlived its usefulness." },
+            },
+            {
+              "@type": "Question",
+              name: "What is the Boundary Softener love pattern?",
+              acceptedAnswer: { "@type": "Answer", text: "One of four love patterns. The Boundary Softener accommodates, prioritises the other person's comfort, and slowly disappears inside relationships — without ever finding out whether the real version of them could have been loved." },
+            },
+            {
+              "@type": "Question",
+              name: "How do I stop people-pleasing in relationships?",
+              acceptedAnswer: { "@type": "Answer", text: "Start by noticing the moment you soften. Don't change it immediately. Just notice. Then ask: what would I say if I were not afraid of the reaction? Awareness comes before any behaviour change." },
+            },
+          ],
+        }),
       },
-      { property: "og:title", content: "The Boundary Softener Love Pattern" },
       {
-        property: "og:description",
-        content:
-          "You know your standards until you like someone. This is the Boundary Softener pattern.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://mylovepattern.com/" },
+            { "@type": "ListItem", position: 2, name: "The Boundary Softener", item: URL },
+          ],
+        }),
       },
     ],
   }),
@@ -23,7 +60,8 @@ export const Route = createFileRoute("/the-boundary-softener")({
 function Page() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-24">
-      <h1 className="font-serif text-5xl text-foreground">The Boundary Softener</h1>
+      <h1 className="font-serif text-5xl text-foreground">Why You Lose Your Boundaries When You Like Someone</h1>
+      <p className="mt-3 text-base text-muted-foreground">The Boundary Softener love pattern</p>
       <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
         <p className="text-xl text-foreground">You know your standards until you like someone.</p>
         <p>
@@ -42,6 +80,7 @@ function Page() {
           Take the free 60-second quiz to confirm your pattern at <Link to="/" className="text-foreground underline">mylovepattern.com</Link>
         </p>
       </div>
+      <RelatedPatterns currentSlug="/the-boundary-softener" />
     </main>
   );
 }

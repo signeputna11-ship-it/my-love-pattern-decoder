@@ -1,19 +1,56 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
+
+const URL = "https://mylovepattern.com/the-over-investor";
+const TITLE = "Why You Over-Give in Relationships — The Over-Investor Pattern";
+const DESC = "If you over-invest in relationships and pick people who never match your effort, this is the Over-Investor love pattern. Where it comes from and what actually shifts it.";
 
 export const Route = createFileRoute("/the-over-investor")({
   head: () => ({
     meta: [
-      { title: "The Over-Investor Love Pattern" },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:url", content: URL },
+      { property: "og:type", content: "article" },
+    ],
+    links: [{ rel: "canonical", href: URL }],
+    scripts: [
       {
-        name: "description",
-        content:
-          "You give everything before anything is established. You think love is something you earn through effort. This is the Over-Investor pattern.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Why do I over-give in relationships?",
+              acceptedAnswer: { "@type": "Answer", text: "Because somewhere along the way you learned love is something you earn through effort. Over-investing then feels like caring, but it is a strategy your nervous system uses to create security with people who haven't earned it yet." },
+            },
+            {
+              "@type": "Question",
+              name: "What is the Over-Investor love pattern?",
+              acceptedAnswer: { "@type": "Answer", text: "One of four love patterns. The Over-Investor invests early and heavily before the situation has been established, often making available partners feel boring and inconsistent partners feel magnetic." },
+            },
+            {
+              "@type": "Question",
+              name: "How do I stop over-investing in relationships?",
+              acceptedAnswer: { "@type": "Answer", text: "Stop asking how do I show up for this person and start asking what is this person actually showing me. Let the situation establish itself before you invest in it. The anxiety of pulling back is the pattern noticing it is not being fed." },
+            },
+          ],
+        }),
       },
-      { property: "og:title", content: "The Over-Investor Love Pattern" },
       {
-        property: "og:description",
-        content:
-          "You give everything before anything is established. You think love is something you earn through effort. This is the Over-Investor pattern.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://mylovepattern.com/" },
+            { "@type": "ListItem", position: 2, name: "The Over-Investor", item: URL },
+          ],
+        }),
       },
     ],
   }),
@@ -23,7 +60,8 @@ export const Route = createFileRoute("/the-over-investor")({
 function Page() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-24">
-      <h1 className="font-serif text-5xl text-foreground">The Over-Investor</h1>
+      <h1 className="font-serif text-5xl text-foreground">Why You Over-Give in Relationships</h1>
+      <p className="mt-3 text-base text-muted-foreground">The Over-Investor love pattern</p>
       <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
         <p className="text-xl text-foreground">You give everything before anything is established.</p>
         <p>
@@ -45,6 +83,7 @@ function Page() {
           Take the free 60-second quiz to confirm your pattern at <Link to="/" className="text-foreground underline">mylovepattern.com</Link>
         </p>
       </div>
+      <RelatedPatterns currentSlug="/the-over-investor" />
     </main>
   );
 }

@@ -15,6 +15,25 @@ export const Route = createFileRoute("/about")({
         content:
           "My Love Pattern was created to help women understand the relationship patterns keeping them stuck. Founded by Signe.",
       },
+      { property: "og:url", content: "https://mylovepattern.com/about" },
+    ],
+    links: [{ rel: "canonical", href: "https://mylovepattern.com/about" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: "About My Love Pattern",
+          url: "https://mylovepattern.com/about",
+          mainEntity: {
+            "@type": "Person",
+            name: "Signe Putna",
+            jobTitle: "Founder, My Love Pattern",
+            url: "https://mylovepattern.com",
+          },
+        }),
+      },
     ],
   }),
   component: AboutPage,

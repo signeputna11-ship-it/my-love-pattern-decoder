@@ -15,7 +15,9 @@ export const Route = createFileRoute("/blog/")({
         content:
           "Weekly writing on love patterns, self-worth, and why relationships keep repeating.",
       },
+      { property: "og:url", content: "https://mylovepattern.com/blog" },
     ],
+    links: [{ rel: "canonical", href: "https://mylovepattern.com/blog" }],
   }),
   component: BlogIndex,
 });
