@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import aboutBg from "@/assets/about-bg.webp";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -41,9 +42,14 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24">
-      <h1 className="font-serif text-5xl text-foreground">About My Love Pattern</h1>
-      <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
+    <div
+      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed"
+      style={{ backgroundImage: `url(${aboutBg})` }}
+    >
+      <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
+      <main className="relative mx-auto max-w-3xl px-6 py-24">
+        <h1 className="font-serif text-5xl text-white">About My Love Pattern</h1>
+        <div className="mt-8 space-y-6 text-lg text-white/90 leading-relaxed">
         <p>
           Signe Putna created My Love Pattern after years of watching smart, self-aware women, herself included, repeat the same relationship ending with a different person.
         </p>
@@ -56,10 +62,11 @@ function AboutPage() {
         <p>
           This is not therapy. It is not coaching. It is a mirror held steady until you can see yourself clearly enough to make a different choice.
         </p>
-        <p>
-          <a href="https://mylovepattern.com" className="text-foreground underline">mylovepattern.com</a>
-        </p>
-      </div>
-    </main>
+          <p>
+            <a href="https://mylovepattern.com" className="text-white underline">mylovepattern.com</a>
+          </p>
+        </div>
+      </main>
+    </div>
   );
 }
