@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import aboutBg from "@/assets/about-bg.webp";
+import { SiteNav } from "@/components/healthy-love/SiteNav";
+import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -42,8 +44,10 @@ export const Route = createFileRoute("/about")({
 
 function AboutPage() {
   return (
+    <>
+      <SiteNav />
     <div
-      className="relative min-h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed"
+      className="relative min-h-[80vh] w-full bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${aboutBg})` }}
     >
       <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
@@ -68,5 +72,7 @@ function AboutPage() {
         </div>
       </main>
     </div>
+      <SiteFooter />
+    </>
   );
 }

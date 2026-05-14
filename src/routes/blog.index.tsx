@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { SiteNav } from "@/components/healthy-love/SiteNav";
+import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -24,7 +26,7 @@ export const Route = createFileRoute("/blog/")({
 
 function BlogIndex() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24">
+    <><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
       <h1 className="font-serif text-5xl text-foreground">Blog</h1>
       <p className="mt-4 text-muted-foreground">
         Weekly writing on love patterns, self-worth, and why relationships keep repeating.
@@ -42,6 +44,6 @@ function BlogIndex() {
           </p>
         </Link>
       </div>
-    </main>
+    </main><SiteFooter /></>
   );
 }
