@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { SiteNav } from "@/components/healthy-love/SiteNav";
+import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 
 export const Route = createFileRoute("/blog/the-over-investor")({
   head: () => ({
@@ -58,7 +60,7 @@ export const Route = createFileRoute("/blog/the-over-investor")({
 
 function PostPage() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24">
+    <><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
       <h1 className="font-serif text-4xl text-foreground">
         The Over-Investor: why you give everything before anything is real
       </h1>
@@ -113,6 +115,6 @@ function PostPage() {
           Find your exact pattern in 60 seconds at <Link to="/" className="text-foreground underline">mylovepattern.com</Link>
         </p>
       </div>
-    </main>
+    </main><SiteFooter /></>
   );
 }
