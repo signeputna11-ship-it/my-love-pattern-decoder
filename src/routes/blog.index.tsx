@@ -3,13 +3,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog — My Love Pattern" },
+      { title: "Blog, My Love Pattern" },
       {
         name: "description",
         content:
           "Weekly writing on love patterns, self-worth, and why relationships keep repeating.",
       },
-      { property: "og:title", content: "Blog — My Love Pattern" },
+      { property: "og:title", content: "Blog, My Love Pattern" },
       {
         property: "og:description",
         content:

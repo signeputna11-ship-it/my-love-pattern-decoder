@@ -69,7 +69,7 @@ function CheckoutPage() {
         <div className="mt-6 overflow-hidden rounded-3xl ring-1 ring-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
           <img
             src={coverImage}
-            alt="My Love Pattern — The Reset cover"
+            alt="My Love Pattern, The Reset cover"
             className="h-auto w-full object-cover"
             loading="eager"
           />

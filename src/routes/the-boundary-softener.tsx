@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
 
 const URL = "https://mylovepattern.com/the-boundary-softener";
-const TITLE = "Why You Lose Your Boundaries When You Like Someone — The Boundary Softener Pattern";
-const DESC = "You know your standards until you like someone. This is the Boundary Softener love pattern — where the people-pleasing comes from and what shifts it.";
+const TITLE = "Why You Lose Your Boundaries When You Like Someone, The Boundary Softener Pattern";
+const DESC = "You know your standards until you like someone. This is the Boundary Softener love pattern, where the people-pleasing comes from and what shifts it.";
 
 export const Route = createFileRoute("/the-boundary-softener")({
   head: () => ({
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/the-boundary-softener")({
             {
               "@type": "Question",
               name: "What is the Boundary Softener love pattern?",
-              acceptedAnswer: { "@type": "Answer", text: "One of four love patterns. The Boundary Softener accommodates, prioritises the other person's comfort, and slowly disappears inside relationships — without ever finding out whether the real version of them could have been loved." },
+              acceptedAnswer: { "@type": "Answer", text: "One of four love patterns. The Boundary Softener accommodates, prioritises the other person's comfort, and slowly disappears inside relationships, without ever finding out whether the real version of them could have been loved." },
             },
             {
               "@type": "Question",

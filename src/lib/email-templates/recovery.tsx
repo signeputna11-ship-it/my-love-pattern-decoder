@@ -20,7 +20,7 @@ export const RecoveryEmail = ({ confirmationUrl }: RecoveryEmailProps) => (
       </Button>
     </div>
     <Text style={styles.small}>
-      If you didn't request a password reset, you can safely ignore this email — your
+      If you didn't request a password reset, you can safely ignore this email, your
       password will not be changed.
     </Text>
   </EmailLayout>

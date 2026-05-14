@@ -45,7 +45,7 @@ function AboutPage() {
       <h1 className="font-serif text-5xl text-foreground">About My Love Pattern</h1>
       <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
         <p>
-          Signe Putna created My Love Pattern after years of watching smart, self-aware women — herself included — repeat the same relationship ending with a different person.
+          Signe Putna created My Love Pattern after years of watching smart, self-aware women, herself included, repeat the same relationship ending with a different person.
         </p>
         <p>
           The patterns had names. The Over-Investor. The Unavailable Chaser. The Validator Seeker. The Boundary Softener. Once you could see yours, everything made sense. Not in a painful way. In a finally way.

@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
 
 const URL = "https://mylovepattern.com/the-unavailable-chaser";
-const TITLE = "Why You Keep Attracting Emotionally Unavailable Men — The Unavailable Chaser Pattern";
-const DESC = "If you keep attracting emotionally unavailable men, distance probably feels like desire. This is the Unavailable Chaser pattern — where it comes from and what shifts it.";
+const TITLE = "Why You Keep Attracting Emotionally Unavailable Men, The Unavailable Chaser Pattern";
+const DESC = "If you keep attracting emotionally unavailable men, distance probably feels like desire. This is the Unavailable Chaser pattern, where it comes from and what shifts it.";
 
 export const Route = createFileRoute("/the-unavailable-chaser")({
   head: () => ({
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/the-unavailable-chaser")({
             {
               "@type": "Question",
               name: "Why do I keep attracting emotionally unavailable men?",
-              acceptedAnswer: { "@type": "Answer", text: "Because your nervous system pattern-matches inconsistency as chemistry. Inconsistent love early in life teaches you that connection requires vigilance — earning back the warm version. Consistent, available people then feel flat, while ambiguous people feel magnetic. This is the Unavailable Chaser pattern, not chemistry." },
+              acceptedAnswer: { "@type": "Answer", text: "Because your nervous system pattern-matches inconsistency as chemistry. Inconsistent love early in life teaches you that connection requires vigilance, earning back the warm version. Consistent, available people then feel flat, while ambiguous people feel magnetic. This is the Unavailable Chaser pattern, not chemistry." },
             },
             {
               "@type": "Question",
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/the-unavailable-chaser")({
             {
               "@type": "Question",
               name: "How do I stop chasing emotionally unavailable people?",
-              acceptedAnswer: { "@type": "Answer", text: "Learn to name the spike in real time. When you feel the magnetic pull toward someone ambiguous, recognise it as the pattern activating — information about you, not about them. Over time you can stop confusing nervous-system arousal with love." },
+              acceptedAnswer: { "@type": "Answer", text: "Learn to name the spike in real time. When you feel the magnetic pull toward someone ambiguous, recognise it as the pattern activating, information about you, not about them. Over time you can stop confusing nervous-system arousal with love." },
             },
           ],
         }),
