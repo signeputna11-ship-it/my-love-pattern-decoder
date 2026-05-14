@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
+import { SiteNav } from "@/components/healthy-love/SiteNav";
+import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 
 const URL = "https://mylovepattern.com/the-over-investor";
 const TITLE = "Why You Over-Give in Relationships, The Over-Investor Pattern";
@@ -59,7 +61,7 @@ export const Route = createFileRoute("/the-over-investor")({
 
 function Page() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24">
+    <><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
       <h1 className="font-serif text-5xl text-foreground">Why You Over-Give in Relationships</h1>
       <p className="mt-3 text-base text-muted-foreground">The Over-Investor love pattern</p>
       <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
@@ -84,6 +86,6 @@ function Page() {
         </p>
       </div>
       <RelatedPatterns currentSlug="/the-over-investor" />
-    </main>
+    </main><SiteFooter /></>
   );
 }
