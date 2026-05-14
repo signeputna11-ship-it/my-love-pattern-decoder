@@ -183,7 +183,7 @@ function AppLayout() {
         playsInline
         className="fixed inset-0 z-0 h-full w-full object-cover opacity-50"
         src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4"
-      />
+      preload="metadata" />
       <div className="fixed inset-0 z-[1] bg-black/70" />
 
       <header className="relative z-10 flex items-center justify-between px-4 pt-4 sm:px-6">
@@ -240,7 +240,7 @@ function CenterCard({
         playsInline
         className="absolute inset-0 z-0 h-full w-full object-cover opacity-50"
         src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4"
-      />
+      preload="metadata" />
       <div className="absolute inset-0 z-[1] bg-black/65" />
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4">
         <div className="liquid-glass-strong w-full max-w-md rounded-3xl p-8 text-center">

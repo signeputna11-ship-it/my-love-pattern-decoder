@@ -25,7 +25,7 @@ function BackgroundVideo({ src }: { src: string }) {
       muted
       loop
       playsInline
-      preload="auto"
+      preload="metadata"
       className="absolute inset-0 z-0 h-full w-full object-cover"
     >
       <source src={src} type="video/mp4" />

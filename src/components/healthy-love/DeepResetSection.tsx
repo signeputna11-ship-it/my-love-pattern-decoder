@@ -16,7 +16,7 @@ export function DeepResetSection() {
         playsInline
         className="absolute inset-0 z-0 h-full w-full object-cover opacity-40"
         src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/GEM%20SPARKLE.mp4"
-      />
+      preload="metadata" />
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/70 via-black/75 to-black/85" />
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
         <p className="text-center font-mono text-[10px] uppercase tracking-[0.2em] text-white/55 sm:text-xs">

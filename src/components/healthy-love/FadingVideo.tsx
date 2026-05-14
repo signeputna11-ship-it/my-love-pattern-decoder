@@ -74,7 +74,7 @@ export function FadingVideo({
       muted
       playsInline
       autoPlay
-      preload="auto"
+      preload="metadata"
       className={className}
       style={{ opacity: 0, transition: "opacity 0s", ...style }}
     />
