@@ -1,74 +1,59 @@
-# SEO Fix: Foundation + Targeted Rewrites
+## Blog system build plan
 
-## Why this is needed (Semrush snapshot)
+### 1. Database (one migration)
+- `blog_posts` (all fields per spec)
+- `blog_subscribers` (email unique, first_name, source)
+- `blog_categories` (seeded with 6 categories)
+- RLS:
+  - `blog_posts`: public SELECT where `published=true`; admin (has_role 'admin') full access
+  - `blog_categories`: public SELECT; admin write
+  - `blog_subscribers`: public INSERT only; admin SELECT
+- Trigger `update_updated_at_column` on blog_posts
+- Seed 6 categories + 1 post (the-over-investor)
 
-| Metric | Value |
-|---|---|
-| Authority Score | 0/100 |
-| Organic keywords | 0 |
-| Estimated organic traffic | 0/mo |
-| Backlinks | 10 (all nofollow, 2 spam domains) |
+### 2. Server functions (`src/lib/blog.functions.ts`)
+- `listPublishedPosts({ category? })` — public, uses `supabaseAdmin` with WHERE published=true
+- `getPostBySlug(slug)` — public
+- `listCategories()` — public
+- `subscribeToBlog({ email, first_name })` — public, insert with onConflict ignore
+- `listAllPostsAdmin()` — `requireSupabaseAuth` + admin role check
+- `upsertPost(...)` — admin
+- `togglePublish(id)` — admin
+- `deletePost(id)` — admin
 
-97% of your current visits are Direct — Google isn't sending anyone yet. The site is too new and missing the technical signals search engines need to trust and index it. Below is what I'll ship in one build.
+### 3. Public routes
+- `src/routes/blog.index.tsx` — REWRITE: video bg, hero, subscribe form, category pills, post grid (loader fetches posts + categories)
+- `src/routes/blog.$slug.tsx` — NEW: full post page with JSON-LD, TipTap HTML render, related posts, subscribe at bottom. Replaces hardcoded `blog.the-over-investor.tsx` (delete it).
+- `src/routes/blog.category.$category.tsx` — NEW: filtered grid
 
-## Part A — Technical SEO (foundation)
+### 4. Admin routes (under `_authenticated`)
+- `src/routes/_authenticated/admin.blog.index.tsx` — table of posts with filter tabs, publish toggle
+- `src/routes/_authenticated/admin.blog.new.tsx`
+- `src/routes/_authenticated/admin.blog.edit.$id.tsx`
+- Both editor routes share `<PostEditor>` component
 
-**1. Canonicals + og:url on every leaf route**
-Add `<link rel="canonical">` and `og:url` meta to: `/`, `/about`, `/blog`, `/blog/the-over-investor`, `/the-over-investor`, `/the-unavailable-chaser`, `/the-validator-seeker`, `/the-boundary-softener`. Tells Google `mylovepattern.com` is the authoritative URL.
+### 5. Components
+- `src/components/blog/SubscribeForm.tsx` — first name + email + button + success state
+- `src/components/blog/PostCard.tsx` — card used in index/category/related
+- `src/components/blog/CategoryPills.tsx`
+- `src/components/blog/VideoBackground.tsx` — reusable parchment-overlay video bg
+- `src/components/blog/PostEditor.tsx` — TipTap editor + settings panel + auto-save + SEO preview
+- `src/components/blog/TipTapToolbar.tsx`
+- `src/components/blog/prose.css` (or inline styles) — prose styling per spec
 
-**2. JSON-LD structured data** (this is what unlocks rich Google results)
-- `__root.tsx` → `Organization` + `WebSite` schema
-- `/blog/the-over-investor` → `Article` schema (headline, author "Signe Putna", datePublished)
-- 4 pattern pages → `FAQPage` schema using the "Where it starts / What shifts it" structure
-- All deep routes → `BreadcrumbList`
+### 6. Dependencies
+`bun add @tiptap/react @tiptap/starter-kit @tiptap/extension-image @tiptap/extension-youtube @tiptap/extension-link @tiptap/extension-placeholder dompurify @types/dompurify`
 
-**3. Internal linking between pattern pages**
-Each pattern page currently dead-ends at the quiz CTA. Add a "Related patterns" footer linking to the other 3 patterns + back to `/`. Internal links are how Google discovers and ranks deep pages.
+### 7. Sitemap
+Update `src/routes/sitemap[.]xml.ts` to query published posts + categories dynamically.
 
-**4. Sitemap + robots audit**
-- Verify all 8 routes are in `/sitemap.xml` (they are) and `lastmod` reflects today
-- Confirm `robots.txt` allows `/about`, `/blog`, and the 4 pattern pages (it does — only `/app`, `/checkout`, `/auth` are blocked)
-- Add `Sitemap: https://mylovepattern.com/sitemap.xml` line to robots.txt (already present ✓)
+### 8. Admin role
+Currently no admin user exists. After migration, ask the user to share the email of the account that should be admin so I can grant `admin` role via `user_roles`. For now editor will check `has_role(uid,'admin')` and unauthorized users see a "request access" message.
 
-**5. Google Search Console verification**
-Add the Google site-verification meta tag to `__root.tsx` (alongside the existing Pinterest one), then I'll call the verification API and submit the sitemap automatically.
+### Notes
+- Reuse existing `SiteNav` / `SiteFooter` on public blog pages.
+- Sanitize rendered HTML with DOMPurify before `dangerouslySetInnerHTML`.
+- Replace the existing `blog.the-over-investor.tsx` static route with the dynamic `blog.$slug.tsx` (seed post serves the same URL).
+- All copy free of em-dashes.
 
-## Part B — Keyword-targeted rewrites (tone level 3 of 5)
-
-Semrush data shows the high-opportunity terms in your niche. Current page titles target almost-zero-volume phrases. I'll rewrite titles, meta descriptions, and H1s only — body copy stays in your voice.
-
-| Page | Current title | New title (keyword target) | Monthly searches |
-|---|---|---|---|
-| `/the-unavailable-chaser` | "The Unavailable Chaser Love Pattern" | "Why You Keep Attracting Emotionally Unavailable Men — The Unavailable Chaser Pattern" | 1,600 + 210 long-tail |
-| `/the-over-investor` | "The Over-Investor Love Pattern" | "Why You Over-Give in Relationships — The Over-Investor Pattern" | targets anxious-attachment intent |
-| `/the-validator-seeker` | "The Validator Seeker Love Pattern" | "Why One Unanswered Text Wrecks You — The Validator Seeker Pattern" | targets reassurance-seeking searches |
-| `/the-boundary-softener` | "The Boundary Softener Love Pattern" | "Why You Lose Your Boundaries When You Like Someone — The Boundary Softener Pattern" | targets people-pleaser searches |
-| `/` (homepage) | "My Love Pattern" | "My Love Pattern — Discover Your Relationship Pattern in 60 Seconds" | brand + intent |
-
-Meta descriptions rewritten to include the question phrasing women actually search for (e.g. "why do I attract emotionally unavailable men", "why do I over-invest"). One subtle keyword phrase added to each opening paragraph — your voice intact, no SEO-spam tone.
-
-## Part C — Things only you can do (instructions, no code)
-
-1. **Google Search Console** — after deploy, I verify automatically. You then sign in at search.google.com/search-console, request indexing for each of the 8 URLs (one click each).
-2. **Bing Webmaster Tools** — sign in with Google, import the GSC property, takes 60 seconds.
-3. **Pinterest** — your verify tag is already live ✓. Start pinning quote graphics from the pattern pages. Pinterest is the single highest-leverage channel for this niche.
-4. **Do NOT buy backlinks.** Your 2 existing referring domains are Fiverr SEO spam. More of those can trigger a Google penalty. Real links come from podcast appearances, guest posts on women's wellness sites, and Substack/newsletter mentions.
-
-## Out of scope (separate plan if you want it later)
-
-- New blog posts targeting question-keywords (e.g. "do emotionally unavailable men change" — 90/mo, KDI very easy)
-- Open Graph share images for each pattern page
-- A `/quiz` landing route separate from `/`
-
-## Technical notes
-
-- TanStack Start `createFileRoute` `head()` for all meta. Canonicals only on leaves (root canonical + leaf canonical would emit duplicates due to a TanStack links-merge bug).
-- JSON-LD goes in the `scripts: []` array of each route's `head()`, type `application/ld+json`.
-- Search Console verification uses the gateway API — I run the curl after deploy, no manual token entry needed from you.
-
-## Expected timeline
-
-- Code changes: ship today
-- Google indexes new pages: 3–14 days after Search Console submission
-- First organic clicks: 4–8 weeks (new domains take time, no shortcut)
-- Meaningful traffic: 3–6 months with 1–2 new posts/month
+Approve and I'll build it in one pass.
