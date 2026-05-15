@@ -24,16 +24,20 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
-import { Route as BlogTheOverInvestorRouteImport } from './routes/blog.the-over-investor'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
 import { Route as AppModuleSlugRouteImport } from './routes/app.module.$slug'
 import { Route as AppAdminEmailsRouteImport } from './routes/app.admin.emails'
+import { Route as AdminBlogNewRouteImport } from './routes/admin.blog.new'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as AdminBlogEditIdRouteImport } from './routes/admin.blog.edit.$id'
 
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
@@ -110,14 +114,24 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/return',
   getParentRoute: () => CheckoutRoute,
 } as any)
-const BlogTheOverInvestorRoute = BlogTheOverInvestorRouteImport.update({
-  id: '/blog/the-over-investor',
-  path: '/blog/the-over-investor',
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
+  id: '/admin/blog/',
+  path: '/admin/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
+  id: '/blog/category/$category',
+  path: '/blog/category/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppModuleSlugRoute = AppModuleSlugRouteImport.update({
@@ -129,6 +143,11 @@ const AppAdminEmailsRoute = AppAdminEmailsRouteImport.update({
   id: '/admin/emails',
   path: '/admin/emails',
   getParentRoute: () => AppRoute,
+} as any)
+const AdminBlogNewRoute = AdminBlogNewRouteImport.update({
+  id: '/admin/blog/new',
+  path: '/admin/blog/new',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
@@ -164,6 +183,11 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminBlogEditIdRoute = AdminBlogEditIdRouteImport.update({
+  id: '/admin/blog/edit/$id',
+  path: '/admin/blog/edit/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -177,14 +201,18 @@ export interface FileRoutesByFullPath {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app/': typeof AppIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
+  '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -203,14 +231,18 @@ export interface FileRoutesByTo {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app': typeof AppIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
+  '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog': typeof AdminBlogIndexRoute
+  '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -231,14 +263,18 @@ export interface FileRoutesById {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app/': typeof AppIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
+  '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
+  '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -260,14 +296,18 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
-    | '/blog/the-over-investor'
+    | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app/'
     | '/blog/'
+    | '/admin/blog/new'
     | '/app/admin/emails'
     | '/app/module/$slug'
+    | '/blog/category/$category'
     | '/lovable/email/suppression'
+    | '/admin/blog/'
+    | '/admin/blog/edit/$id'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -286,14 +326,18 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
-    | '/blog/the-over-investor'
+    | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app'
     | '/blog'
+    | '/admin/blog/new'
     | '/app/admin/emails'
     | '/app/module/$slug'
+    | '/blog/category/$category'
     | '/lovable/email/suppression'
+    | '/admin/blog'
+    | '/admin/blog/edit/$id'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -313,14 +357,18 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
-    | '/blog/the-over-investor'
+    | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app/'
     | '/blog/'
+    | '/admin/blog/new'
     | '/app/admin/emails'
     | '/app/module/$slug'
+    | '/blog/category/$category'
     | '/lovable/email/suppression'
+    | '/admin/blog/'
+    | '/admin/blog/edit/$id'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -341,10 +389,14 @@ export interface RootRouteChildren {
   TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
   TheValidatorSeekerRoute: typeof TheValidatorSeekerRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
-  BlogTheOverInvestorRoute: typeof BlogTheOverInvestorRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  AdminBlogNewRoute: typeof AdminBlogNewRoute
+  BlogCategoryCategoryRoute: typeof BlogCategoryCategoryRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
+  AdminBlogEditIdRoute: typeof AdminBlogEditIdRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -460,11 +512,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof CheckoutRoute
     }
-    '/blog/the-over-investor': {
-      id: '/blog/the-over-investor'
-      path: '/blog/the-over-investor'
-      fullPath: '/blog/the-over-investor'
-      preLoaderRoute: typeof BlogTheOverInvestorRouteImport
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/blog/': {
+      id: '/admin/blog/'
+      path: '/admin/blog'
+      fullPath: '/admin/blog/'
+      preLoaderRoute: typeof AdminBlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/suppression': {
@@ -472,6 +531,13 @@ declare module '@tanstack/react-router' {
       path: '/lovable/email/suppression'
       fullPath: '/lovable/email/suppression'
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/category/$category': {
+      id: '/blog/category/$category'
+      path: '/blog/category/$category'
+      fullPath: '/blog/category/$category'
+      preLoaderRoute: typeof BlogCategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/module/$slug': {
@@ -487,6 +553,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/admin/emails'
       preLoaderRoute: typeof AppAdminEmailsRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/admin/blog/new': {
+      id: '/admin/blog/new'
+      path: '/admin/blog/new'
+      fullPath: '/admin/blog/new'
+      preLoaderRoute: typeof AdminBlogNewRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
@@ -530,6 +603,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/blog/edit/$id': {
+      id: '/admin/blog/edit/$id'
+      path: '/admin/blog/edit/$id'
+      fullPath: '/admin/blog/edit/$id'
+      preLoaderRoute: typeof AdminBlogEditIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -571,10 +651,14 @@ const rootRouteChildren: RootRouteChildren = {
   TheUnavailableChaserRoute: TheUnavailableChaserRoute,
   TheValidatorSeekerRoute: TheValidatorSeekerRoute,
   UnsubscribeRoute: UnsubscribeRoute,
-  BlogTheOverInvestorRoute: BlogTheOverInvestorRoute,
+  BlogSlugRoute: BlogSlugRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   BlogIndexRoute: BlogIndexRoute,
+  AdminBlogNewRoute: AdminBlogNewRoute,
+  BlogCategoryCategoryRoute: BlogCategoryCategoryRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  AdminBlogIndexRoute: AdminBlogIndexRoute,
+  AdminBlogEditIdRoute: AdminBlogEditIdRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
@@ -585,12 +669,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
