@@ -27,6 +27,10 @@ Allow: /
 
 Disallow: /app
 Disallow: /checkout
+Disallow: /checkout/return
 Disallow: /auth
+Disallow: /unsubscribe
+Disallow: /email/unsubscribe
+Disallow: /admin
 
 Sitemap: https://mylovepattern.com/sitemap.xml
