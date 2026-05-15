@@ -258,7 +258,7 @@ function PostPage() {
                 <span style={{ fontSize: "13px", color: "#8A8480", fontFamily: "Inter" }}>
                   Topics:
                 </span>
-                {post.tags.map((tag) => (
+                {post.tags.map((tag: string) => (
                   <span
                     key={tag}
                     className="rounded-full px-3 py-1 text-xs"
