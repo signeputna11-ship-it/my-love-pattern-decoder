@@ -1,0 +1,110 @@
+/* Blog post prose styling per spec */
+.blog-prose {
+  color: #2c1f1a;
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  line-height: 1.85;
+}
+.blog-prose h2 {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 32px;
+  color: #111111;
+  margin-top: 48px;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+.blog-prose h3 {
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8A8480;
+  margin-top: 36px;
+  margin-bottom: 12px;
+}
+.blog-prose h3::before {
+  content: "✦  ";
+  color: #EDB200;
+}
+.blog-prose p {
+  font-size: 17px;
+  line-height: 1.85;
+  color: #2c1f1a;
+  margin-bottom: 20px;
+}
+.blog-prose blockquote {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: 24px;
+  color: #6b4c44;
+  border-left: 3px solid #EDB200;
+  padding-left: 24px;
+  margin: 36px 0;
+}
+.blog-prose img {
+  width: 100%;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+.blog-prose a {
+  color: #111111;
+  border-bottom: 1px solid #E8E3DC;
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+.blog-prose a:hover {
+  border-color: #111111;
+}
+.blog-prose ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+.blog-prose ul li {
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  color: #2c1f1a;
+  line-height: 1.85;
+  padding-left: 20px;
+  position: relative;
+  margin-bottom: 8px;
+}
+.blog-prose ul li::before {
+  content: "✦";
+  color: #EDB200;
+  position: absolute;
+  left: 0;
+}
+.blog-prose ol {
+  padding-left: 24px;
+  margin-bottom: 20px;
+}
+.blog-prose ol li {
+  font-size: 17px;
+  line-height: 1.85;
+  color: #2c1f1a;
+  margin-bottom: 8px;
+}
+.blog-prose strong {
+  font-weight: 600;
+  color: #111111;
+}
+.blog-prose em {
+  font-style: italic;
+}
+.blog-prose iframe,
+.blog-prose [data-youtube-video] {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  margin: 24px 0;
+  border: 0;
+}
+.blog-prose [data-youtube-video] iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  border: 0;
+}

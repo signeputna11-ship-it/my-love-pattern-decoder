@@ -24,7 +24,6 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
-import { Route as BlogTheOverInvestorRouteImport } from './routes/blog.the-over-investor'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as AppModuleSlugRouteImport } from './routes/app.module.$slug'
 import { Route as AppAdminEmailsRouteImport } from './routes/app.admin.emails'
@@ -110,11 +109,6 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/return',
   getParentRoute: () => CheckoutRoute,
 } as any)
-const BlogTheOverInvestorRoute = BlogTheOverInvestorRouteImport.update({
-  id: '/blog/the-over-investor',
-  path: '/blog/the-over-investor',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -177,7 +171,6 @@ export interface FileRoutesByFullPath {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app/': typeof AppIndexRoute
@@ -203,7 +196,6 @@ export interface FileRoutesByTo {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app': typeof AppIndexRoute
@@ -231,7 +223,6 @@ export interface FileRoutesById {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/blog/the-over-investor': typeof BlogTheOverInvestorRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/app/': typeof AppIndexRoute
@@ -260,7 +251,6 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
-    | '/blog/the-over-investor'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app/'
@@ -286,7 +276,6 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
-    | '/blog/the-over-investor'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app'
@@ -313,7 +302,6 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
-    | '/blog/the-over-investor'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/app/'
@@ -341,7 +329,6 @@ export interface RootRouteChildren {
   TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
   TheValidatorSeekerRoute: typeof TheValidatorSeekerRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
-  BlogTheOverInvestorRoute: typeof BlogTheOverInvestorRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   BlogIndexRoute: typeof BlogIndexRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -460,13 +447,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof CheckoutRoute
     }
-    '/blog/the-over-investor': {
-      id: '/blog/the-over-investor'
-      path: '/blog/the-over-investor'
-      fullPath: '/blog/the-over-investor'
-      preLoaderRoute: typeof BlogTheOverInvestorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -571,7 +551,6 @@ const rootRouteChildren: RootRouteChildren = {
   TheUnavailableChaserRoute: TheUnavailableChaserRoute,
   TheValidatorSeekerRoute: TheValidatorSeekerRoute,
   UnsubscribeRoute: UnsubscribeRoute,
-  BlogTheOverInvestorRoute: BlogTheOverInvestorRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   BlogIndexRoute: BlogIndexRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,

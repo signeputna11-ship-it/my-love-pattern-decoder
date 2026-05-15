@@ -1,21 +1,28 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { listPublishedPosts, listCategories, type BlogPost, type BlogCategory } from "@/lib/blog.functions";
 import { SiteNav } from "@/components/healthy-love/SiteNav";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
+import { VideoBackground } from "@/components/blog/VideoBackground";
+import { SubscribeForm } from "@/components/blog/SubscribeForm";
+import { PostCard } from "@/components/blog/PostCard";
+import { CategoryPills } from "@/components/blog/CategoryPills";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog, My Love Pattern" },
+      { title: "Blog · My Love Pattern" },
       {
         name: "description",
         content:
-          "Weekly writing on love patterns, self-worth, and why relationships keep repeating.",
+          "Honest writing on love patterns, self-worth, and why the same relationship keeps finding you.",
       },
-      { property: "og:title", content: "Blog, My Love Pattern" },
+      { property: "og:title", content: "Blog · My Love Pattern" },
       {
         property: "og:description",
         content:
-          "Weekly writing on love patterns, self-worth, and why relationships keep repeating.",
+          "Honest writing on love patterns, self-worth, and why the same relationship keeps finding you.",
       },
       { property: "og:url", content: "https://mylovepattern.com/blog" },
     ],
@@ -25,25 +32,101 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogIndex() {
+  const fetchPosts = useServerFn(listPublishedPosts);
+  const fetchCats = useServerFn(listCategories);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [categories, setCategories] = useState<BlogCategory[]>([]);
+  const [active, setActive] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([fetchPosts({ data: {} }), fetchCats()])
+      .then(([p, c]) => {
+        setPosts(p.posts);
+        setCategories(c.categories);
+      })
+      .finally(() => setLoading(false));
+  }, [fetchPosts, fetchCats]);
+
+  const filtered = active ? posts.filter((p) => p.category === active) : posts;
+
   return (
-    <><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="font-serif text-5xl text-foreground">Blog</h1>
-      <p className="mt-4 text-muted-foreground">
-        Weekly writing on love patterns, self-worth, and why relationships keep repeating.
-      </p>
-      <div className="mt-12 grid gap-6">
-        <Link
-          to="/blog/the-over-investor"
-          className="block rounded-lg border border-border p-6 transition-colors hover:bg-accent"
-        >
-          <h2 className="font-serif text-2xl text-foreground">
-            The Over-Investor: why you give everything before anything is real
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            The Over-Investor pattern makes you give everything before anything is established.
+    <>
+      <VideoBackground />
+      <SiteNav />
+      <main className="relative z-[1]">
+        {/* Hero */}
+        <section className="mx-auto max-w-[1100px] px-6 pt-16 pb-10">
+          <p
+            className="uppercase"
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "11px",
+              letterSpacing: "2.5px",
+              color: "#8A8480",
+            }}
+          >
+            ✦ Weekly Writing
           </p>
-        </Link>
-      </div>
-    </main><SiteFooter /></>
+          <h1
+            className="mt-4 italic"
+            style={{
+              fontFamily: "Instrument Serif, serif",
+              fontSize: "clamp(42px, 6vw, 68px)",
+              color: "#111111",
+              lineHeight: 1.05,
+            }}
+          >
+            Understand why it keeps happening.
+          </h1>
+          <p
+            className="mt-4 max-w-[520px]"
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 400,
+              fontSize: "18px",
+              color: "#6b4c44",
+              lineHeight: 1.55,
+            }}
+          >
+            Honest writing on love patterns, self-worth, and why the same relationship keeps finding you.
+          </p>
+          <div className="mt-8 max-w-[640px]">
+            <SubscribeForm />
+          </div>
+        </section>
+
+        {/* Filters */}
+        {categories.length > 0 && (
+          <CategoryPills categories={categories} active={active} onChange={setActive} />
+        )}
+
+        {/* Grid */}
+        <section
+          className="mx-auto px-6 pb-[100px]"
+          style={{ maxWidth: "1100px" }}
+        >
+          {loading ? (
+            <p className="text-center text-sm" style={{ color: "#8A8480" }}>
+              Loading...
+            </p>
+          ) : filtered.length === 0 ? (
+            <p className="text-center text-sm" style={{ color: "#8A8480" }}>
+              No posts in this category yet.
+            </p>
+          ) : (
+            <div
+              className="grid gap-6"
+              style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))" }}
+            >
+              {filtered.map((p) => (
+                <PostCard key={p.id} post={p} />
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
+      <SiteFooter />
+    </>
   );
 }
