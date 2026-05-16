@@ -11,6 +11,7 @@ import {
 import { StickyMobileCTA } from "@/components/healthy-love/StickyMobileCTA";
 import { DeepResetSection } from "@/components/healthy-love/DeepResetSection";
 import { DeepResetPopup } from "@/components/healthy-love/DeepResetPopup";
+import { PageBackground } from "@/components/healthy-love/PageBackground";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -221,7 +222,8 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-black pb-24 text-white md:pb-0">
+    <div className="relative min-h-screen bg-black pb-24 text-white md:pb-0">
+      <PageBackground image="floating-heart" />
       <Nav />
       <Hero />
       <PatternSection />
