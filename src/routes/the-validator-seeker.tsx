@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
 import { SiteNav } from "@/components/healthy-love/SiteNav";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
+import { PageBackground } from "@/components/healthy-love/PageBackground";
 
 const URL = "https://mylovepattern.com/the-validator-seeker";
 const TITLE = "Why One Unanswered Text Wrecks You, The Validator Seeker Pattern";
@@ -61,7 +62,7 @@ export const Route = createFileRoute("/the-validator-seeker")({
 
 function Page() {
   return (
-    <><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
+    <><PageBackground image="right-flowers" /><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
       <h1 className="font-serif text-5xl text-foreground">Why One Unanswered Text Wrecks You</h1>
       <p className="mt-3 text-base text-muted-foreground">The Validator Seeker love pattern</p>
       <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
