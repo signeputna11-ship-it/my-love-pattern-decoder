@@ -62,15 +62,7 @@ export function Nav() {
     };
   }, []);
 
-  const links: { label: string; href: string }[] = [
-    { label: "Home", href: "#top" },
-    { label: "Patterns", href: "#patterns" },
-    { label: "Diagnosis", href: "#diagnosis" },
-    { label: "Reset", href: "#toolkit" },
-    { label: "Path", href: "#experience" },
-    { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
-  ];
+  // Desktop links rendered inline below.
 
   const patternLinks: { label: string; href: string }[] = [
     { label: "The Over-Investor", href: "/the-over-investor" },
@@ -94,20 +86,12 @@ export function Nav() {
           </span>
         </a>
         <nav className="hidden items-center gap-7 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm text-white/70 transition hover:text-white"
-            >
-              {link.label}
-            </a>
-          ))}
+          <a href="#top" className="text-sm text-white/70 transition hover:text-white">Home</a>
           <div className="relative group">
-            <button className="text-sm text-white/70 transition hover:text-white">
+            <button className="inline-flex items-center gap-1 text-sm text-white/70 transition hover:text-white">
               Patterns ▾
             </button>
-            <div className="absolute right-0 top-full hidden min-w-[220px] pt-2 group-hover:block">
+            <div className="absolute left-1/2 top-full hidden min-w-[240px] -translate-x-1/2 pt-2 group-hover:block">
               <div className="rounded-2xl liquid-glass p-2">
                 {patternLinks.map((p) => (
                   <a
@@ -121,6 +105,8 @@ export function Nav() {
               </div>
             </div>
           </div>
+          <a href="/blog" className="text-sm text-white/70 transition hover:text-white">Blog</a>
+          <a href="/about" className="text-sm text-white/70 transition hover:text-white">About</a>
         </nav>
         <button
           onClick={() => {
@@ -143,16 +129,8 @@ export function Nav() {
 
       {open && (
         <div className="mx-auto mt-2 max-w-6xl rounded-3xl liquid-glass p-3 md:hidden">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              onClick={() => setOpen(false)}
-              href={link.href}
-              className="block rounded-xl px-3 py-3 text-sm text-white/85"
-            >
-              {link.label}
-            </a>
-          ))}
+          <a onClick={() => setOpen(false)} href="#top" className="block rounded-xl px-3 py-3 text-sm text-white/85">Home</a>
+          <p className="mt-2 px-3 pt-2 text-[10px] uppercase tracking-widest text-white/55">Patterns</p>
           {patternLinks.map((p) => (
             <a
               key={p.href}
@@ -163,6 +141,8 @@ export function Nav() {
               {p.label}
             </a>
           ))}
+          <a onClick={() => setOpen(false)} href="/blog" className="block rounded-xl px-3 py-3 text-sm text-white/85">Blog</a>
+          <a onClick={() => setOpen(false)} href="/about" className="block rounded-xl px-3 py-3 text-sm text-white/85">About</a>
           {hasAccess && (
             <button
               onClick={() => {
