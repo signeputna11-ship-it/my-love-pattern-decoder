@@ -64,12 +64,8 @@ export function Nav() {
 
   const links: { label: string; href: string }[] = [
     { label: "Home", href: "#top" },
-    { label: "Patterns", href: "#patterns" },
-    { label: "Diagnosis", href: "#diagnosis" },
-    { label: "Reset", href: "#toolkit" },
-    { label: "Path", href: "#experience" },
-    { label: "About", href: "/about" },
     { label: "Blog", href: "/blog" },
+    { label: "About", href: "/about" },
   ];
 
   const patternLinks: { label: string; href: string }[] = [
