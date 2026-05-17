@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { PageBackground } from "@/components/healthy-love/PageBackground";
 
 export const Route = createFileRoute("/unsubscribe")({
   component: UnsubscribePage,
@@ -55,6 +56,7 @@ function UnsubscribePage() {
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+      <PageBackground image="margherita" />
       <div className="liquid-glass-strong w-full max-w-md rounded-3xl p-8 text-center">
         <img src="/mlp-logo.png" alt="My Love Pattern" className="mx-auto mb-6 h-14 w-14 rounded-full bg-white" />
         <h1 className="font-serif text-3xl mb-3">Unsubscribe</h1>
