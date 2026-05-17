@@ -133,16 +133,8 @@ export function Nav() {
 
       {open && (
         <div className="mx-auto mt-2 max-w-6xl rounded-3xl liquid-glass p-3 md:hidden">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              onClick={() => setOpen(false)}
-              href={link.href}
-              className="block rounded-xl px-3 py-3 text-sm text-white/85"
-            >
-              {link.label}
-            </a>
-          ))}
+          <a onClick={() => setOpen(false)} href="#top" className="block rounded-xl px-3 py-3 text-sm text-white/85">Home</a>
+          <p className="mt-2 px-3 pt-2 text-[10px] uppercase tracking-widest text-white/55">Patterns</p>
           {patternLinks.map((p) => (
             <a
               key={p.href}
@@ -153,6 +145,8 @@ export function Nav() {
               {p.label}
             </a>
           ))}
+          <a onClick={() => setOpen(false)} href="/blog" className="block rounded-xl px-3 py-3 text-sm text-white/85">Blog</a>
+          <a onClick={() => setOpen(false)} href="/about" className="block rounded-xl px-3 py-3 text-sm text-white/85">About</a>
           {hasAccess && (
             <button
               onClick={() => {
