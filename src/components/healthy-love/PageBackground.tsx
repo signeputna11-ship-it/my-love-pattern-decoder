@@ -4,6 +4,10 @@ import leftCrystalFlowers from "@/assets/bg-left-crystal-flowers.png";
 import floating from "@/assets/bg-floating.png";
 import crystalBall from "@/assets/bg-crystal-ball.png";
 import rightFlowers from "@/assets/bg-right-flowers.png";
+import floatingOverview from "@/assets/bg-floating-overview.png";
+import day from "@/assets/bg-day.png";
+import night from "@/assets/bg-night.png";
+import margherita from "@/assets/bg-margherita.png";
 
 export const pageBackgrounds = {
   crystal,
@@ -12,6 +16,10 @@ export const pageBackgrounds = {
   floating,
   "crystal-ball": crystalBall,
   "right-flowers": rightFlowers,
+  "floating-overview": floatingOverview,
+  day,
+  night,
+  margherita,
 } as const;
 
 export type PageBackgroundKey = keyof typeof pageBackgrounds;
