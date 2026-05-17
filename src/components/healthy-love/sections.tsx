@@ -62,11 +62,14 @@ export function Nav() {
     };
   }, []);
 
-  const links: { label: string; href: string }[] = [
-    { label: "Home", href: "#top" },
-    { label: "Blog", href: "/blog" },
-    { label: "About", href: "/about" },
+  const patternLinks: { label: string; href: string }[] = [
+    { label: "The Over-Investor", href: "/the-over-investor" },
+    { label: "The Unavailable Chaser", href: "/the-unavailable-chaser" },
+    { label: "The Validator Seeker", href: "/the-validator-seeker" },
+    { label: "The Boundary Softener", href: "/the-boundary-softener" },
   ];
+
+  const _unused_links_removed = null;
 
   const patternLinks: { label: string; href: string }[] = [
     { label: "The Over-Investor", href: "/the-over-investor" },
