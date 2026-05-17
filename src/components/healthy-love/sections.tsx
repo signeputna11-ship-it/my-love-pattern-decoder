@@ -62,14 +62,7 @@ export function Nav() {
     };
   }, []);
 
-  const patternLinks: { label: string; href: string }[] = [
-    { label: "The Over-Investor", href: "/the-over-investor" },
-    { label: "The Unavailable Chaser", href: "/the-unavailable-chaser" },
-    { label: "The Validator Seeker", href: "/the-validator-seeker" },
-    { label: "The Boundary Softener", href: "/the-boundary-softener" },
-  ];
-
-  const _unused_links_removed = null;
+  // Desktop links rendered inline below.
 
   const patternLinks: { label: string; href: string }[] = [
     { label: "The Over-Investor", href: "/the-over-investor" },
