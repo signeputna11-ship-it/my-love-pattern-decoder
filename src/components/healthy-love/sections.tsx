@@ -90,20 +90,12 @@ export function Nav() {
           </span>
         </a>
         <nav className="hidden items-center gap-7 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm text-white/70 transition hover:text-white"
-            >
-              {link.label}
-            </a>
-          ))}
+          <a href="#top" className="text-sm text-white/70 transition hover:text-white">Home</a>
           <div className="relative group">
-            <button className="text-sm text-white/70 transition hover:text-white">
+            <button className="inline-flex items-center gap-1 text-sm text-white/70 transition hover:text-white">
               Patterns ▾
             </button>
-            <div className="absolute right-0 top-full hidden min-w-[220px] pt-2 group-hover:block">
+            <div className="absolute left-1/2 top-full hidden min-w-[240px] -translate-x-1/2 pt-2 group-hover:block">
               <div className="rounded-2xl liquid-glass p-2">
                 {patternLinks.map((p) => (
                   <a
@@ -117,6 +109,8 @@ export function Nav() {
               </div>
             </div>
           </div>
+          <a href="/blog" className="text-sm text-white/70 transition hover:text-white">Blog</a>
+          <a href="/about" className="text-sm text-white/70 transition hover:text-white">About</a>
         </nav>
         <button
           onClick={() => {
