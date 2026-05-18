@@ -35,6 +35,7 @@ function BackgroundVideo({ src }: { src: string }) {
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [patternsOpen, setPatternsOpen] = useState(false);
   const navigate = useNavigate();
   const [hasAccess, setHasAccess] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
