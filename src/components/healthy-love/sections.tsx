@@ -35,6 +35,7 @@ function BackgroundVideo({ src }: { src: string }) {
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [patternsOpen, setPatternsOpen] = useState(false);
   const navigate = useNavigate();
   const [hasAccess, setHasAccess] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
@@ -85,25 +86,65 @@ export function Nav() {
             </span>
           </span>
         </a>
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-7 overflow-visible md:flex">
           <a href="#top" className="text-sm text-white/70 transition hover:text-white">Home</a>
-          <div className="relative group">
-            <button className="inline-flex items-center gap-1 text-sm text-white/70 transition hover:text-white">
+          <div
+            className="relative"
+            onMouseEnter={() => setPatternsOpen(true)}
+            onMouseLeave={() => setPatternsOpen(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setPatternsOpen((v) => !v)}
+              className="inline-flex items-center gap-1 text-sm text-white/70 transition hover:text-white"
+            >
               Patterns ▾
             </button>
-            <div className="absolute left-1/2 top-full hidden min-w-[240px] -translate-x-1/2 pt-2 group-hover:block">
-              <div className="rounded-2xl liquid-glass p-2">
-                {patternLinks.map((p) => (
-                  <a
-                    key={p.href}
-                    href={p.href}
-                    className="block rounded-xl px-3 py-2 text-sm text-white/85 hover:bg-white/10"
-                  >
-                    {p.label}
-                  </a>
-                ))}
+            {patternsOpen && (
+              <div
+                className="absolute left-1/2 top-full min-w-[260px] -translate-x-1/2 pt-2"
+                style={{ zIndex: 1000 }}
+              >
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.97)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    border: "1px solid #E8E3DC",
+                    borderRadius: 14,
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+                    padding: 8,
+                  }}
+                >
+                  {patternLinks.map((p) => (
+                    <a
+                      key={p.href}
+                      href={p.href}
+                      onClick={() => setPatternsOpen(false)}
+                      className="block transition-colors"
+                      style={{
+                        padding: "10px 16px",
+                        borderRadius: 10,
+                        fontFamily: "Inter, system-ui, sans-serif",
+                        fontSize: 14,
+                        color: "#444",
+                        textDecoration: "none",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "rgba(201,133,122,0.08)";
+                        e.currentTarget.style.color = "#111111";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.color = "#444";
+                      }}
+                    >
+                      {p.label}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <a href="/blog" className="text-sm text-white/70 transition hover:text-white">Blog</a>
           <a href="/about" className="text-sm text-white/70 transition hover:text-white">About</a>
