@@ -89,8 +89,8 @@ function CategoryPage() {
               className="grid gap-6"
               style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))" }}
             >
-              {posts.map((p) => (
-                <PostCard key={p.id} post={p} />
+              {posts.map((p, i) => (
+                <PostCard key={p.id} post={p} index={i} />
               ))}
             </div>
           )}
