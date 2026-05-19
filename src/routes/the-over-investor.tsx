@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
-import { SiteNav } from "@/components/healthy-love/SiteNav";
-import { SiteFooter } from "@/components/healthy-love/SiteFooter";
-import { PageBackground } from "@/components/healthy-love/PageBackground";
+import { PatternPageShell } from "@/components/healthy-love/PatternPageShell";
 
 const URL = "https://mylovepattern.com/the-over-investor";
 const TITLE = "Why You Over-Give in Relationships, The Over-Investor Pattern";
