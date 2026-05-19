@@ -1,14 +1,52 @@
+import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import type { BlogPost } from "@/lib/blog.functions";
 
-export function PostCard({ post }: { post: BlogPost }) {
+const R2_BASE = "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/";
+
+const POST_VIDEOS: Record<string, string> = {
+  "the-over-investor": "FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL.mp4",
+  "the-unavailable-chaser": "FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4",
+  "validator-seeker-pattern": "FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL%20BALL.mp4",
+  "boundary-softener-pattern": "ROSES%20FAUNA%20CLOSE%20UP.mp4",
+  "different-person-same-relationship": "GEMS%20ISLAND%20MOTION.mp4",
+  "why-therapy-didnt-fix-dating": "GEM%20SPARKLE.mp4",
+};
+
+const FALLBACK_VIDEOS = [
+  "FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4",
+  "FLOWER%20AND%20CRYSTALS%20ISLAND%20TOP%20VIEW.mp4",
+  "GEM%20SPARKLE.mp4",
+  "ROSES%20FAUNA%20CLOSE%20UP.mp4",
+];
+
+function resolveMedia(post: BlogPost, index: number): { src: string; isVideo: boolean } {
   const img = post.featured_image_url;
-  const isVideo = img?.match(/\.(mp4|webm|mov)$/i);
+  if (img && /\.(mp4|webm|mov)$/i.test(img)) return { src: img, isVideo: true };
+  if (img) return { src: img, isVideo: false };
+  const mapped = POST_VIDEOS[post.slug];
+  const file = mapped ?? FALLBACK_VIDEOS[index % FALLBACK_VIDEOS.length];
+  return { src: R2_BASE + file, isVideo: true };
+}
+
+export function PostCard({ post, index = 0 }: { post: BlogPost; index?: number }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const { src, isVideo } = resolveMedia(post, index);
+  const preload = index < 3 ? "metadata" : "none";
+
+  const handleEnter = () => {
+    videoRef.current?.play().catch(() => {});
+  };
+  const handleLeave = () => {
+    videoRef.current?.pause();
+  };
 
   return (
     <Link
       to="/blog/$slug"
       params={{ slug: post.slug }}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
       className="group block overflow-hidden rounded-[20px] border transition-all duration-[250ms] hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
       style={{
         backgroundColor: "rgba(255,255,255,0.85)",
@@ -16,27 +54,21 @@ export function PostCard({ post }: { post: BlogPost }) {
       }}
     >
       <div className="relative h-[220px] w-full overflow-hidden">
-        {img && !isVideo ? (
-          <img src={img} alt={post.title} className="h-full w-full object-cover" />
-        ) : isVideo ? (
+        {isVideo ? (
           <video
-            className="h-full w-full object-cover"
-            autoPlay
+            ref={videoRef}
+            className="h-full w-full"
+            style={{ width: "100%", height: "220px", objectFit: "cover", display: "block" }}
             muted
             loop
             playsInline
-            preload="metadata"
+            autoPlay
+            preload={preload}
           >
-            <source src={img!} type="video/mp4" />
+            <source src={src} type="video/mp4" />
           </video>
         ) : (
-          <div
-            className="h-full w-full"
-            style={{
-              background:
-                "linear-gradient(135deg, #EDB200 0%, #F8F5F0 50%, #6b4c44 100%)",
-            }}
-          />
+          <img src={src} alt={post.title} className="h-full w-full object-cover" />
         )}
         {post.category && (
           <span
