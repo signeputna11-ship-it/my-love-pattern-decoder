@@ -53,6 +53,7 @@ export function PatternPageShell({
             <span style={{ color: "#EDB200" }}>✦</span> {subtitle}
           </p>
           <div
+            className="pattern-prose"
             style={{
               fontFamily: "Inter, sans-serif",
               fontSize: "17px",
@@ -62,6 +63,12 @@ export function PatternPageShell({
           >
             {children}
           </div>
+          <style>{`
+            .pattern-prose p { margin-bottom: 20px; font-size: 17px; line-height: 1.85; color: #2c1f1a; }
+            .pattern-prose p.lead { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 24px; color: #111111; line-height: 1.4; margin-bottom: 28px; }
+            .pattern-prose strong { color: #111111; font-weight: 600; }
+            .pattern-prose a { color: #111111; border-bottom: 1px solid #E8E3DC; text-decoration: none; }
+          `}</style>
           <RelatedPatterns currentSlug={currentSlug} />
         </article>
       </main>
