@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
-import { SiteNav } from "@/components/healthy-love/SiteNav";
-import { SiteFooter } from "@/components/healthy-love/SiteFooter";
-import { PageBackground } from "@/components/healthy-love/PageBackground";
+import { PatternPageShell } from "@/components/healthy-love/PatternPageShell";
 
 const URL = "https://mylovepattern.com/the-unavailable-chaser";
 const TITLE = "Why You Keep Attracting Emotionally Unavailable Men, The Unavailable Chaser Pattern";
