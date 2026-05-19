@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
-import { SiteNav } from "@/components/healthy-love/SiteNav";
-import { SiteFooter } from "@/components/healthy-love/SiteFooter";
-import { PageBackground } from "@/components/healthy-love/PageBackground";
+import { PatternPageShell } from "@/components/healthy-love/PatternPageShell";
 
 const URL = "https://mylovepattern.com/the-boundary-softener";
 const TITLE = "Why You Lose Your Boundaries When You Like Someone, The Boundary Softener Pattern";
@@ -62,28 +59,18 @@ export const Route = createFileRoute("/the-boundary-softener")({
 
 function Page() {
   return (
-    <><PageBackground image="left-crystal-flowers" /><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="font-serif text-5xl text-foreground">Why You Lose Your Boundaries When You Like Someone</h1>
-      <p className="mt-3 text-base text-muted-foreground">The Boundary Softener love pattern</p>
-      <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
-        <p className="text-xl text-foreground">You know your standards until you like someone.</p>
-        <p>
-          In theory you know what you want. Consistency. Follow-through. Someone who shows up. But then you meet someone and something shifts. You start accommodating. You say yes when you mean no. You call it flexibility. You call it not being difficult. You have done it so long you have stopped noticing where your actual edge is.
-        </p>
-        <p>
-          The Boundary Softener pattern usually forms when expressing needs created conflict early on. So you learned to shrink them. To be agreeable. To prioritise the other person's comfort over your own. You called it love. It was survival.
-        </p>
-        <p>
-          The problem is it makes you invisible in every relationship you are in. The other person never meets the real version of you. And you never find out whether they could actually handle it.
-        </p>
-        <p>
-          <span className="font-semibold text-foreground">What shifts it:</span> Starting to notice the moment you soften. Not changing it immediately. Just noticing. Then asking: what would I say if I were not afraid of the reaction?
-        </p>
-        <p>
-          Take the free 60-second quiz to confirm your pattern at <Link to="/" className="text-foreground underline">mylovepattern.com</Link>
-        </p>
-      </div>
-      <RelatedPatterns currentSlug="/the-boundary-softener" />
-    </main><SiteFooter /></>
+    <PatternPageShell
+      videoSrc="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/ROSES%20FAUNA%20CLOSE%20UP.mp4"
+      title="Why You Lose Your Boundaries When You Like Someone"
+      subtitle="The Boundary Softener love pattern"
+      currentSlug="/the-boundary-softener"
+    >
+      <p className="lead">You know your standards until you like someone.</p>
+      <p>In theory you know what you want. Consistency. Follow-through. Someone who shows up. But then you meet someone and something shifts. You start accommodating. You say yes when you mean no. You call it flexibility. You call it not being difficult. You have done it so long you have stopped noticing where your actual edge is.</p>
+      <p>The Boundary Softener pattern usually forms when expressing needs created conflict early on. So you learned to shrink them. To be agreeable. To prioritise the other person's comfort over your own. You called it love. It was survival.</p>
+      <p>The problem is it makes you invisible in every relationship you are in. The other person never meets the real version of you. And you never find out whether they could actually handle it.</p>
+      <p><strong>What shifts it:</strong> Starting to notice the moment you soften. Not changing it immediately. Just noticing. Then asking: what would I say if I were not afraid of the reaction?</p>
+      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/">mylovepattern.com</Link></p>
+    </PatternPageShell>
   );
 }

@@ -126,7 +126,7 @@ function PostPage() {
 
   return (
     <>
-      <VideoBackground src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL.mp4" />
+      <VideoBackground src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4" />
       <SiteNav />
       <main className="relative z-[1]">
         <article

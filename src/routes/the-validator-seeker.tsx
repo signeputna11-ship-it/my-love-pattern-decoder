@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
-import { SiteNav } from "@/components/healthy-love/SiteNav";
-import { SiteFooter } from "@/components/healthy-love/SiteFooter";
-import { PageBackground } from "@/components/healthy-love/PageBackground";
+import { PatternPageShell } from "@/components/healthy-love/PatternPageShell";
 
 const URL = "https://mylovepattern.com/the-validator-seeker";
 const TITLE = "Why One Unanswered Text Wrecks You, The Validator Seeker Pattern";
@@ -62,28 +59,18 @@ export const Route = createFileRoute("/the-validator-seeker")({
 
 function Page() {
   return (
-    <><PageBackground image="right-flowers" /><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="font-serif text-5xl text-foreground">Why One Unanswered Text Wrecks You</h1>
-      <p className="mt-3 text-base text-muted-foreground">The Validator Seeker love pattern</p>
-      <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
-        <p className="text-xl text-foreground">One unanswered message shifts your entire nervous system.</p>
-        <p>
-          When attention comes you feel calm, capable, fine. When it goes quiet you feel anxious, restless, uncertain about everything. The reassurance does not last long. You need it again. And the cycle continues.
-        </p>
-        <p>
-          The Validator Seeker pattern forms when your sense of being okay became tied to external signals. A response, a choice, a look, a text back. Not because you are needy. Because at some point the people around you made their approval feel conditional, and your nervous system learned to scan for it constantly.
-        </p>
-        <p>
-          This is not about the person you are dating. It is about the story running underneath: that you are only as lovable as someone's last response to you.
-        </p>
-        <p>
-          <span className="font-semibold text-foreground">What shifts it:</span> Separating your internal state from their external behaviour. Building a source of okayness that does not depend on what they do next.
-        </p>
-        <p>
-          Take the free 60-second quiz to confirm your pattern at <Link to="/" className="text-foreground underline">mylovepattern.com</Link>
-        </p>
-      </div>
-      <RelatedPatterns currentSlug="/the-validator-seeker" />
-    </main><SiteFooter /></>
+    <PatternPageShell
+      videoSrc="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL%20BALL.mp4"
+      title="Why One Unanswered Text Wrecks You"
+      subtitle="The Validator Seeker love pattern"
+      currentSlug="/the-validator-seeker"
+    >
+      <p className="lead">One unanswered message shifts your entire nervous system.</p>
+      <p>When attention comes you feel calm, capable, fine. When it goes quiet you feel anxious, restless, uncertain about everything. The reassurance does not last long. You need it again. And the cycle continues.</p>
+      <p>The Validator Seeker pattern forms when your sense of being okay became tied to external signals. A response, a choice, a look, a text back. Not because you are needy. Because at some point the people around you made their approval feel conditional, and your nervous system learned to scan for it constantly.</p>
+      <p>This is not about the person you are dating. It is about the story running underneath: that you are only as lovable as someone's last response to you.</p>
+      <p><strong>What shifts it:</strong> Separating your internal state from their external behaviour. Building a source of okayness that does not depend on what they do next.</p>
+      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/">mylovepattern.com</Link></p>
+    </PatternPageShell>
   );
 }

@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
-import { SiteNav } from "@/components/healthy-love/SiteNav";
-import { SiteFooter } from "@/components/healthy-love/SiteFooter";
-import { PageBackground } from "@/components/healthy-love/PageBackground";
+import { PatternPageShell } from "@/components/healthy-love/PatternPageShell";
 
 const URL = "https://mylovepattern.com/the-over-investor";
 const TITLE = "Why You Over-Give in Relationships, The Over-Investor Pattern";
@@ -62,31 +59,19 @@ export const Route = createFileRoute("/the-over-investor")({
 
 function Page() {
   return (
-    <><PageBackground image="crystal" /><SiteNav /><main className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="font-serif text-5xl text-foreground">Why You Over-Give in Relationships</h1>
-      <p className="mt-3 text-base text-muted-foreground">The Over-Investor love pattern</p>
-      <div className="mt-8 space-y-6 text-lg text-muted-foreground leading-relaxed">
-        <p className="text-xl text-foreground">You give everything before anything is established.</p>
-        <p>
-          You reply faster. You make yourself available. You accommodate their schedule, their pace, their mood before they have given you any real reason to. And the worst part is it feels like caring. It feels like you.
-        </p>
-        <p>
-          The Over-Investor pattern runs on a single belief formed long before this person existed in your life: love is something you earn through effort.
-        </p>
-        <p>
-          When that belief runs in the background, early investment does not feel like a risk. It feels like strategy. The problem is what it selects for. The people who match your energy feel boring. The ones who make you work for it feel like home. That is not chemistry. That is a pattern.
-        </p>
-        <p>
-          <span className="font-semibold text-foreground">Where it starts:</span> Most Over-Investors learned early that love was conditional on performance. Affection was inconsistent. You learned to work for the warm moments. That adaptation followed you into adult relationships where the other person never asked for that level of effort.
-        </p>
-        <p>
-          <span className="font-semibold text-foreground">What shifts it:</span> Learning to let the situation establish itself before you invest in it. Not how do I show up for this person, but what is this person actually showing me.
-        </p>
-        <p>
-          Take the free 60-second quiz to confirm your pattern at <Link to="/" className="text-foreground underline">mylovepattern.com</Link>
-        </p>
-      </div>
-      <RelatedPatterns currentSlug="/the-over-investor" />
-    </main><SiteFooter /></>
+    <PatternPageShell
+      videoSrc="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL.mp4"
+      title="Why You Over-Give in Relationships"
+      subtitle="The Over-Investor love pattern"
+      currentSlug="/the-over-investor"
+    >
+      <p className="lead">You give everything before anything is established.</p>
+      <p>You reply faster. You make yourself available. You accommodate their schedule, their pace, their mood before they have given you any real reason to. And the worst part is it feels like caring. It feels like you.</p>
+      <p>The Over-Investor pattern runs on a single belief formed long before this person existed in your life: love is something you earn through effort.</p>
+      <p>When that belief runs in the background, early investment does not feel like a risk. It feels like strategy. The problem is what it selects for. The people who match your energy feel boring. The ones who make you work for it feel like home. That is not chemistry. That is a pattern.</p>
+      <p><strong>Where it starts:</strong> Most Over-Investors learned early that love was conditional on performance. Affection was inconsistent. You learned to work for the warm moments. That adaptation followed you into adult relationships where the other person never asked for that level of effort.</p>
+      <p><strong>What shifts it:</strong> Learning to let the situation establish itself before you invest in it. Not how do I show up for this person, but what is this person actually showing me.</p>
+      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/">mylovepattern.com</Link></p>
+    </PatternPageShell>
   );
 }
