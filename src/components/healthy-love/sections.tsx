@@ -74,7 +74,7 @@ export function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-4 sm:pt-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full liquid-glass px-2.5 py-2 sm:px-4 sm:py-3">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full liquid-glass px-2.5 py-2 sm:px-4 sm:py-3" style={{ overflow: "visible" }}>
         <a href="#top" className="flex min-w-0 flex-1 items-center gap-2 text-white">
           <span className="grid h-7 w-7 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-white sm:h-8 sm:w-8">
             <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
