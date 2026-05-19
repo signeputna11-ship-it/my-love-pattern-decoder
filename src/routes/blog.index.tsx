@@ -119,8 +119,8 @@ function BlogIndex() {
               className="grid gap-6"
               style={{ gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))" }}
             >
-              {filtered.map((p) => (
-                <PostCard key={p.id} post={p} />
+              {filtered.map((p, i) => (
+                <PostCard key={p.id} post={p} index={i} />
               ))}
             </div>
           )}

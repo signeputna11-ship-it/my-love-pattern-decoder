@@ -356,8 +356,8 @@ function PostPage() {
                 <span style={{ color: "#EDB200" }}>✦</span> Read next
               </h2>
               <div className="grid gap-6 sm:grid-cols-2">
-                {related.map((p: BlogPost) => (
-                  <PostCard key={p.id} post={p} />
+                {related.map((p: BlogPost, i: number) => (
+                  <PostCard key={p.id} post={p} index={i} />
                 ))}
               </div>
             </>
