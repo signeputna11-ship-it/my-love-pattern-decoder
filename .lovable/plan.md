@@ -1,59 +1,32 @@
-## Blog system build plan
+## Decisions locked in
+- **Payments**: existing gateway-proxied Stripe client (`createStripeClient`) — no new `stripe` SDK init, no `STRIPE_SECRET_KEY`.
+- **DB**: extend `purchases` (add `access_token`, `upsell_converted`, `email`, `product_slug`) instead of creating an `orders` table.
+- **Token access**: `/app/worksheet/:token` and `/app/kit/:token` are intentionally token-gated (no Supabase login required) — token is the access credential.
+- **Emails**: Lovable Emails queue (`enqueue_email`) — no Resend.
+- **Kit content**: new 5-stage kit lives **alongside** existing Reset modules. New tables (`kit_stages`, `kit_stage_progress`) rather than overwriting `modules`/`user_progress`.
 
-### 1. Database (one migration)
-- `blog_posts` (all fields per spec)
-- `blog_subscribers` (email unique, first_name, source)
-- `blog_categories` (seeded with 6 categories)
-- RLS:
-  - `blog_posts`: public SELECT where `published=true`; admin (has_role 'admin') full access
-  - `blog_categories`: public SELECT; admin write
-  - `blog_subscribers`: public INSERT only; admin SELECT
-- Trigger `update_updated_at_column` on blog_posts
-- Seed 6 categories + 1 post (the-over-investor)
+## Scope to build
+1. **Schema migration**: add `access_token`, `email`, `product_slug`, `upsell_converted` to `purchases`; create `kit_stages` (admin-seeded content), `kit_stage_progress` (token-scoped progress), `worksheet_responses` (token-scoped auto-save).
+2. **Stripe checkout server fn**: `createCheckoutSession` for two products (`worksheet`, `kit_upsell`), using gateway client.
+3. **Stripe webhook** at `/api/public/stripe-webhook`: on `checkout.session.completed` insert `purchases` row with generated `access_token`, enqueue welcome email + nurture sequence.
+4. **Public routes**:
+   - `/shop/worksheet` — sales page with blurred preview + checkout button
+   - `/thank-you?token=...` — access link + upsell card
+   - `/app/worksheet/:token` — token-gated fillable worksheet with auto-save (no auth)
+   - `/app/kit/:token` — token-gated 5-stage dashboard
+5. **Server fns** (token-validated, no `requireSupabaseAuth`): `getWorksheetByToken`, `saveWorksheetResponse`, `getKitByToken`, `markStageComplete`.
+6. **Admin** (auth-gated under `_authenticated`, admin role): orders list + subscribers list — extend existing admin if present.
+7. **Email sequence**: 7 templates enqueued on purchase with scheduled `send_at` offsets (D0, D1, D3, D5, D7, D14, D21). Requires `delayed_send_at` column on queue — if not supported, fall back to a cron processor.
 
-### 2. Server functions (`src/lib/blog.functions.ts`)
-- `listPublishedPosts({ category? })` — public, uses `supabaseAdmin` with WHERE published=true
-- `getPostBySlug(slug)` — public
-- `listCategories()` — public
-- `subscribeToBlog({ email, first_name })` — public, insert with onConflict ignore
-- `listAllPostsAdmin()` — `requireSupabaseAuth` + admin role check
-- `upsertPost(...)` — admin
-- `togglePublish(id)` — admin
-- `deletePost(id)` — admin
+## Open blockers before I write code
+- **Spec truncation**: the original prompt was cut at ~40k chars. I'm missing: exact product prices, exact worksheet questions, exact 5 kit stage names/content, exact 7 email copy, upsell pricing, and "preview questions blurred" design details. I cannot invent these without producing the wrong thing.
+- **Stripe products**: not yet created via `payments--create_product`. I need prices in cents + currency for `worksheet` and `kit_upsell`.
 
-### 3. Public routes
-- `src/routes/blog.index.tsx` — REWRITE: video bg, hero, subscribe form, category pills, post grid (loader fetches posts + categories)
-- `src/routes/blog.$slug.tsx` — NEW: full post page with JSON-LD, TipTap HTML render, related posts, subscribe at bottom. Replaces hardcoded `blog.the-over-investor.tsx` (delete it).
-- `src/routes/blog.category.$category.tsx` — NEW: filtered grid
+## Ask
+Paste (or confirm I should invent placeholders for):
+1. Worksheet price + upsell price (e.g. `$27` / `$67`), currency
+2. Names of the 5 kit stages
+3. Worksheet question list (or "use placeholders, you'll edit later")
+4. Email subject lines + body copy (or "use placeholders")
 
-### 4. Admin routes (under `_authenticated`)
-- `src/routes/_authenticated/admin.blog.index.tsx` — table of posts with filter tabs, publish toggle
-- `src/routes/_authenticated/admin.blog.new.tsx`
-- `src/routes/_authenticated/admin.blog.edit.$id.tsx`
-- Both editor routes share `<PostEditor>` component
-
-### 5. Components
-- `src/components/blog/SubscribeForm.tsx` — first name + email + button + success state
-- `src/components/blog/PostCard.tsx` — card used in index/category/related
-- `src/components/blog/CategoryPills.tsx`
-- `src/components/blog/VideoBackground.tsx` — reusable parchment-overlay video bg
-- `src/components/blog/PostEditor.tsx` — TipTap editor + settings panel + auto-save + SEO preview
-- `src/components/blog/TipTapToolbar.tsx`
-- `src/components/blog/prose.css` (or inline styles) — prose styling per spec
-
-### 6. Dependencies
-`bun add @tiptap/react @tiptap/starter-kit @tiptap/extension-image @tiptap/extension-youtube @tiptap/extension-link @tiptap/extension-placeholder dompurify @types/dompurify`
-
-### 7. Sitemap
-Update `src/routes/sitemap[.]xml.ts` to query published posts + categories dynamically.
-
-### 8. Admin role
-Currently no admin user exists. After migration, ask the user to share the email of the account that should be admin so I can grant `admin` role via `user_roles`. For now editor will check `has_role(uid,'admin')` and unauthorized users see a "request access" message.
-
-### Notes
-- Reuse existing `SiteNav` / `SiteFooter` on public blog pages.
-- Sanitize rendered HTML with DOMPurify before `dangerouslySetInnerHTML`.
-- Replace the existing `blog.the-over-investor.tsx` static route with the dynamic `blog.$slug.tsx` (seed post serves the same URL).
-- All copy free of em-dashes.
-
-Approve and I'll build it in one pass.
+If you say **"use placeholders for everything, just ship the plumbing"**, I'll build the full stack with sensible placeholder content you can edit in the admin.
