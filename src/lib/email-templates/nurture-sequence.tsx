@@ -95,20 +95,25 @@ function renderStep(step: number, first_name: string) {
             We go to the origin of the belief. Not to relive it. To understand it with the mind of an adult instead of the mind of a child who had no other reference point.
           </Text>
           <Text style={styles.text}>
-            When you can see where the belief came from and why it formed, something changes in how much authority it has over you. It stops feeling like the truth about love and starts feeling like a conclusion a young version of you drew with the information she had at the time.
+            When you can see where the belief came from and why it formed, something changes in how much authority it has over you. It stops feeling like the truth about love. It starts feeling like a conclusion a young version of you drew with the information she had at the time.
           </Text>
           <Text style={styles.text}>
             That is when the behaviour changes. Not because you decided to change it. Because the belief driving it no longer feels true in the same way.
           </Text>
-          <Text style={styles.text}>
-            I work with a small number of women each month on exactly this. A 90-minute Deep Pattern Reset. You leave with a personalised 21-day audio to anchor the shift.
-          </Text>
-          <div style={styles.buttonWrap}>
-            <Button style={styles.button} href="mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20Discovery%20Call">
-              Email Signe to arrange a discovery call
-            </Button>
+          <div style={{ background: '#faf7f2', border: '1px solid #e8dccb', borderRadius: 16, padding: 28, margin: '28px 0', textAlign: 'center' as const }}>
+            <Heading as="h3" style={{ ...styles.h1, fontSize: 22, margin: 0 }}>The Deep Pattern Reset</Heading>
+            <Text style={{ ...styles.text, marginTop: 10 }}>
+              90 minutes. A deeply relaxed meditative state. Direct work on the belief at the level where it lives. A personalised 21-day audio to anchor the shift.
+            </Text>
+            <Text style={{ ...styles.text, fontWeight: 600, marginTop: 6 }}>$333 per session</Text>
+            <div style={{ marginTop: 18 }}>
+              <a href="mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20-%20Discovery%20Call" style={{ display: 'inline-block', background: '#111111', color: 'white', borderRadius: 100, padding: '10px 24px', textDecoration: 'none', fontSize: 14 }}>
+                Email Signe to arrange a discovery call →
+              </a>
+            </div>
+            <Text style={{ ...styles.small, marginTop: 14 }}>Signe responds personally. Limited spots each month.</Text>
           </div>
-          <Text style={styles.small}>Investment $333. Limited spots each month.</Text>
+          <Text style={styles.text}>Signe</Text>
         </>
       )
     case 6:
