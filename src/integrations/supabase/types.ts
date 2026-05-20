@@ -334,6 +334,75 @@ export type Database = {
         }
         Relationships: []
       }
+      kit_stage_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          purchase_id: string
+          stage_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          purchase_id: string
+          stage_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          purchase_id?: string
+          stage_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kit_stage_progress_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "purchases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kit_stage_progress_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "kit_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      kit_stages: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          position: number
+          slug: string
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          position: number
+          slug: string
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          position?: number
+          slug?: string
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       modules: {
         Row: {
           created_at: string
@@ -399,55 +468,67 @@ export type Database = {
       }
       purchases: {
         Row: {
+          access_token: string | null
           amount_total: number | null
           created_at: string
           currency: string | null
+          customer_email: string | null
           environment: string
           has_access: boolean
           id: string
           price_id: string | null
           product_id: string | null
+          product_slug: string | null
           refunded: boolean
           status: string
           stripe_customer_id: string | null
           stripe_payment_intent_id: string | null
           stripe_session_id: string | null
           updated_at: string
-          user_id: string
+          upsell_converted: boolean
+          user_id: string | null
         }
         Insert: {
+          access_token?: string | null
           amount_total?: number | null
           created_at?: string
           currency?: string | null
+          customer_email?: string | null
           environment?: string
           has_access?: boolean
           id?: string
           price_id?: string | null
           product_id?: string | null
+          product_slug?: string | null
           refunded?: boolean
           status?: string
           stripe_customer_id?: string | null
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
           updated_at?: string
-          user_id: string
+          upsell_converted?: boolean
+          user_id?: string | null
         }
         Update: {
+          access_token?: string | null
           amount_total?: number | null
           created_at?: string
           currency?: string | null
+          customer_email?: string | null
           environment?: string
           has_access?: boolean
           id?: string
           price_id?: string | null
           product_id?: string | null
+          product_slug?: string | null
           refunded?: boolean
           status?: string
           stripe_customer_id?: string | null
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
           updated_at?: string
-          user_id?: string
+          upsell_converted?: boolean
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -630,6 +711,35 @@ export type Database = {
             columns: ["tool_id"]
             isOneToOne: false
             referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      worksheet_responses: {
+        Row: {
+          data: Json
+          id: string
+          purchase_id: string
+          updated_at: string
+        }
+        Insert: {
+          data?: Json
+          id?: string
+          purchase_id: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+          purchase_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "worksheet_responses_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: true
+            referencedRelation: "purchases"
             referencedColumns: ["id"]
           },
         ]
