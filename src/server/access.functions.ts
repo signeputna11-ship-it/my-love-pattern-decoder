@@ -83,7 +83,7 @@ export const saveWorksheetResponse = createServerFn({ method: "POST" })
     const { error: upsertError } = await supabaseAdmin
       .from("worksheet_responses")
       .upsert(
-        { purchase_id: purchase.id as string, data: data.data, updated_at: new Date().toISOString() },
+        [{ purchase_id: purchase.id as string, data: data.data as never, updated_at: new Date().toISOString() }],
         { onConflict: "purchase_id" },
       );
     if (upsertError) throw new Error(upsertError.message);
@@ -144,7 +144,7 @@ export const markStageComplete = createServerFn({ method: "POST" })
     const { error: upsertError } = await supabaseAdmin
       .from("kit_stage_progress")
       .upsert(
-        { purchase_id: purchase.id as string, stage_id: data.stageId, completed_at: new Date().toISOString() },
+        [{ purchase_id: purchase.id as string, stage_id: data.stageId, completed_at: new Date().toISOString() }],
         { onConflict: "purchase_id,stage_id" },
       );
     if (upsertError) throw new Error(upsertError.message);

@@ -12,7 +12,7 @@ type Product = {
   currency: string;
 };
 
-export const Route = createFileRoute("/shop")({
+export const Route = createFileRoute("/shop/")({
   component: ShopIndex,
   head: () => ({
     meta: [

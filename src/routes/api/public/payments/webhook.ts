@@ -11,29 +11,65 @@ function getSupabase(): any {
   return _supabase;
 }
 
-async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
-  const userId = session.metadata?.userId;
-  if (!userId) {
-    console.error("checkout.session.completed without userId in metadata", session.id);
-    return;
-  }
-  const lineItem = session.line_items?.data?.[0] ?? null;
-  let priceId: string | null = lineItem?.price?.metadata?.lovable_external_id ?? null;
-  let productId: string | null = lineItem?.price?.product ?? null;
+// Generate a URL-safe random access token (~22 chars).
+function generateAccessToken(): string {
+  const bytes = new Uint8Array(24);
+  crypto.getRandomValues(bytes);
+  return Buffer.from(bytes)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
 
-  if (!priceId) {
-    try {
-      const stripe = createStripeClient(env);
-      const expanded = await stripe.checkout.sessions.retrieve(session.id, {
-        expand: ["line_items.data.price.product"],
-      });
-      const li: any = expanded.line_items?.data?.[0];
-      priceId = li?.price?.metadata?.lovable_external_id ?? li?.price?.id ?? null;
-      productId = (li?.price?.product as any)?.id ?? li?.price?.product ?? null;
-    } catch (e) {
-      console.warn("Failed to expand session line items:", (e as Error).message);
+async function lookupProductSlugByLookupKey(
+  env: StripeEnv,
+  lookupKey: string | null,
+): Promise<string | null> {
+  if (!lookupKey) return null;
+  const { data } = await getSupabase()
+    .from("shop_products")
+    .select("slug")
+    .eq("stripe_price_id", lookupKey)
+    .maybeSingle();
+  return (data?.slug as string | null) ?? null;
+}
+
+async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
+  const userId: string | null = session.metadata?.userId ?? null;
+  const metadataSlug: string | null = session.metadata?.product_slug ?? null;
+  const guestEmail: string | null = session.metadata?.guest_email ?? null;
+
+  let priceId: string | null = null;
+  let productId: string | null = null;
+  let resolvedSlug: string | null = metadataSlug;
+
+  try {
+    const stripe = createStripeClient(env);
+    const expanded = await stripe.checkout.sessions.retrieve(session.id, {
+      expand: ["line_items.data.price.product"],
+    });
+    const li: any = expanded.line_items?.data?.[0];
+    priceId = li?.price?.lookup_key ?? li?.price?.metadata?.lovable_external_id ?? li?.price?.id ?? null;
+    productId = (li?.price?.product as any)?.id ?? li?.price?.product ?? null;
+    if (!resolvedSlug) {
+      resolvedSlug = await lookupProductSlugByLookupKey(env, priceId);
     }
+  } catch (e) {
+    console.warn("Failed to expand session line items:", (e as Error).message);
   }
+
+  const recipientEmail: string | null =
+    session.customer_details?.email ?? session.customer_email ?? guestEmail ?? null;
+
+  // Idempotent token: keep existing token on re-delivery
+  const { data: existing } = await getSupabase()
+    .from("purchases")
+    .select("id, access_token")
+    .eq("stripe_session_id", session.id)
+    .maybeSingle();
+
+  const accessToken: string = existing?.access_token ?? generateAccessToken();
 
   await getSupabase().from("purchases").upsert(
     {
@@ -43,6 +79,9 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
       stripe_customer_id: session.customer ?? null,
       price_id: priceId,
       product_id: productId,
+      product_slug: resolvedSlug,
+      customer_email: recipientEmail,
+      access_token: accessToken,
       amount_total: session.amount_total ?? null,
       currency: session.currency ?? null,
       status: "paid",
@@ -54,20 +93,24 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
     { onConflict: "stripe_session_id" },
   );
 
-  // Send purchase confirmation email (idempotent on stripe_session_id).
-  const recipient: string | null =
-    session.customer_details?.email ?? session.customer_email ?? null;
-  if (recipient) {
+  if (recipientEmail) {
     const amount =
       typeof session.amount_total === "number"
         ? (session.amount_total / 100).toFixed(2)
         : undefined;
+    const isKit = resolvedSlug === "love-pattern-reset-kit";
+    const accessPath = isKit ? `/kit/${accessToken}` : `/w/${accessToken}`;
     try {
       await enqueueTransactionalEmailAsService({
         templateName: "purchase-confirmation",
-        recipientEmail: recipient,
+        recipientEmail,
         idempotencyKey: `purchase-confirm-${session.id}`,
-        templateData: { amount, currency: session.currency ?? undefined },
+        templateData: {
+          amount,
+          currency: session.currency ?? undefined,
+          accessPath,
+          productSlug: resolvedSlug ?? undefined,
+        },
       });
     } catch (e) {
       console.error("Failed to enqueue purchase confirmation:", e);
@@ -98,7 +141,6 @@ async function handleWebhook(req: Request, env: StripeEnv) {
       await upsertPurchaseFromSession(event.data.object, env);
       break;
     case "transaction.completed": {
-      // In case payment provider abstraction sends this. Try to extract a session/PI
       const obj: any = event.data.object;
       if (obj?.id?.startsWith?.("cs_")) await upsertPurchaseFromSession(obj, env);
       break;
