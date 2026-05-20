@@ -66,35 +66,42 @@ body { font-family: 'Inter', sans-serif; background: #000; }
 .text-balance { text-wrap: balance; }
 html { scroll-behavior: smooth; }
 
-/* Editorial typography: prevent orphan/widow words globally.
-   `text-wrap: balance` distributes headline lines so the last line never carries a single dangling word.
-   `text-wrap: pretty` does the same for body paragraphs. */
+/* Editorial typography: prevent orphan/widow words globally — forced with !important
+   to override component-level utility classes and inline styles. */
 h1, h2, h3, h4, h5, h6,
-.headline-balance {
-  text-wrap: balance;
-  overflow-wrap: break-word;
-  word-break: break-word;
+.hero-title,
+.section-title,
+.post-title,
+.card-title,
+.headline-balance,
+[class*="title"],
+[class*="heading"],
+[class*="headline"] {
+  text-wrap: balance !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
   hyphens: manual;
 }
 
-p {
+p, blockquote, li {
   text-wrap: pretty;
   overflow-wrap: break-word;
 }
 
-blockquote {
-  text-wrap: balance;
-  overflow-wrap: break-word;
+.blog-prose h1,
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4,
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  text-wrap: balance !important;
 }
 
-.hero-title,
-.section-title,
-.card-title,
-.post-title,
-.pattern-title,
-.upsell-title,
-.testimonial-text {
-  text-wrap: balance;
+.blog-prose p,
+.prose p {
+  text-wrap: pretty !important;
 }
 
 @custom-variant dark (&:is(.dark *));

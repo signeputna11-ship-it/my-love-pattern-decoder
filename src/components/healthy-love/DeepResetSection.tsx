@@ -25,8 +25,9 @@ export function DeepResetSection() {
         <h2 className="mt-5 text-center font-serif text-[2rem] leading-tight text-white sm:text-4xl md:text-6xl">
           The Deep Pattern Reset
           <br />
-          <em className="italic text-white/75">
-            One session. A different nervous system story.
+          <em className="italic text-white/75" style={{ textWrap: "balance" }}>
+            One session. A different{" "}
+            <span style={{ whiteSpace: "nowrap" }}>nervous system story.</span>
           </em>
         </h2>
 
