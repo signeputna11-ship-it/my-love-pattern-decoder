@@ -233,6 +233,80 @@ export type Database = {
         }
         Relationships: []
       }
+      email_sequence_log: {
+        Row: {
+          id: string
+          sent_at: string
+          step: number
+          subscriber_id: string
+          template_name: string
+        }
+        Insert: {
+          id?: string
+          sent_at?: string
+          step: number
+          subscriber_id: string
+          template_name: string
+        }
+        Update: {
+          id?: string
+          sent_at?: string
+          step?: number
+          subscriber_id?: string
+          template_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_sequence_log_subscriber_id_fkey"
+            columns: ["subscriber_id"]
+            isOneToOne: false
+            referencedRelation: "email_subscribers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string | null
+          id: string
+          last_emailed_at: string | null
+          product_slug: string | null
+          sequence_paused: boolean
+          sequence_step: number
+          source: string
+          subscribed_at: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name?: string | null
+          id?: string
+          last_emailed_at?: string | null
+          product_slug?: string | null
+          sequence_paused?: boolean
+          sequence_step?: number
+          source?: string
+          subscribed_at?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_emailed_at?: string | null
+          product_slug?: string | null
+          sequence_paused?: boolean
+          sequence_step?: number
+          source?: string
+          subscribed_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_unsubscribe_tokens: {
         Row: {
           created_at: string
@@ -473,6 +547,7 @@ export type Database = {
           created_at: string
           currency: string | null
           customer_email: string | null
+          downloaded_at: string | null
           environment: string
           has_access: boolean
           id: string
@@ -486,6 +561,7 @@ export type Database = {
           stripe_session_id: string | null
           updated_at: string
           upsell_converted: boolean
+          upsell_shown: boolean
           user_id: string | null
         }
         Insert: {
@@ -494,6 +570,7 @@ export type Database = {
           created_at?: string
           currency?: string | null
           customer_email?: string | null
+          downloaded_at?: string | null
           environment?: string
           has_access?: boolean
           id?: string
@@ -507,6 +584,7 @@ export type Database = {
           stripe_session_id?: string | null
           updated_at?: string
           upsell_converted?: boolean
+          upsell_shown?: boolean
           user_id?: string | null
         }
         Update: {
@@ -515,6 +593,7 @@ export type Database = {
           created_at?: string
           currency?: string | null
           customer_email?: string | null
+          downloaded_at?: string | null
           environment?: string
           has_access?: boolean
           id?: string
@@ -528,6 +607,7 @@ export type Database = {
           stripe_session_id?: string | null
           updated_at?: string
           upsell_converted?: boolean
+          upsell_shown?: boolean
           user_id?: string | null
         }
         Relationships: []
