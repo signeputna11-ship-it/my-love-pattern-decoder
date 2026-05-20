@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getWorksheetByToken, saveWorksheetResponse } from "@/server/access.functions";
 import { Loader2, Check } from "lucide-react";
+import { VideoBg } from "@/components/shop/VideoBg";
 
 type Loaded = {
   product: { slug: string; name: string; short_description: string | null } | null;
@@ -101,6 +102,7 @@ function WorksheetPage() {
   const [err, setErr] = useState<string | null>(null);
   const [values, setValues] = useState<Record<string, string>>({});
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
+  const [focusedField, setFocusedField] = useState<string | null>(null);
   const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -137,78 +139,204 @@ function WorksheetPage() {
     persist(next);
   };
 
+  const answeredCount = questions.filter((q) => (values[q.id] ?? "").trim().length > 0).length;
+  const progressPct = questions.length ? (answeredCount / questions.length) * 100 : 0;
+
+  const Shell = ({ children }: { children: React.ReactNode }) => (
+    <div
+      style={{
+        position: "relative",
+        minHeight: "100vh",
+        overflow: "hidden",
+        backgroundColor: "#F8F5F0",
+        color: "#111111",
+      }}
+    >
+      <VideoBg
+        src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4"
+        overlay="rgba(248,245,240,0.84)"
+      />
+      <div style={{ position: "relative", zIndex: 2 }}>{children}</div>
+    </div>
+  );
+
   if (err) {
     return (
-      <div className="grid min-h-screen place-items-center p-6" style={{ backgroundColor: "#F8F5F0" }}>
-        <div className="rounded-3xl border border-red-300 bg-red-50 p-6 text-center">
-          <p className="text-red-700">{err}</p>
+      <Shell>
+        <div className="grid min-h-screen place-items-center p-6">
+          <div className="rounded-3xl border border-red-300 bg-red-50 p-6 text-center">
+            <p className="text-red-700">{err}</p>
+          </div>
         </div>
-      </div>
+      </Shell>
     );
   }
 
   if (!loaded) {
     return (
-      <div className="grid min-h-screen place-items-center" style={{ backgroundColor: "#F8F5F0" }}>
-        <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#6b4c44" }} />
-      </div>
+      <Shell>
+        <div className="grid min-h-screen place-items-center">
+          <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#6b4c44" }} />
+        </div>
+      </Shell>
     );
   }
 
   return (
-    <div className="relative min-h-screen" style={{ backgroundColor: "#F8F5F0", color: "#111" }}>
+    <Shell>
       <div className="mx-auto max-w-2xl px-4 py-12 sm:py-16">
-        <header className="pb-8" style={{ borderBottom: "1px solid #E8E3DC" }}>
-          <p className="text-xs uppercase tracking-[0.3em]" style={{ color: "#8A8480" }}>
+        <header className="pb-8">
+          <p
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: 11,
+              textTransform: "uppercase",
+              letterSpacing: "2.5px",
+              color: "#8A8480",
+            }}
+          >
             Worksheet <span style={{ color: "#EDB200" }}>✦</span>
           </p>
           <h1
-            className="mt-2 text-3xl sm:text-4xl italic"
-            style={{ fontFamily: "Instrument Serif, serif", textWrap: "balance" }}
+            style={{
+              fontFamily: "'Instrument Serif', serif",
+              fontStyle: "italic",
+              fontSize: "clamp(32px,4.5vw,52px)",
+              color: "#111111",
+              lineHeight: 1.1,
+              textWrap: "balance",
+              marginTop: 8,
+            }}
           >
             {loaded.product?.name ?? "Your worksheet"}
           </h1>
           {loaded.product?.short_description && (
-            <p className="mt-2 text-sm" style={{ color: "#6b4c44" }}>{loaded.product.short_description}</p>
+            <p style={{ marginTop: 10, fontSize: 15, color: "#2c1f1a", lineHeight: 1.7 }}>
+              {loaded.product.short_description}
+            </p>
           )}
-          <div className="mt-4 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest" style={{ color: "#8A8480" }}>
+
+          <div
+            style={{
+              marginTop: 20,
+              height: 3,
+              background: "rgba(255,255,255,0.4)",
+              borderRadius: 100,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                height: 3,
+                width: `${progressPct}%`,
+                background: "linear-gradient(90deg, #c9857a, #EDB200)",
+                borderRadius: 100,
+                transition: "width 0.4s ease",
+              }}
+            />
+          </div>
+
+          <div
+            className="mt-3 inline-flex items-center gap-1.5"
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: 11,
+              textTransform: "uppercase",
+              letterSpacing: "2px",
+              color: "#8A8480",
+            }}
+          >
             {saveState === "saving" ? (
-              <><Loader2 className="h-3 w-3 animate-spin" /> Saving</>
+              <>
+                <Loader2 className="h-3 w-3 animate-spin" /> Saving
+              </>
             ) : saveState === "saved" ? (
-              <><Check className="h-3 w-3" style={{ color: "#5a8a5c" }} /> Saved</>
+              <>
+                <Check className="h-3 w-3" style={{ color: "#5a8a5c" }} /> Saved
+              </>
             ) : (
-              <>Auto-saves as you write</>
+              <>{answeredCount} of {questions.length} answered</>
             )}
           </div>
         </header>
 
-        <div className="mt-8 space-y-8">
+        <div className="mt-4 space-y-5">
           {questions.map((q) => (
-            <div key={q.id}>
-              <label className="block text-xs uppercase tracking-widest" style={{ color: "#8A8480" }}>
-                {q.number}. <span style={{ color: "#111" }}>{q.text}</span>
+            <div
+              key={q.id}
+              style={{
+                background: "rgba(255,255,255,0.52)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
+                border: "1px solid rgba(255,255,255,0.45)",
+                boxShadow:
+                  "0 4px 24px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.85)",
+                borderRadius: 20,
+                padding: 32,
+              }}
+            >
+              <label
+                style={{
+                  display: "block",
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: 11,
+                  textTransform: "uppercase",
+                  letterSpacing: "2px",
+                  color: "#8A8480",
+                }}
+              >
+                {q.number}.{" "}
+                <span
+                  style={{
+                    fontFamily: "'Instrument Serif', serif",
+                    fontStyle: "italic",
+                    fontSize: 18,
+                    color: "#111111",
+                    textTransform: "none",
+                    letterSpacing: "normal",
+                  }}
+                >
+                  {q.text}
+                </span>
               </label>
               <textarea
                 value={values[q.id] ?? ""}
                 onChange={(e) => onChange(q.id, e.target.value)}
+                onFocus={() => setFocusedField(q.id)}
+                onBlur={() => setFocusedField(null)}
                 placeholder="Write freely"
                 rows={5}
-                className="mt-2 w-full rounded-2xl px-4 py-3 text-sm leading-relaxed focus:outline-none"
                 style={{
-                  backgroundColor: "#fff",
-                  border: "1px solid #E8E3DC",
-                  color: "#111",
+                  marginTop: 14,
+                  width: "100%",
+                  background:
+                    focusedField === q.id ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.6)",
+                  backdropFilter: "blur(8px)",
+                  border:
+                    focusedField === q.id
+                      ? "1px solid rgba(201,133,122,0.6)"
+                      : "1px solid rgba(255,255,255,0.5)",
+                  borderRadius: 12,
+                  padding: 16,
+                  fontSize: 15,
+                  lineHeight: 1.75,
+                  color: "#2c1f1a",
                   fontFamily: "Inter, sans-serif",
+                  outline: "none",
+                  resize: "vertical",
                 }}
               />
             </div>
           ))}
         </div>
 
-        <p className="mt-12 text-center text-xs" style={{ color: "#8A8480" }}>
+        <p
+          className="mt-12 text-center"
+          style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#8A8480" }}
+        >
           Your answers are private to this link. Save the link, it's your way back in.
         </p>
       </div>
-    </div>
+    </Shell>
   );
 }
