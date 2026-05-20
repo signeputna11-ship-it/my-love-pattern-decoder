@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNav } from "@/components/healthy-love/SiteNav";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import { VideoBackground } from "@/components/blog/VideoBackground";
+import signePortrait from "@/assets/signe-portrait.png";
 
 const ABOUT_VIDEO =
   "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4";
@@ -200,22 +201,18 @@ function AboutPage() {
                     overflow: "hidden",
                     background: "rgba(255,255,255,0.5)",
                     border: "1px solid #E8E3DC",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                   }}
                 >
-                  <span
-                    className="italic"
+                  <img
+                    src={signePortrait}
+                    alt="Signe Putna, founder of My Love Pattern"
                     style={{
-                      fontFamily: "Instrument Serif, serif",
-                      fontStyle: "italic",
-                      fontSize: "18px",
-                      color: "#8A8480",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
                     }}
-                  >
-                    Signe's photo
-                  </span>
+                  />
                 </div>
                 <p
                   style={{
