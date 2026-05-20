@@ -532,6 +532,51 @@ export type Database = {
         }
         Relationships: []
       }
+      shop_products: {
+        Row: {
+          active: boolean
+          created_at: string
+          currency: string
+          id: string
+          kind: string
+          name: string
+          position: number
+          price_cents: number
+          short_description: string | null
+          slug: string
+          stripe_price_id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          currency?: string
+          id?: string
+          kind: string
+          name: string
+          position?: number
+          price_cents: number
+          short_description?: string | null
+          slug: string
+          stripe_price_id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          currency?: string
+          id?: string
+          kind?: string
+          name?: string
+          position?: number
+          price_cents?: number
+          short_description?: string | null
+          slug?: string
+          stripe_price_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
