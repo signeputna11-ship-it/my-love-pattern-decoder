@@ -10,6 +10,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           { loc: "https://mylovepattern.com/", changefreq: "weekly", lastmod: today },
           { loc: "https://mylovepattern.com/about", changefreq: "monthly", lastmod: today },
           { loc: "https://mylovepattern.com/blog", changefreq: "weekly", lastmod: today },
+          { loc: "https://mylovepattern.com/shop", changefreq: "weekly", lastmod: today },
+          { loc: "https://mylovepattern.com/shop/deep-pattern-reset", changefreq: "monthly", lastmod: today },
           { loc: "https://mylovepattern.com/the-over-investor", changefreq: "monthly", lastmod: today },
           { loc: "https://mylovepattern.com/the-unavailable-chaser", changefreq: "monthly", lastmod: today },
           { loc: "https://mylovepattern.com/the-validator-seeker", changefreq: "monthly", lastmod: today },
