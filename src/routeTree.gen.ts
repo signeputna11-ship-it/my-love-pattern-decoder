@@ -30,6 +30,8 @@ import { Route as KitTokenRouteImport } from './routes/kit.$token'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
+import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
@@ -42,6 +44,7 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
+import { Route as ApiPublicHooksEmailSequenceRouteImport } from './routes/api/public/hooks/email-sequence'
 import { Route as AdminBlogEditIdRouteImport } from './routes/admin.blog.edit.$id'
 
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
@@ -149,6 +152,16 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
+  id: '/admin/subscribers',
+  path: '/admin/subscribers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/admin/orders',
+  path: '/admin/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   id: '/admin/blog/',
   path: '/admin/blog/',
@@ -213,6 +226,12 @@ const ApiPublicPaymentsWebhookRoute =
     path: '/api/public/payments/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksEmailSequenceRoute =
+  ApiPublicHooksEmailSequenceRouteImport.update({
+    id: '/api/public/hooks/email-sequence',
+    path: '/api/public/hooks/email-sequence',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminBlogEditIdRoute = AdminBlogEditIdRouteImport.update({
   id: '/admin/blog/edit/$id',
   path: '/admin/blog/edit/$id',
@@ -232,6 +251,8 @@ export interface FileRoutesByFullPath {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -248,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
+  '/api/public/hooks/email-sequence': typeof ApiPublicHooksEmailSequenceRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -267,6 +289,8 @@ export interface FileRoutesByTo {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -283,6 +307,7 @@ export interface FileRoutesByTo {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
+  '/api/public/hooks/email-sequence': typeof ApiPublicHooksEmailSequenceRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -304,6 +329,8 @@ export interface FileRoutesById {
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
   '/the-validator-seeker': typeof TheValidatorSeekerRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/subscribers': typeof AdminSubscribersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -320,6 +347,7 @@ export interface FileRoutesById {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/admin/blog/edit/$id': typeof AdminBlogEditIdRoute
+  '/api/public/hooks/email-sequence': typeof ApiPublicHooksEmailSequenceRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -342,6 +370,8 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
+    | '/admin/orders'
+    | '/admin/subscribers'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -358,6 +388,7 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/admin/blog/'
     | '/admin/blog/edit/$id'
+    | '/api/public/hooks/email-sequence'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -377,6 +408,8 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
+    | '/admin/orders'
+    | '/admin/subscribers'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -393,6 +426,7 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/admin/blog'
     | '/admin/blog/edit/$id'
+    | '/api/public/hooks/email-sequence'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -413,6 +447,8 @@ export interface FileRouteTypes {
     | '/the-unavailable-chaser'
     | '/the-validator-seeker'
     | '/unsubscribe'
+    | '/admin/orders'
+    | '/admin/subscribers'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -429,6 +465,7 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/admin/blog/'
     | '/admin/blog/edit/$id'
+    | '/api/public/hooks/email-sequence'
     | '/api/public/payments/webhook'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -450,6 +487,8 @@ export interface RootRouteChildren {
   TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
   TheValidatorSeekerRoute: typeof TheValidatorSeekerRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  AdminOrdersRoute: typeof AdminOrdersRoute
+  AdminSubscribersRoute: typeof AdminSubscribersRoute
   BlogSlugRoute: typeof BlogSlugRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   KitTokenRoute: typeof KitTokenRoute
@@ -462,6 +501,7 @@ export interface RootRouteChildren {
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   AdminBlogIndexRoute: typeof AdminBlogIndexRoute
   AdminBlogEditIdRoute: typeof AdminBlogEditIdRoute
+  ApiPublicHooksEmailSequenceRoute: typeof ApiPublicHooksEmailSequenceRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -619,6 +659,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/subscribers': {
+      id: '/admin/subscribers'
+      path: '/admin/subscribers'
+      fullPath: '/admin/subscribers'
+      preLoaderRoute: typeof AdminSubscribersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/orders': {
+      id: '/admin/orders'
+      path: '/admin/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/': {
       id: '/admin/blog/'
       path: '/admin/blog'
@@ -703,6 +757,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/email-sequence': {
+      id: '/api/public/hooks/email-sequence'
+      path: '/api/public/hooks/email-sequence'
+      fullPath: '/api/public/hooks/email-sequence'
+      preLoaderRoute: typeof ApiPublicHooksEmailSequenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog/edit/$id': {
       id: '/admin/blog/edit/$id'
       path: '/admin/blog/edit/$id'
@@ -752,6 +813,8 @@ const rootRouteChildren: RootRouteChildren = {
   TheUnavailableChaserRoute: TheUnavailableChaserRoute,
   TheValidatorSeekerRoute: TheValidatorSeekerRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  AdminOrdersRoute: AdminOrdersRoute,
+  AdminSubscribersRoute: AdminSubscribersRoute,
   BlogSlugRoute: BlogSlugRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   KitTokenRoute: KitTokenRoute,
@@ -764,6 +827,7 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   AdminBlogIndexRoute: AdminBlogIndexRoute,
   AdminBlogEditIdRoute: AdminBlogEditIdRoute,
+  ApiPublicHooksEmailSequenceRoute: ApiPublicHooksEmailSequenceRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,

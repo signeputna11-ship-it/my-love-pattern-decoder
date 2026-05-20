@@ -115,6 +115,26 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
     } catch (e) {
       console.error("Failed to enqueue purchase confirmation:", e);
     }
+
+    // Enroll into nurture sequence (step 1 = purchase-confirmation, already sent).
+    try {
+      const firstName =
+        (session.customer_details?.name as string | undefined)?.split(" ")[0] ?? null;
+      await getSupabase().from("email_subscribers").upsert(
+        {
+          email: recipientEmail.toLowerCase(),
+          first_name: firstName,
+          source: "purchase",
+          product_slug: resolvedSlug,
+          sequence_step: 1,
+          sequence_paused: false,
+          last_emailed_at: new Date().toISOString(),
+        },
+        { onConflict: "email", ignoreDuplicates: false },
+      );
+    } catch (e) {
+      console.error("Failed to enroll subscriber:", e);
+    }
   } else {
     console.warn("No recipient email on session", session.id);
   }
