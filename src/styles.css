@@ -66,12 +66,35 @@ body { font-family: 'Inter', sans-serif; background: #000; }
 .text-balance { text-wrap: balance; }
 html { scroll-behavior: smooth; }
 
-/* Editorial typography: prevent orphan/widow words on headlines.
-   `text-wrap: balance` distributes lines so the last line never carries a single dangling word. */
-h1, h2, h3,
+/* Editorial typography: prevent orphan/widow words globally.
+   `text-wrap: balance` distributes headline lines so the last line never carries a single dangling word.
+   `text-wrap: pretty` does the same for body paragraphs. */
+h1, h2, h3, h4, h5, h6,
 .headline-balance {
   text-wrap: balance;
+  overflow-wrap: break-word;
+  word-break: break-word;
   hyphens: manual;
+}
+
+p {
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+blockquote {
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.hero-title,
+.section-title,
+.card-title,
+.post-title,
+.pattern-title,
+.upsell-title,
+.testimonial-text {
+  text-wrap: balance;
 }
 
 @custom-variant dark (&:is(.dark *));
