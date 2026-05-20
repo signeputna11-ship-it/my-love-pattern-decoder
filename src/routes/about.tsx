@@ -97,7 +97,7 @@ function Rule() {
 function AboutPage() {
   return (
     <>
-      <VideoBackground src={ABOUT_VIDEO} overlayColor="rgba(248,245,240,0.82)" />
+      <VideoBackground src={ABOUT_VIDEO} overlayOpacity={0.82} />
       <SiteNav />
       <div style={{ backgroundColor: "#F8F5F0" }} className="relative">
         <main className="relative z-[1]">
