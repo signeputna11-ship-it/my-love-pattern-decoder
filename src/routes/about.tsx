@@ -144,8 +144,8 @@ function AboutPage() {
                 margin: "0 auto",
               }}
             >
-              My Love Pattern was created to help women see the pattern clearly
-              — and finally understand why it keeps happening.
+              My Love Pattern was created to help women see the pattern clearly,
+              and finally understand why it keeps happening.
             </p>
             <div
               aria-hidden="true"
@@ -245,7 +245,7 @@ function AboutPage() {
                   Built for the woman who already knows something is off.
                 </h2>
                 {[
-                  "Signe Putna created My Love Pattern after years of watching smart, self-aware women — herself included — repeat the same relationship ending with a different person.",
+                  "Signe Putna created My Love Pattern after years of watching smart, self-aware women, herself included, repeat the same relationship ending with a different person.",
                   "The patterns had names. The Over-Investor. The Unavailable Chaser. The Validator Seeker. The Boundary Softener. Once you could see yours, everything made sense. Not in a painful way. In a finally way.",
                   "My Love Pattern exists for the woman who already knows something is off but cannot yet see what she is choosing and why.",
                 ].map((p, i) => (
