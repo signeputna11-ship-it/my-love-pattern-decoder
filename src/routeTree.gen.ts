@@ -14,14 +14,19 @@ import { Route as TheValidatorSeekerRouteImport } from './routes/the-validator-s
 import { Route as TheUnavailableChaserRouteImport } from './routes/the-unavailable-chaser'
 import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
 import { Route as TheBoundarySoftenerRouteImport } from './routes/the-boundary-softener'
+import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as WTokenRouteImport } from './routes/w.$token'
+import { Route as ShopSlugRouteImport } from './routes/shop.$slug'
+import { Route as KitTokenRouteImport } from './routes/kit.$token'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -64,6 +69,11 @@ const TheBoundarySoftenerRoute = TheBoundarySoftenerRouteImport.update({
   path: '/the-boundary-softener',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ThankYouRoute = ThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -94,6 +104,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/shop/',
+  path: '/shop/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -103,6 +118,21 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
+} as any)
+const WTokenRoute = WTokenRouteImport.update({
+  id: '/w/$token',
+  path: '/w/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopSlugRoute = ShopSlugRouteImport.update({
+  id: '/shop/$slug',
+  path: '/shop/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KitTokenRoute = KitTokenRouteImport.update({
+  id: '/kit/$token',
+  path: '/kit/$token',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
@@ -196,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
@@ -204,8 +235,12 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/kit/$token': typeof KitTokenRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/w/$token': typeof WTokenRoute
   '/app/': typeof AppIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/shop/': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
@@ -226,6 +261,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
@@ -234,8 +270,12 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/kit/$token': typeof KitTokenRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/w/$token': typeof WTokenRoute
   '/app': typeof AppIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/shop': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
@@ -258,6 +298,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
   '/the-unavailable-chaser': typeof TheUnavailableChaserRoute
@@ -266,8 +307,12 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/kit/$token': typeof KitTokenRoute
+  '/shop/$slug': typeof ShopSlugRoute
+  '/w/$token': typeof WTokenRoute
   '/app/': typeof AppIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/shop/': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
@@ -291,6 +336,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/thank-you'
     | '/the-boundary-softener'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
@@ -299,8 +345,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/kit/$token'
+    | '/shop/$slug'
+    | '/w/$token'
     | '/app/'
     | '/blog/'
+    | '/shop/'
     | '/admin/blog/new'
     | '/app/admin/emails'
     | '/app/module/$slug'
@@ -321,6 +371,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/thank-you'
     | '/the-boundary-softener'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
@@ -329,8 +380,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/kit/$token'
+    | '/shop/$slug'
+    | '/w/$token'
     | '/app'
     | '/blog'
+    | '/shop'
     | '/admin/blog/new'
     | '/app/admin/emails'
     | '/app/module/$slug'
@@ -352,6 +407,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/sitemap.xml'
+    | '/thank-you'
     | '/the-boundary-softener'
     | '/the-over-investor'
     | '/the-unavailable-chaser'
@@ -360,8 +416,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/kit/$token'
+    | '/shop/$slug'
+    | '/w/$token'
     | '/app/'
     | '/blog/'
+    | '/shop/'
     | '/admin/blog/new'
     | '/app/admin/emails'
     | '/app/module/$slug'
@@ -384,6 +444,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CheckoutRoute: typeof CheckoutRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ThankYouRoute: typeof ThankYouRoute
   TheBoundarySoftenerRoute: typeof TheBoundarySoftenerRoute
   TheOverInvestorRoute: typeof TheOverInvestorRoute
   TheUnavailableChaserRoute: typeof TheUnavailableChaserRoute
@@ -391,7 +452,11 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   BlogSlugRoute: typeof BlogSlugRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
+  KitTokenRoute: typeof KitTokenRoute
+  ShopSlugRoute: typeof ShopSlugRoute
+  WTokenRoute: typeof WTokenRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  ShopIndexRoute: typeof ShopIndexRoute
   AdminBlogNewRoute: typeof AdminBlogNewRoute
   BlogCategoryCategoryRoute: typeof BlogCategoryCategoryRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -442,6 +507,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TheBoundarySoftenerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/thank-you': {
+      id: '/thank-you'
+      path: '/thank-you'
+      fullPath: '/thank-you'
+      preLoaderRoute: typeof ThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -484,6 +556,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop/': {
+      id: '/shop/'
+      path: '/shop'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
@@ -497,6 +576,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/w/$token': {
+      id: '/w/$token'
+      path: '/w/$token'
+      fullPath: '/w/$token'
+      preLoaderRoute: typeof WTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/$slug': {
+      id: '/shop/$slug'
+      path: '/shop/$slug'
+      fullPath: '/shop/$slug'
+      preLoaderRoute: typeof ShopSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kit/$token': {
+      id: '/kit/$token'
+      path: '/kit/$token'
+      fullPath: '/kit/$token'
+      preLoaderRoute: typeof KitTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/email/unsubscribe': {
       id: '/email/unsubscribe'
@@ -646,6 +746,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CheckoutRoute: CheckoutRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ThankYouRoute: ThankYouRoute,
   TheBoundarySoftenerRoute: TheBoundarySoftenerRoute,
   TheOverInvestorRoute: TheOverInvestorRoute,
   TheUnavailableChaserRoute: TheUnavailableChaserRoute,
@@ -653,7 +754,11 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   BlogSlugRoute: BlogSlugRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
+  KitTokenRoute: KitTokenRoute,
+  ShopSlugRoute: ShopSlugRoute,
+  WTokenRoute: WTokenRoute,
   BlogIndexRoute: BlogIndexRoute,
+  ShopIndexRoute: ShopIndexRoute,
   AdminBlogNewRoute: AdminBlogNewRoute,
   BlogCategoryCategoryRoute: BlogCategoryCategoryRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,

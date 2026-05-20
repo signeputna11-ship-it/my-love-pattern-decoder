@@ -11,8 +11,8 @@ export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
   head: () => ({
     meta: [
-      { title: "Unlock The Reset · My Love Pattern" },
-      { name: "description", content: "Lifetime access to The Reset for $49." },
+      { title: "Unlock the Reset Kit · My Love Pattern" },
+      { name: "description", content: "Lifetime access to the My Love Pattern Reset Kit for $49." },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -37,10 +37,10 @@ function CheckoutPage() {
   const fetchClientSecret = async (): Promise<string> => {
     const secret = await createCheckoutSession({
       data: {
-        priceId: "reset_lifetime_usd",
+        priceId: "love_pattern_reset_kit_usd",
         customerEmail: user?.email,
         userId: user?.id,
-        returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+        returnUrl: `${window.location.origin}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
         environment: getStripeEnvironment(),
       },
     });
@@ -74,9 +74,9 @@ function CheckoutPage() {
             loading="eager"
           />
         </div>
-        <h1 className="mt-6 font-serif text-4xl sm:text-5xl">Unlock The Reset</h1>
+        <h1 className="mt-6 font-serif text-4xl sm:text-5xl">Unlock the Reset Kit</h1>
         <p className="mt-2 text-sm text-white/70">
-          Lifetime access. 5 modules. Workbook, AI guide, downloadable answers. $49.
+          My Love Pattern Reset Kit. All worksheets included. Lifetime access. $49.
         </p>
 
         <div className="mt-8 liquid-glass-strong overflow-hidden rounded-3xl p-2">
