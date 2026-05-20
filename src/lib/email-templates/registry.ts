@@ -13,6 +13,7 @@ import { template as welcomeTemplate } from './welcome'
 import { template as purchaseConfirmationTemplate } from './purchase-confirmation'
 import { template as courseNotificationTemplate } from './course-notification'
 import { template as passwordResetFollowupTemplate } from './password-reset-followup'
+import { template as nurtureSequenceTemplate } from './nurture-sequence'
 
 /**
  * Template registry — maps template names to their React Email components.
@@ -23,4 +24,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'purchase-confirmation': purchaseConfirmationTemplate,
   'course-notification': courseNotificationTemplate,
   'password-reset-followup': passwordResetFollowupTemplate,
+  'nurture-sequence': nurtureSequenceTemplate,
 }
