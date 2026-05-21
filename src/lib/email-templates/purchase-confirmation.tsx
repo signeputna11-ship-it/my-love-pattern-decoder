@@ -1,43 +1,48 @@
 import * as React from 'react'
-import { Button, Heading, Text } from '@react-email/components'
+import { Heading, Link, Text } from '@react-email/components'
 import { EmailLayout, styles } from './_layout'
 import type { TemplateEntry } from './registry'
 
 interface PurchaseConfirmationProps {
-  amount?: string
-  currency?: string
+  first_name?: string
+  product_name?: string
+  access_link?: string
 }
 
 const PurchaseConfirmationEmail = ({
-  amount,
-  currency,
-}: PurchaseConfirmationProps) => (
-  <EmailLayout preview="Your access is unlocked">
-    <Heading style={styles.h1}>Your access is unlocked</Heading>
-    <Text style={styles.text}>
-      Thank you for your purchase. Your full reset path is now available.
-    </Text>
-    {amount ? (
+  first_name,
+  product_name,
+  access_link,
+}: PurchaseConfirmationProps) => {
+  const name = first_name?.trim() || 'there'
+  const product = product_name?.trim() || 'worksheet'
+  const link = access_link?.trim() || 'https://mylovepattern.com/'
+  return (
+    <EmailLayout preview={`Your ${product} is here`}>
+      <Heading style={styles.h1}>Your worksheet is here, {name} ✦</Heading>
+      <Text style={styles.text}>Hi {name},</Text>
       <Text style={styles.text}>
-        Amount charged: <strong>{amount} {currency?.toUpperCase() ?? ''}</strong>
+        Your {product} is ready. Access it here:{' '}
+        <Link href={link} style={{ color: '#a0574e' }}>{link}</Link>
       </Text>
-    ) : null}
-    <div style={styles.buttonWrap}>
-      <Button style={styles.button} href="https://mylovepattern.com/app">
-        Start Your Reset
-      </Button>
-    </div>
-    <Text style={styles.small}>
-      Keep this email as your receipt. If you have any questions, just reply.
-    </Text>
-  </EmailLayout>
-)
+      <Text style={styles.text}>This link never expires.</Text>
+      <Text style={styles.text}>Signe, My Love Pattern</Text>
+    </EmailLayout>
+  )
+}
 
 export const template = {
   component: PurchaseConfirmationEmail,
-  subject: 'Your access is unlocked',
+  subject: (data: Record<string, any>) => {
+    const name = (data?.first_name as string | undefined)?.trim() || 'there'
+    return `Your worksheet is here, ${name} ✦`
+  },
   displayName: 'Purchase confirmation',
-  previewData: { amount: '49.00', currency: 'usd' },
+  previewData: {
+    first_name: 'Jane',
+    product_name: 'Breadcrumbing & Red Flags worksheet',
+    access_link: 'https://mylovepattern.com/w/example-token',
+  },
 } satisfies TemplateEntry
 
 export default PurchaseConfirmationEmail

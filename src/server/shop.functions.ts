@@ -29,16 +29,30 @@ export const getShopProduct = createServerFn({ method: "GET" })
     return { product };
   });
 
+function clean(s: string, max: number): string {
+  return s.trim().slice(0, max);
+}
+
 export const createGuestCheckout = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
       slug: string;
       customerEmail: string;
+      firstName: string;
+      lastName: string;
+      phone: string;
       returnUrl: string;
       environment: StripeEnv;
     }) => {
       if (!/^[a-z0-9-]+$/.test(data.slug)) throw new Error("Invalid slug");
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.customerEmail)) throw new Error("Invalid email");
+      if (!data.firstName || data.firstName.trim().length < 1) throw new Error("First name required");
+      if (data.firstName.length > 80) throw new Error("First name too long");
+      if (!data.lastName || data.lastName.trim().length < 1) throw new Error("Last name required");
+      if (data.lastName.length > 80) throw new Error("Last name too long");
+      if (!data.phone || data.phone.trim().length < 4) throw new Error("Phone required");
+      if (data.phone.length > 40) throw new Error("Phone too long");
+      if (!/^[+0-9()\-.\s]+$/.test(data.phone)) throw new Error("Invalid phone");
       if (!data.returnUrl) throw new Error("Missing returnUrl");
       if (data.environment !== "sandbox" && data.environment !== "live")
         throw new Error("Invalid environment");
@@ -55,6 +69,11 @@ export const createGuestCheckout = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!product) throw new Error("Product not found");
 
+    const firstName = clean(data.firstName, 80);
+    const lastName = clean(data.lastName, 80);
+    const phone = clean(data.phone, 40);
+    const fullName = `${firstName} ${lastName}`.trim().slice(0, 160);
+
     const stripe = createStripeClient(data.environment);
     const prices = await stripe.prices.list({ lookup_keys: [product.stripe_price_id as string] });
     if (!prices.data.length) throw new Error("Stripe price not found");
@@ -70,6 +89,10 @@ export const createGuestCheckout = createServerFn({ method: "POST" })
       metadata: {
         product_slug: product.slug as string,
         guest_email: data.customerEmail,
+        first_name: firstName,
+        last_name: lastName,
+        full_name: fullName,
+        phone,
       },
     });
 

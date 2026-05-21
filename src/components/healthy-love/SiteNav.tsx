@@ -27,6 +27,9 @@ export function SiteNav() {
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground" activeOptions={{ exact: true }} activeProps={{ className: "text-sm text-foreground font-medium" }}>
             Home
           </Link>
+          <Link to="/shop" className="text-sm text-muted-foreground hover:text-foreground" activeProps={{ className: "text-sm text-foreground font-medium" }}>
+            Shop
+          </Link>
           <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground" activeProps={{ className: "text-sm text-foreground font-medium" }}>
             About
           </Link>
@@ -53,6 +56,7 @@ export function SiteNav() {
           </div>
         </nav>
 
+
         <Link
           to="/"
           hash="diagnosis"
@@ -74,8 +78,10 @@ export function SiteNav() {
         <div className="border-t border-border bg-background md:hidden">
           <div className="mx-auto max-w-6xl px-4 py-2">
             <Link to="/" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Home</Link>
+            <Link to="/shop" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Shop</Link>
             <Link to="/about" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">About</Link>
             <Link to="/blog" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Blog</Link>
+
             <p className="mt-2 px-3 pt-2 text-[10px] uppercase tracking-widest text-muted-foreground">Patterns</p>
             {PATTERN_LINKS.map((p) => (
               <Link key={p.to} to={p.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">

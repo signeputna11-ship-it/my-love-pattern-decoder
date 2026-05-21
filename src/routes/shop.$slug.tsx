@@ -214,26 +214,48 @@ function SessionProductView({ product }: { product: Product }) {
 
 function StripeProductView({ product }: { product: Product }) {
   const { slug } = product;
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [emailValid, setEmailValid] = useState(false);
   const [started, setStarted] = useState(false);
   const stripePromise = useMemo(() => getStripe(), []);
 
-  useEffect(() => {
-    setEmailValid(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email));
-  }, [email]);
+  const emailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  const phoneValid = /^[+0-9()\-.\s]{4,40}$/.test(phone);
+  const formValid =
+    firstName.trim().length >= 1 &&
+    lastName.trim().length >= 1 &&
+    phoneValid &&
+    emailValid;
 
   const fetchClientSecret = async (): Promise<string> => {
     const secret = await createGuestCheckout({
       data: {
         slug,
         customerEmail: email,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        phone: phone.trim(),
         returnUrl: `${window.location.origin}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
         environment: getStripeEnvironment(),
       },
     });
     if (!secret) throw new Error("Could not start checkout");
     return secret;
+  };
+
+  const inputStyle: React.CSSProperties = {
+    marginTop: 8,
+    width: "100%",
+    background: "rgba(255,255,255,0.6)",
+    border: "1px solid rgba(255,255,255,0.7)",
+    borderRadius: 12,
+    padding: "14px 16px",
+    fontFamily: "Inter, sans-serif",
+    fontSize: 15,
+    color: "#2c1f1a",
+    outline: "none",
   };
 
   return (
@@ -329,31 +351,65 @@ function StripeProductView({ product }: { product: Product }) {
           </div>
 
           {!started ? (
-            <div className="mt-6">
-              <label style={{ ...labelStyle, display: "block" }}>Your email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                style={{
-                  marginTop: 8,
-                  width: "100%",
-                  background: "rgba(255,255,255,0.6)",
-                  border: "1px solid rgba(255,255,255,0.7)",
-                  borderRadius: 12,
-                  padding: "14px 16px",
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: 15,
-                  color: "#2c1f1a",
-                  outline: "none",
-                }}
-              />
+            <div className="mt-6 space-y-4">
+              <div>
+                <label style={{ ...labelStyle, display: "block" }}>First name</label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Your first name"
+                  autoComplete="given-name"
+                  required
+                  maxLength={80}
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={{ ...labelStyle, display: "block" }}>Last name</label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Your last name"
+                  autoComplete="family-name"
+                  required
+                  maxLength={80}
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={{ ...labelStyle, display: "block" }}>Phone number</label>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+1 555 123 4567"
+                  autoComplete="tel"
+                  required
+                  maxLength={40}
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={{ ...labelStyle, display: "block" }}>Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                  style={inputStyle}
+                />
+                <p style={{ marginTop: 8, fontSize: 12, color: "#8A8480" }}>
+                  Your access link goes to this email. Double-check spelling.
+                </p>
+              </div>
               <button
-                disabled={!emailValid}
+                disabled={!formValid}
                 onClick={() => setStarted(true)}
                 style={{
-                  marginTop: 14,
                   width: "100%",
                   background: "#111111",
                   color: "white",
@@ -361,15 +417,12 @@ function StripeProductView({ product }: { product: Product }) {
                   padding: "14px 20px",
                   fontSize: 14,
                   fontWeight: 500,
-                  opacity: emailValid ? 1 : 0.4,
+                  opacity: formValid ? 1 : 0.4,
                   transition: "all 0.2s",
                 }}
               >
                 Continue to payment · {formatPrice(product.price_cents, product.currency)}
               </button>
-              <p style={{ marginTop: 12, fontSize: 12, color: "#8A8480" }}>
-                Your access link goes to this email. Double-check spelling.
-              </p>
             </div>
           ) : (
             <div className="mt-6 overflow-hidden rounded-2xl bg-white p-2">
@@ -383,6 +436,7 @@ function StripeProductView({ product }: { product: Product }) {
     </div>
   );
 }
+
 
 function ShopProductPage() {
   const { slug } = Route.useParams();
