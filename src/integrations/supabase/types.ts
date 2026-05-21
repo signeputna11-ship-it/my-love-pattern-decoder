@@ -272,6 +272,8 @@ export type Database = {
           first_name: string | null
           id: string
           last_emailed_at: string | null
+          last_name: string | null
+          phone: string | null
           product_slug: string | null
           sequence_paused: boolean
           sequence_step: number
@@ -285,6 +287,8 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_emailed_at?: string | null
+          last_name?: string | null
+          phone?: string | null
           product_slug?: string | null
           sequence_paused?: boolean
           sequence_step?: number
@@ -298,6 +302,8 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_emailed_at?: string | null
+          last_name?: string | null
+          phone?: string | null
           product_slug?: string | null
           sequence_paused?: boolean
           sequence_step?: number
@@ -549,8 +555,11 @@ export type Database = {
           customer_email: string | null
           downloaded_at: string | null
           environment: string
+          first_name: string | null
           has_access: boolean
           id: string
+          last_name: string | null
+          phone: string | null
           price_id: string | null
           product_id: string | null
           product_slug: string | null
@@ -572,8 +581,11 @@ export type Database = {
           customer_email?: string | null
           downloaded_at?: string | null
           environment?: string
+          first_name?: string | null
           has_access?: boolean
           id?: string
+          last_name?: string | null
+          phone?: string | null
           price_id?: string | null
           product_id?: string | null
           product_slug?: string | null
@@ -595,8 +607,11 @@ export type Database = {
           customer_email?: string | null
           downloaded_at?: string | null
           environment?: string
+          first_name?: string | null
           has_access?: boolean
           id?: string
+          last_name?: string | null
+          phone?: string | null
           price_id?: string | null
           product_id?: string | null
           product_slug?: string | null
