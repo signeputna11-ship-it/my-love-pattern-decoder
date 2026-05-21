@@ -39,10 +39,14 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
   const userId: string | null = session.metadata?.userId ?? null;
   const metadataSlug: string | null = session.metadata?.product_slug ?? null;
   const guestEmail: string | null = session.metadata?.guest_email ?? null;
+  const metaFirstName: string | null = session.metadata?.first_name ?? null;
+  const metaLastName: string | null = session.metadata?.last_name ?? null;
+  const metaPhone: string | null = session.metadata?.phone ?? null;
 
   let priceId: string | null = null;
   let productId: string | null = null;
   let resolvedSlug: string | null = metadataSlug;
+  let productName: string | null = null;
 
   try {
     const stripe = createStripeClient(env);
@@ -52,6 +56,7 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
     const li: any = expanded.line_items?.data?.[0];
     priceId = li?.price?.lookup_key ?? li?.price?.metadata?.lovable_external_id ?? li?.price?.id ?? null;
     productId = (li?.price?.product as any)?.id ?? li?.price?.product ?? null;
+    productName = (li?.price?.product as any)?.name ?? li?.description ?? null;
     if (!resolvedSlug) {
       resolvedSlug = await lookupProductSlugByLookupKey(env, priceId);
     }
@@ -59,8 +64,27 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
     console.warn("Failed to expand session line items:", (e as Error).message);
   }
 
+  // Fall back to shop_products for the canonical name
+  if (resolvedSlug && !productName) {
+    const { data: p } = await getSupabase()
+      .from("shop_products")
+      .select("name")
+      .eq("slug", resolvedSlug)
+      .maybeSingle();
+    productName = (p?.name as string | null) ?? null;
+  }
+
   const recipientEmail: string | null =
     session.customer_details?.email ?? session.customer_email ?? guestEmail ?? null;
+
+  const customerFullName: string | null =
+    (session.customer_details?.name as string | null) ?? null;
+  const firstName: string | null =
+    metaFirstName ?? customerFullName?.split(" ")[0] ?? null;
+  const lastName: string | null =
+    metaLastName ?? (customerFullName ? customerFullName.split(" ").slice(1).join(" ") || null : null);
+  const phone: string | null =
+    metaPhone ?? (session.customer_details?.phone as string | null) ?? null;
 
   // Idempotent token: keep existing token on re-delivery
   const { data: existing } = await getSupabase()
@@ -81,6 +105,9 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
       product_id: productId,
       product_slug: resolvedSlug,
       customer_email: recipientEmail,
+      first_name: firstName,
+      last_name: lastName,
+      phone,
       access_token: accessToken,
       amount_total: session.amount_total ?? null,
       currency: session.currency ?? null,
@@ -94,22 +121,18 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
   );
 
   if (recipientEmail) {
-    const amount =
-      typeof session.amount_total === "number"
-        ? (session.amount_total / 100).toFixed(2)
-        : undefined;
     const isKit = resolvedSlug === "love-pattern-reset-kit";
     const accessPath = isKit ? `/kit/${accessToken}` : `/w/${accessToken}`;
+    const accessLink = `https://mylovepattern.com${accessPath}`;
     try {
       await enqueueTransactionalEmailAsService({
         templateName: "purchase-confirmation",
         recipientEmail,
         idempotencyKey: `purchase-confirm-${session.id}`,
         templateData: {
-          amount,
-          currency: session.currency ?? undefined,
-          accessPath,
-          productSlug: resolvedSlug ?? undefined,
+          first_name: firstName ?? undefined,
+          product_name: productName ?? undefined,
+          access_link: accessLink,
         },
       });
     } catch (e) {
@@ -118,12 +141,12 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
 
     // Enroll into nurture sequence (step 1 = purchase-confirmation, already sent).
     try {
-      const firstName =
-        (session.customer_details?.name as string | undefined)?.split(" ")[0] ?? null;
       await getSupabase().from("email_subscribers").upsert(
         {
           email: recipientEmail.toLowerCase(),
           first_name: firstName,
+          last_name: lastName,
+          phone,
           source: "purchase",
           product_slug: resolvedSlug,
           sequence_step: 1,
@@ -139,6 +162,7 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
     console.warn("No recipient email on session", session.id);
   }
 }
+
 
 async function revokeAccessByPaymentIntent(paymentIntentId: string, env: StripeEnv) {
   await getSupabase()
