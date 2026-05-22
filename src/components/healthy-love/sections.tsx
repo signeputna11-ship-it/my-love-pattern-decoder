@@ -88,6 +88,7 @@ export function Nav() {
         </a>
         <nav className="hidden items-center gap-7 overflow-visible md:flex">
           <a href="#top" className="text-sm text-white/70 transition hover:text-white">Home</a>
+          <a href="/shop" className="text-sm text-white/70 transition hover:text-white">Shop</a>
           <div
             className="relative"
             onMouseEnter={() => setPatternsOpen(true)}
