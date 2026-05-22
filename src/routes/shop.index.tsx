@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getShopProducts } from "@/server/shop.functions";
 import { Loader2 } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
+import { SiteNav } from "@/components/healthy-love/SiteNav";
 
 type Product = {
   slug: string;
@@ -73,6 +74,9 @@ function ShopIndex() {
         src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20TOP%20VIEW.mp4"
         overlay="rgba(248,245,240,0.85)"
       />
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <SiteNav />
+      </div>
       <div style={{ position: "relative", zIndex: 2 }} className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
         <header className="mb-16 text-center">
           <p style={SECTION_LABEL}><span style={{ color: "#EDB200" }}>✦</span> My Love Pattern Shop</p>
