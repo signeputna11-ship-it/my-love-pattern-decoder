@@ -5,6 +5,7 @@ import { getStripe, getStripeEnvironment } from "@/lib/stripe";
 import { getShopProduct, createGuestCheckout } from "@/server/shop.functions";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
+import { SiteNav } from "@/components/healthy-love/SiteNav";
 
 type Product = {
   slug: string;
