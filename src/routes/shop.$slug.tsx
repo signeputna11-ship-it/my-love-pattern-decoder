@@ -463,6 +463,9 @@ function ShopProductPage() {
       }}
     >
       <VideoBg src={video.src} overlay={video.overlay} />
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <SiteNav />
+      </div>
       <div
         style={{ position: "relative", zIndex: 2 }}
         className="mx-auto max-w-6xl px-4 py-10 sm:py-16"
