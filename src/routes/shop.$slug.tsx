@@ -219,22 +219,28 @@ function StripeProductView({ product }: { product: Product }) {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [touched, setTouched] = useState<{ firstName?: boolean; lastName?: boolean; phone?: boolean; email?: boolean }>({});
   const [started, setStarted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const stripePromise = useMemo(() => getStripe(), []);
 
-  const emailValid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-  const phoneValid = /^[+0-9()\-.\s]{4,40}$/.test(phone);
-  const formValid =
-    firstName.trim().length >= 1 &&
-    lastName.trim().length >= 1 &&
-    phoneValid &&
-    emailValid;
+  const firstNameOk = firstName.trim().length >= 1;
+  const lastNameOk = lastName.trim().length >= 1;
+  const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim());
+  const phoneDigits = phone.replace(/[^0-9]/g, "");
+  const phoneOk =
+    phone.trim().length >= 6 &&
+    phone.trim().length <= 40 &&
+    phoneDigits.length >= 6 &&
+    /^[+0-9()\-.\s]+$/.test(phone.trim());
+  const formValid = firstNameOk && lastNameOk && phoneOk && emailOk;
 
   const fetchClientSecret = async (): Promise<string> => {
     const secret = await createGuestCheckout({
       data: {
         slug,
-        customerEmail: email,
+        customerEmail: email.trim(),
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         phone: phone.trim(),
@@ -244,6 +250,12 @@ function StripeProductView({ product }: { product: Product }) {
     });
     if (!secret) throw new Error("Could not start checkout");
     return secret;
+  };
+
+  const handleContinue = () => {
+    if (!formValid || submitting) return;
+    setCheckoutError(null);
+    setStarted(true);
   };
 
   const inputStyle: React.CSSProperties = {
@@ -257,6 +269,13 @@ function StripeProductView({ product }: { product: Product }) {
     fontSize: 15,
     color: "#2c1f1a",
     outline: "none",
+  };
+
+  const errorStyle: React.CSSProperties = {
+    marginTop: 6,
+    fontSize: 12,
+    color: "#b3322c",
+    fontFamily: "Inter, sans-serif",
   };
 
   return (
@@ -359,12 +378,16 @@ function StripeProductView({ product }: { product: Product }) {
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  onBlur={() => setTouched((t) => ({ ...t, firstName: true }))}
                   placeholder="Your first name"
                   autoComplete="given-name"
                   required
                   maxLength={80}
                   style={inputStyle}
                 />
+                {touched.firstName && !firstNameOk && (
+                  <p style={errorStyle}>Please enter your first name.</p>
+                )}
               </div>
               <div>
                 <label style={{ ...labelStyle, display: "block" }}>Last name</label>
@@ -372,12 +395,16 @@ function StripeProductView({ product }: { product: Product }) {
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  onBlur={() => setTouched((t) => ({ ...t, lastName: true }))}
                   placeholder="Your last name"
                   autoComplete="family-name"
                   required
                   maxLength={80}
                   style={inputStyle}
                 />
+                {touched.lastName && !lastNameOk && (
+                  <p style={errorStyle}>Please enter your last name.</p>
+                )}
               </div>
               <div>
                 <label style={{ ...labelStyle, display: "block" }}>Phone number</label>
@@ -385,12 +412,16 @@ function StripeProductView({ product }: { product: Product }) {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
                   placeholder="+1 555 123 4567"
                   autoComplete="tel"
                   required
                   maxLength={40}
                   style={inputStyle}
                 />
+                {touched.phone && !phoneOk && (
+                  <p style={errorStyle}>Enter a valid phone number with country code.</p>
+                )}
               </div>
               <div>
                 <label style={{ ...labelStyle, display: "block" }}>Email</label>
@@ -398,18 +429,41 @@ function StripeProductView({ product }: { product: Product }) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => setTouched((t) => ({ ...t, email: true }))}
                   placeholder="you@example.com"
                   autoComplete="email"
                   required
                   style={inputStyle}
                 />
-                <p style={{ marginTop: 8, fontSize: 12, color: "#8A8480" }}>
-                  Your access link goes to this email. Double-check spelling.
-                </p>
+                {touched.email && !emailOk ? (
+                  <p style={errorStyle}>Enter a valid email address.</p>
+                ) : (
+                  <p style={{ marginTop: 8, fontSize: 12, color: "#8A8480" }}>
+                    Your access link goes to this email. Double-check spelling.
+                  </p>
+                )}
               </div>
+
+              {checkoutError && (
+                <div
+                  style={{
+                    borderRadius: 12,
+                    background: "rgba(179,50,44,0.08)",
+                    border: "1px solid rgba(179,50,44,0.3)",
+                    color: "#7a221d",
+                    padding: "10px 14px",
+                    fontSize: 13,
+                    fontFamily: "Inter, sans-serif",
+                  }}
+                >
+                  {checkoutError}
+                </div>
+              )}
+
               <button
-                disabled={!formValid}
-                onClick={() => setStarted(true)}
+                type="button"
+                disabled={!formValid || submitting}
+                onClick={handleContinue}
                 style={{
                   width: "100%",
                   background: "#111111",
@@ -418,18 +472,48 @@ function StripeProductView({ product }: { product: Product }) {
                   padding: "14px 20px",
                   fontSize: 14,
                   fontWeight: 500,
-                  opacity: formValid ? 1 : 0.4,
+                  opacity: !formValid || submitting ? 0.45 : 1,
+                  cursor: !formValid || submitting ? "not-allowed" : "pointer",
                   transition: "all 0.2s",
+                  border: "none",
                 }}
               >
-                Continue to payment · {formatPrice(product.price_cents, product.currency)}
+                {submitting
+                  ? "Starting secure checkout…"
+                  : `Continue to payment · ${formatPrice(product.price_cents, product.currency)}`}
               </button>
+              {!formValid && (
+                <p style={{ textAlign: "center", fontSize: 12, color: "#8A8480", marginTop: 4 }}>
+                  Fill in all fields above to continue.
+                </p>
+              )}
             </div>
           ) : (
-            <div className="mt-6 overflow-hidden rounded-2xl bg-white p-2">
-              <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
-                <EmbeddedCheckout />
-              </EmbeddedCheckoutProvider>
+            <div className="mt-6 space-y-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setStarted(false);
+                  setCheckoutError(null);
+                }}
+                style={{
+                  fontSize: 12,
+                  color: "#8A8480",
+                  textDecoration: "underline",
+                  fontFamily: "Inter, sans-serif",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                ← Edit your details
+              </button>
+              <div className="overflow-hidden rounded-2xl bg-white p-2">
+                <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
+                  <EmbeddedCheckout />
+                </EmbeddedCheckoutProvider>
+              </div>
             </div>
           )}
         </div>
