@@ -216,34 +216,25 @@ function SessionProductView({ product }: { product: Product }) {
 function StripeProductView({ product }: { product: Product }) {
   const { slug } = product;
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [touched, setTouched] = useState<{ firstName?: boolean; lastName?: boolean; phone?: boolean; email?: boolean }>({});
+  const [touched, setTouched] = useState<{ firstName?: boolean; email?: boolean }>({});
   const [started, setStarted] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const stripePromise = useMemo(() => getStripe(), []);
 
   const firstNameOk = firstName.trim().length >= 1;
-  const lastNameOk = lastName.trim().length >= 1;
   const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim());
-  const phoneDigits = phone.replace(/[^0-9]/g, "");
-  const phoneOk =
-    phone.trim().length >= 6 &&
-    phone.trim().length <= 40 &&
-    phoneDigits.length >= 6 &&
-    /^[+0-9()\-.\s]+$/.test(phone.trim());
-  const formValid = firstNameOk && lastNameOk && phoneOk && emailOk;
+  const formValid = firstNameOk && emailOk;
 
   const fetchClientSecret = async (): Promise<string> => {
+    if (clientSecret) return clientSecret;
     const secret = await createGuestCheckout({
       data: {
         slug,
         customerEmail: email.trim(),
         firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        phone: phone.trim(),
         returnUrl: `${window.location.origin}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
         environment: getStripeEnvironment(),
       },
@@ -252,10 +243,22 @@ function StripeProductView({ product }: { product: Product }) {
     return secret;
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!formValid || submitting) return;
     setCheckoutError(null);
-    setStarted(true);
+    setSubmitting(true);
+    try {
+      const secret = await fetchClientSecret();
+      console.log("[checkout] client secret received", secret ? "ok" : "empty");
+      setClientSecret(secret);
+      setStarted(true);
+    } catch (e) {
+      const msg = (e as Error)?.message ?? "Could not start checkout";
+      console.error("[checkout] failed", e);
+      setCheckoutError(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
