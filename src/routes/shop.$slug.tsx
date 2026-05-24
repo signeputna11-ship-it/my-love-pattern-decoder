@@ -393,40 +393,6 @@ function StripeProductView({ product }: { product: Product }) {
                 )}
               </div>
               <div>
-                <label style={{ ...labelStyle, display: "block" }}>Last name</label>
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  onBlur={() => setTouched((t) => ({ ...t, lastName: true }))}
-                  placeholder="Your last name"
-                  autoComplete="family-name"
-                  required
-                  maxLength={80}
-                  style={inputStyle}
-                />
-                {touched.lastName && !lastNameOk && (
-                  <p style={errorStyle}>Please enter your last name.</p>
-                )}
-              </div>
-              <div>
-                <label style={{ ...labelStyle, display: "block" }}>Phone number</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
-                  placeholder="+1 555 123 4567"
-                  autoComplete="tel"
-                  required
-                  maxLength={40}
-                  style={inputStyle}
-                />
-                {touched.phone && !phoneOk && (
-                  <p style={errorStyle}>Enter a valid phone number with country code.</p>
-                )}
-              </div>
-              <div>
                 <label style={{ ...labelStyle, display: "block" }}>Email</label>
                 <input
                   type="email"
