@@ -1,46 +1,57 @@
-## Problem
+## Goal
 
-On every Stripe product page (`/shop/:slug` for the 6 worksheets + Reset Kit), the "Continue to payment" button often appears inactive. Root causes:
+Replace the current `/about` page on mylovepattern.com with the structure and copy from `HerOwnRoots.jsx`, adapted to MLP's existing design system. Use Signe's uploaded photo. Use the existing mailto-to-Signe booking flow (no Calendly, no €333 Stripe checkout).
 
-1. **Silent validation** — the button is `disabled` whenever any of First name / Last name / Phone / Email fails validation, but nothing tells the user which field is wrong. Phone regex (`/^[+0-9()\-.\s]{4,40}$/`) rejects common inputs (e.g. letters mid-typing, missing length). Users assume the button is broken.
-2. **No clickable affordance** — disabled state uses only `opacity: 0.4`. No `cursor: not-allowed` when disabled, no `cursor: pointer` when enabled, no hover state. Looks dead either way.
-3. **No `type="button"`** — inside any future wrapper `<form>` this would submit/refresh.
-4. **No error surfacing on submit failure** — if `createGuestCheckout` throws (network, Stripe error, bad slug), the Embedded Checkout silently fails to mount and the user sees a blank panel with no retry.
-5. **Phone marked "required"** but many guest buyers don't want to share it — friction that blocks conversion. Spec earlier required it; we'll keep required but relax the regex and show inline help.
+## What changes
 
-## Fix
+### 1. Add the portrait asset
+- Copy `user-uploads://IMG_1337.JPG` → `src/assets/signe-her-own-roots.jpg`.
 
-### 1. `src/routes/shop.$slug.tsx` — `StripeProductView`
-- Add per-field inline validation messages (red helper text under each field) that appear only after the field has been touched (`onBlur`).
-- Relax phone regex to `^[+0-9()\-.\s]{6,40}$` and strip-on-validate; trim before checking length. Email regex unchanged.
-- Button:
-  - Add `type="button"`.
-  - Add `cursor: formValid ? "pointer" : "not-allowed"`.
-  - When `!formValid`, keep `disabled` but also render a small hint line above: "Fill in all fields to continue".
-  - Add hover state (slight bg lift) when enabled.
-- Wrap `fetchClientSecret` in try/catch; on failure, `setStarted(false)` and surface a toast/inline error ("Couldn't start payment. Try again or refresh."). Add a "Back to details" link inside the embedded checkout panel so users can re-edit and retry.
-- Add a loading state on the button while `setStarted` transitions (prevent double-click).
+### 2. Rewrite `src/routes/about.tsx`
+Keep the existing `createFileRoute("/about")` block (head/meta/JSON-LD stay — they're already correct). Replace the `AboutPage` component with a new layout based on the Her Own Roots sections, but built from MLP primitives so it integrates visually.
 
-### 2. Verify identical CTA in `src/routes/checkout.tsx` (the legacy authenticated Reset Kit checkout)
-- That page mounts `EmbeddedCheckout` immediately (no name/phone gate), so the "Continue to payment" issue does not apply there. No change unless QA shows otherwise.
+**Reuse, don't fork:**
+- `SiteNav` (top) and `SiteFooter` (bottom) — same as today. No second "Her Own Roots" sub-brand nav.
+- `VideoBackground` for the hero (same R2 video the current About uses) — keep MLP's dark-video aesthetic instead of the cream `#F8F5F0` Her Own Roots palette.
+- Tailwind + existing semantic tokens (`bg-background`, `text-foreground`, `text-muted-foreground`, `font-serif`, `font-mono`, `border-border`, `bg-accent`, etc.) — no inline `#111` / `#F8F5F0` / `#8A8480` colors.
+- Existing typography pairing already in use (Instrument Serif italic for display, Inter for body).
+- The "✦" ornament and uppercase tracked eyebrow labels stay — they already match MLP.
 
-### 3. Smoke-test the full Stripe path after the fix
-- Hit `/shop/breadcrumbing-red-flags`, fill fields, confirm the button activates and the Stripe iframe mounts.
-- Use Stripe test card `4242 4242 4242 4242` (sandbox token is active in preview).
-- Confirm webhook `/api/public/payments/webhook?env=sandbox` fires, `purchases` row is written with first/last/phone, Step-1 confirmation email is enqueued, and `/thank-you?session_id=...` resolves the access link.
-- Check `stack_modern--server-function-logs` for webhook errors.
+**Sections, in order (all copy lifted from HerOwnRoots.jsx):**
+1. **Hero** — "You already know something needs to change." Two-column on desktop, stacked on mobile. Left: eyebrow ("About Signe ✦ Porto"), display headline, supporting paragraph. Right: small "Deep Pattern Reset" eyebrow + "Book a Deep Pattern Reset" CTA (mailto to `mylovepattern@gmail.com`, same `SIGNE_MAILTO` pattern used in `SiteFooter`) + a ghost link "What happens in a session" → `#session`. Bottom credential strip: RTT · Reiki · Kundalini · Intuitive Coaching.
+   - Drop the €333 price tile and the "herownroots.com" URL chip (we are on mylovepattern.com, and pricing is handled off-site via email).
+2. **Mirror** — "You have tried everything. And something is still there." Two-column copy block (3 paragraphs).
+3. **Who this is for** — Six-card grid (01–06) on `bg-accent/40` with `border-border`. Same 6 items from the file.
+4. **About Signe (`id="about"`)** — Two-column: left = Signe's photo (`signe-her-own-roots.jpg`, aspect-ratio 3/4, rounded, captioned "Signe Putna"); right = "I do not teach what I studied. I show you what I lived." with the 3 proof bullets and credential pills.
+5. **The Session (`id="session"`)** — Dark band (`bg-foreground text-background` — already used by SiteFooter's "Book Signe" card). "One session. The root. Changed." + the 4 numbered steps (i–iv). End with the mailto CTA again.
+6. **Closing CTA** — Single centered block: "Ready when you are" → mailto to Signe.
 
-### 4. Out of scope
-- No changes to product list, pricing, email templates, navigation, or the Deep Pattern Reset session (mailto flow stays as-is).
-- No DB migrations.
+**Drop from the source file:**
+- The fixed cream `<nav>` (replaced by `SiteNav`).
+- All Calendly script-loading `useEffect` + `openCalendly` (we use mailto).
+- Manual Google Fonts injection (fonts are already loaded globally).
+- The `<style>` global reset and `.hor-btn` / `.hor-ghost` / `.hor-book` classes (Tailwind handles this).
+- The `useReveal` IntersectionObserver scroll animations — not used elsewhere on MLP; keep the page static for now to match the rest of the site.
+- The €333 price, "herownroots.com" wordmark, and "Her Own Roots" sub-brand naming. The page is the My Love Pattern About page; section copy can still reference Signe's practice but we don't introduce a second brand identity.
 
-## Files touched
+### 3. Nothing else changes
+- `SiteNav` already links to `/about` — no nav edits needed.
+- `SiteFooter`'s existing "Book a Deep Pattern Reset" CTA already mailtos Signe with the right subject/body; reuse the same `SIGNE_MAILTO` constant in the new About page.
+- No new routes, no route-tree edits (`/about` already exists), no DB / RLS / payments changes.
 
-- `src/routes/shop.$slug.tsx` (UX + error handling only — `StripeProductView`)
+## Technical notes
 
-## Acceptance
+- File touched: `src/routes/about.tsx` (component body only — keep the `Route` export, head meta, and JSON-LD).
+- Asset added: `src/assets/signe-her-own-roots.jpg`, imported as an ES module and passed to `<img src={...} />`.
+- Use semantic tokens from `src/styles.css`. No raw hex values in JSX.
+- `id="about"` and `id="session"` anchors preserved so in-page jumps from the hero work.
+- Mobile: hero/about/session grids collapse to single column at `md:` breakpoint.
 
-1. On any worksheet or kit page, the "Continue to payment" button visibly becomes active (dark, pointer cursor) the moment all four fields are valid.
-2. If a field is invalid after blur, the user sees exactly which field and why.
-3. Clicking the button mounts the Stripe Embedded Checkout reliably; on backend failure the user sees a clear error and can retry.
-4. Test purchase end-to-end with `4242 4242 4242 4242` writes a `purchases` row and enqueues the confirmation email.
+## Out of scope (flag, don't do)
+
+- No Calendly integration.
+- No €333 Stripe product / checkout.
+- No new "Her Own Roots" sub-brand, logo, or separate domain page.
+- No changes to the homepage, shop, or quiz flow.
+
+If you later want a dedicated paid €333 session purchasable via Stripe (like the $7 shop items), that's a separate build.
