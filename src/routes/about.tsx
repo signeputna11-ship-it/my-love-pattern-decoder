@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/healthy-love/SiteNav";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import { VideoBackground } from "@/components/blog/VideoBackground";
 import signePortrait from "@/assets/signe-her-own-roots.jpg";
+import rttBadge from "@/assets/rtt-certified-badge.png";
 
 const ABOUT_VIDEO =
   "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4";
@@ -395,6 +396,90 @@ function AboutPage() {
                 >
                   Book a Deep Pattern Reset
                 </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Ornament />
+
+        {/* RTT EXPLAINER */}
+        <section
+          className="border-y px-6 py-20"
+          style={{ backgroundColor: "#ffffff", borderColor: "#E8E3DC" }}
+        >
+          <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1fr_1.4fr] md:gap-16">
+            <div className="flex flex-col items-center text-center">
+              <img
+                src={rttBadge}
+                alt="Certified RTT Practitioner badge, Marisa Peer Rapid Transformational Therapy"
+                loading="lazy"
+                width={1024}
+                height={1024}
+                className="h-auto w-[230px] sm:w-[280px]"
+              />
+              <p className="mt-6 font-serif text-2xl italic text-foreground">
+                Certified RTT Practitioner
+              </p>
+              <p className="mt-1 text-xs font-light tracking-wider text-muted-foreground">
+                Marisa Peer · Rapid Transformational Therapy
+              </p>
+            </div>
+
+            <div>
+              <p className={eyebrow}>The method behind the session</p>
+              <h2 className="mt-5 font-serif text-[clamp(28px,3.5vw,44px)] font-normal italic leading-[1.1] text-foreground">
+                What is Rapid Transformational Therapy?
+              </h2>
+              <div className="mt-6 space-y-4">
+                <p className="text-[15px] font-light leading-[1.85] text-foreground">
+                  RTT was created by Marisa Peer and combines hypnotherapy, NLP,
+                  CBT and neuroscience to go directly to the subconscious, where
+                  patterns actually live.
+                </p>
+                <p className="text-[15px] font-light leading-[1.85] text-foreground">
+                  Unlike talk therapy, RTT bypasses the thinking mind and finds
+                  the original moment the pattern was created, the exact age,
+                  the exact scene, the decision your nervous system made before
+                  you were old enough to question it.
+                </p>
+                <p className="text-[15px] font-light leading-[1.85] text-foreground">
+                  Once that moment is found, we reframe it at the root. New
+                  neural pathways form. The old response loses its grip.
+                </p>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  [
+                    "One session",
+                    "Most clients experience a significant shift in a single 90-minute session.",
+                  ],
+                  [
+                    "The subconscious",
+                    "RTT works where the pattern actually lives, not in the thoughts, but underneath them.",
+                  ],
+                  [
+                    "Lasting change",
+                    "Combined with a personalised 21-day audio, the rewiring continues long after the session ends.",
+                  ],
+                ].map(([title, body]) => (
+                  <div
+                    key={title}
+                    className="rounded-lg border p-5"
+                    style={{
+                      backgroundColor: "#F8F5F0",
+                      borderColor: "#E8E3DC",
+                    }}
+                  >
+                    <p className="font-serif text-base italic text-foreground">
+                      {title}
+                    </p>
+                    <p className="mt-2 text-xs font-light leading-[1.65] text-muted-foreground">
+                      {body}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
