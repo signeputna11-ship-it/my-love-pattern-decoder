@@ -79,7 +79,7 @@ export function SiteNav() {
           <div className="mx-auto max-w-6xl px-4 py-2">
             <Link to="/" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Home</Link>
             <Link to="/shop" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Shop</Link>
-            <Link to="/about" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Deep Reset</Link>
+            <Link to="/about" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Signe</Link>
             <Link to="/blog" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Blog</Link>
 
             <p className="mt-2 px-3 pt-2 text-[10px] uppercase tracking-widest text-muted-foreground">Patterns</p>
