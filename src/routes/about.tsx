@@ -73,7 +73,7 @@ const FOR_ITEMS: Array<[string, string, string]> = [
   [
     "02",
     "You moved somewhere new and the same feeling followed you",
-    "New city, new life, new version of you. And a few months in — the same pattern. Different context. Same root. The root travels with you until it is touched.",
+    "New city, new life, new version of you. And a few months in , the same pattern. Different context. Same root. The root travels with you until it is touched.",
   ],
   [
     "03",
@@ -114,12 +114,12 @@ const SESSION_STEPS: Array<[string, string, string]> = [
   [
     "i",
     "We find the root",
-    "RTT process takes you to the subconscious origin — the original moment the pattern was installed. Not as a concept. As a felt experience.",
+    "RTT process takes you to the subconscious origin , the original moment the pattern was installed. Not as a concept. As a felt experience.",
   ],
   [
     "ii",
     "We change it there",
-    "We reframe the original decision at the root. New neural pathways form. The old response loses its grip. Not intellectually — in the body.",
+    "We reframe the original decision at the root. New neural pathways form. The old response loses its grip. Not intellectually , in the body.",
   ],
   [
     "iii",
@@ -227,7 +227,7 @@ function AboutPage() {
               </p>
               <p className="text-[15px] font-light leading-[1.85] text-foreground">
                 The root is not in your thoughts. It is in your body, your
-                subconscious, your nervous system — the decisions you made
+                subconscious, your nervous system , the decisions you made
                 before you were old enough to know you were making them.{" "}
                 <strong className="font-medium">
                   That is where I work. That is the only place this actually
@@ -297,7 +297,7 @@ function AboutPage() {
               <p className="mt-6 text-[15px] font-light leading-[1.85] text-foreground">
                 I have been doing this work since I was 14. Reiki found me
                 first. Then meditation, kundalini, and RTT. I have used this
-                work on myself first — before I ever offered it to anyone else.
+                work on myself first , before I ever offered it to anyone else.
               </p>
 
               <div className="mt-6 border-t border-border">
@@ -365,7 +365,7 @@ function AboutPage() {
                 </h2>
                 <p className="mt-6 text-[15px] font-light leading-[1.82] text-background/65">
                   This is not a consultation. This is not a discovery call.
-                  This is the work itself — 90 minutes that go to the exact
+                  This is the work itself , 90 minutes that go to the exact
                   origin of the pattern and change it there.
                 </p>
               </div>
