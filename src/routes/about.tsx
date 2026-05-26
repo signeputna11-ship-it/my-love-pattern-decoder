@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/healthy-love/SiteNav";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import { VideoBackground } from "@/components/blog/VideoBackground";
 import signePortrait from "@/assets/signe-her-own-roots.jpg";
+import rttBadge from "@/assets/rtt-certified-badge.png";
 
 const ABOUT_VIDEO =
   "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4";
