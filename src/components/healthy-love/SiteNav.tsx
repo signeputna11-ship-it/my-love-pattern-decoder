@@ -31,7 +31,7 @@ export function SiteNav() {
             Shop
           </Link>
           <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground" activeProps={{ className: "text-sm text-foreground font-medium" }}>
-            About
+            Deep Reset
           </Link>
           <Link to="/blog" className="text-sm text-muted-foreground hover:text-foreground" activeProps={{ className: "text-sm text-foreground font-medium" }}>
             Blog
