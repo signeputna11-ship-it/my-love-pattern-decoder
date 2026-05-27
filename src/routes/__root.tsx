@@ -46,6 +46,8 @@ export const Route = createRootRoute({
       { name: "google-site-verification", content: "TLjivVP9gjp07U79hyBiuc9uzjcKz3M7JoBRtyACpNM" },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: "/mlp-logo.png" },
+      { rel: "apple-touch-icon", href: "/mlp-logo.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {
