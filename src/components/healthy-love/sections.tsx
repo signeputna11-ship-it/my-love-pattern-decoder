@@ -89,6 +89,8 @@ export function Nav() {
         <nav className="hidden items-center gap-7 overflow-visible md:flex">
           <a href="#top" className="text-sm text-white/70 transition hover:text-white">Home</a>
           <a href="/shop" className="text-sm text-white/70 transition hover:text-white">Shop</a>
+          <a href="/about" className="text-sm text-white/70 transition hover:text-white">Deep Reset</a>
+          <a href="/blog" className="text-sm text-white/70 transition hover:text-white">Blog</a>
           <div
             className="relative"
             onMouseEnter={() => setPatternsOpen(true)}
@@ -147,8 +149,6 @@ export function Nav() {
               </div>
             )}
           </div>
-          <a href="/blog" className="text-sm text-white/70 transition hover:text-white">Blog</a>
-          <a href="/about" className="text-sm text-white/70 transition hover:text-white">About</a>
         </nav>
         <button
           onClick={() => {
@@ -173,6 +173,8 @@ export function Nav() {
         <div className="mx-auto mt-2 max-w-6xl rounded-3xl liquid-glass p-3 md:hidden">
           <a onClick={() => setOpen(false)} href="#top" className="block rounded-xl px-3 py-3 text-sm text-white/85">Home</a>
           <a onClick={() => setOpen(false)} href="/shop" className="block rounded-xl px-3 py-3 text-sm text-white/85">Shop</a>
+          <a onClick={() => setOpen(false)} href="/about" className="block rounded-xl px-3 py-3 text-sm text-white/85">Deep Reset</a>
+          <a onClick={() => setOpen(false)} href="/blog" className="block rounded-xl px-3 py-3 text-sm text-white/85">Blog</a>
           <p className="mt-2 px-3 pt-2 text-[10px] uppercase tracking-widest text-white/55">Patterns</p>
           {patternLinks.map((p) => (
             <a
@@ -184,8 +186,6 @@ export function Nav() {
               {p.label}
             </a>
           ))}
-          <a onClick={() => setOpen(false)} href="/blog" className="block rounded-xl px-3 py-3 text-sm text-white/85">Blog</a>
-          <a onClick={() => setOpen(false)} href="/about" className="block rounded-xl px-3 py-3 text-sm text-white/85">About</a>
           {hasAccess && (
             <button
               onClick={() => {
