@@ -9,7 +9,7 @@ const ABOUT_VIDEO =
   "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4";
 
 const SIGNE_MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Discovery%20Call&body=Hi%20Signe%2C%20I%20am%20interested%20in%20the%20Deep%20Pattern%20Reset%20session.%20I%20would%20love%20to%20arrange%20a%20discovery%20call.%20My%20name%20is%3A";
+  "https://calendly.com/mylovepattern/30min";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -169,7 +169,7 @@ function AboutPage() {
                 </p>
               </div>
               <a
-                href={SIGNE_MAILTO}
+                href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center rounded-full bg-foreground px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-background transition hover:opacity-90"
               >
                 Book a Deep Pattern Reset
@@ -391,7 +391,7 @@ function AboutPage() {
                   </div>
                 ))}
                 <a
-                  href={SIGNE_MAILTO}
+                  href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
                   className="mt-8 inline-flex items-center rounded-full bg-background px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground transition hover:opacity-90"
                 >
                   Book a Deep Pattern Reset
@@ -508,13 +508,13 @@ function AboutPage() {
           </p>
           <div className="relative mt-10 flex flex-wrap justify-center gap-3">
             <a
-              href={SIGNE_MAILTO}
+              href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center rounded-full bg-foreground px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-background transition hover:opacity-90"
             >
               Book a Deep Pattern Reset
             </a>
             <a
-              href={SIGNE_MAILTO}
+              href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center rounded-full border border-border px-7 py-3 text-[11px] font-normal uppercase tracking-[0.15em] text-muted-foreground transition hover:border-foreground hover:text-foreground"
             >
               Write to Signe first

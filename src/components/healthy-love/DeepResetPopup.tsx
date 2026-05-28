@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight } from "lucide-react";
 
 const MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Discovery%20Call&body=Hi%20Signe%2C%20I%20am%20interested%20in%20the%20Deep%20Pattern%20Reset%20session.%20I%20would%20love%20to%20arrange%20a%20discovery%20call.%20My%20name%20is%3A";
+  "https://calendly.com/mylovepattern/30min";
 
 const STORAGE_KEY = "mlp_deep_reset_popup_dismissed_v1";
 
@@ -154,7 +154,7 @@ export function DeepResetPopup() {
 
             <div className="border-t border-white/10 bg-black/85 p-6 sm:p-8 sm:pt-6 rounded-b-3xl">
               <a
-                href={MAILTO}
+                href={MAILTO} target="_blank" rel="noopener noreferrer"
                 onClick={handleCtaClick}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
               >

@@ -29,7 +29,7 @@ export const Route = createFileRoute("/shop/")({
 });
 
 const SESSION_MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep Pattern Reset — Discovery Call&body=Hi Signe, I would like to arrange a discovery call for the Deep Pattern Reset session. My name is:";
+  "https://calendly.com/mylovepattern/30min";
 
 function formatPrice(cents: number, currency: string) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: currency.toUpperCase() }).format(
