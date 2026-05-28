@@ -17,7 +17,7 @@ type Product = {
 };
 
 const SESSION_MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep Pattern Reset — Discovery Call&body=Hi Signe, I would like to arrange a discovery call for the Deep Pattern Reset session. My name is:";
+  "https://calendly.com/mylovepattern/30min";
 
 const VIDEO_BY_SLUG: Record<string, { src: string; overlay: string }> = {
   "love-pattern-reset-kit": {

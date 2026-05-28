@@ -32,7 +32,7 @@ type Resolved = {
 } | null;
 
 const SESSION_MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep Pattern Reset — Discovery Call&body=Hi Signe, I would like to arrange a discovery call for the Deep Pattern Reset session. My name is:";
+  "https://calendly.com/mylovepattern/30min";
 
 export const Route = createFileRoute("/thank-you")({
   component: ThankYouPage,
