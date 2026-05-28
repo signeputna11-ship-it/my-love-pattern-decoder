@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 
 const SIGNE_MAILTO =
-  "mailto:mylovepattern@gmail.com?subject=Deep%20Pattern%20Reset%20%E2%80%94%20Discovery%20Call&body=Hi%20Signe%2C%20I%20am%20interested%20in%20the%20Deep%20Pattern%20Reset%20session.%20I%20would%20love%20to%20arrange%20a%20discovery%20call.%20My%20name%20is%3A";
+  "https://calendly.com/mylovepattern/30min";
 
 type PatternSlug =
   | "/the-over-investor"
@@ -70,7 +70,7 @@ export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } 
               A private 90-minute session to reset the pattern at the level it actually lives. Includes a personalised 21-day audio meditation.
             </p>
             <a
-              href={SIGNE_MAILTO}
+              href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-background px-5 py-3 text-sm font-semibold text-foreground hover:opacity-90"
             >
               Email Signe <ArrowUpRight className="h-4 w-4" />
