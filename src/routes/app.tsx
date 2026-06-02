@@ -5,6 +5,7 @@ import { Loader2, LogOut, Shield } from "lucide-react";
 import { toast } from "sonner";
 import mlpLogo from "@/assets/mlp-logo.png";
 import { checkIsAdmin } from "@/server/admin-emails.functions";
+import { linkGuestPurchases } from "@/server/payments.functions";
 
 export const Route = createFileRoute("/app")({
   component: AppLayout,
@@ -48,6 +49,10 @@ function AppLayout() {
       checkIsAdmin()
         .then((r) => setIsAdmin(!!r?.isAdmin))
         .catch(() => setIsAdmin(false));
+
+      // Best-effort: attach any guest purchases made with this email
+      // to the now-authenticated account before checking access.
+      try { await linkGuestPurchases(); } catch { /* non-fatal */ }
 
       const rpcRes = await withTimeout(
         supabase.rpc("has_paid_access", { _user_id: user.id }),
