@@ -78,12 +78,19 @@ export const createGuestCheckout = createServerFn({ method: "POST" })
     if (!prices.data.length) throw new Error("Stripe price not found");
     const stripePrice = prices.data[0];
 
+    // Resolve a Stripe Customer up-front so the email lands on a real
+    // Customer object — makes later guest-to-account linking simpler.
+    const existingCustomer = await stripe.customers.list({ email: data.customerEmail, limit: 1 });
+    const customerId = existingCustomer.data.length
+      ? existingCustomer.data[0].id
+      : (await stripe.customers.create({ email: data.customerEmail, name: fullName || firstName })).id;
+
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: stripePrice.id, quantity: 1 }],
       mode: "payment",
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
-      customer_email: data.customerEmail,
+      customer: customerId,
       payment_intent_data: { description: product.name as string },
       // Auto-convert USD base price into the buyer's local currency (e.g. EUR).
       adaptive_pricing: { enabled: true },
