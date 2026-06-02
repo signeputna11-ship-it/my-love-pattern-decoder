@@ -11,7 +11,7 @@ const resolvePurchaseBySession = createServerFn({ method: "GET" })
     return data;
   })
   .handler(async ({ data }) => {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 20; i++) {
       const { data: purchase } = await supabaseAdmin
         .from("purchases")
         .select("access_token, product_slug, customer_email, has_access, refunded")
@@ -148,10 +148,9 @@ function SessionUpsellCard() {
         <p style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", marginBottom: 28 }}>
           one private session
         </p>
-        <a
-          href={SESSION_MAILTO}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/shop/$slug"
+          params={{ slug: "deep-pattern-reset" }}
           style={{
             display: "inline-block",
             background: "linear-gradient(135deg,#c9857a,#a0574e)",
@@ -164,10 +163,18 @@ function SessionUpsellCard() {
             textDecoration: "none",
           }}
         >
-          Email Signe to arrange a discovery call →
-        </a>
-        <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "rgba(255,255,255,0.3)", marginTop: 12 }}>
-          Signe responds personally. Limited spots each month.
+          Reserve your session · $333 →
+        </Link>
+        <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 14 }}>
+          Not ready yet?{" "}
+          <a
+            href={SESSION_MAILTO}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "rgba(255,255,255,0.75)", textDecoration: "underline" }}
+          >
+            Book a free discovery call first →
+          </a>
         </p>
       </div>
     </div>
