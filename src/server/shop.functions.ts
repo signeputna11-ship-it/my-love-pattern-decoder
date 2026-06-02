@@ -85,6 +85,8 @@ export const createGuestCheckout = createServerFn({ method: "POST" })
       return_url: data.returnUrl,
       customer_email: data.customerEmail,
       payment_intent_data: { description: product.name as string },
+      // Auto-convert USD base price into the buyer's local currency (e.g. EUR).
+      adaptive_pricing: { enabled: true },
       metadata: {
         product_slug: product.slug as string,
         guest_email: data.customerEmail,

@@ -31,6 +31,8 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       ui_mode: "embedded_page",
       return_url: data.returnUrl,
       ...(data.customerEmail && { customer_email: data.customerEmail }),
+      // Auto-convert USD base price into the buyer's local currency (e.g. EUR).
+      adaptive_pricing: { enabled: true },
       metadata: {
         ...(data.userId && { userId: data.userId }),
       },
