@@ -133,6 +133,7 @@ async function upsertPurchaseFromSession(session: any, env: StripeEnv) {
           first_name: firstName ?? undefined,
           product_name: productName ?? undefined,
           access_link: accessLink,
+          product_slug: resolvedSlug ?? undefined,
         },
       });
     } catch (e) {
