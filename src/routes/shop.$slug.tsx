@@ -179,29 +179,21 @@ function SessionProductView({ product }: { product: Product }) {
             per private session
           </div>
           <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "#6b4c44", marginTop: 20, lineHeight: 1.65 }}>
-            Email Signe to arrange a short discovery call first. She responds to every message personally within 48 hours.
+            Reserve your session now with secure checkout. Signe will email you within 24 hours with the pre-session worksheet and scheduling link.
           </p>
-          <a
-            href={SESSION_MAILTO}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "block",
-              textAlign: "center",
-              background: "#111111",
-              color: "white",
-              borderRadius: 100,
-              padding: "14px 24px",
-              fontSize: 14,
-              fontWeight: 500,
-              marginTop: 20,
-              textDecoration: "none",
-            }}
-          >
-            Email Signe to arrange a discovery call →
-          </a>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8A8480", marginTop: 12 }}>
-            This opens your email directly to Signe. Limited spots each month.
+          <div className="mt-5">
+            <StripeBuyForm product={product} ctaLabel="Reserve your session · $333" />
+          </div>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8A8480", marginTop: 14, textAlign: "center" }}>
+            Not ready yet?{" "}
+            <a
+              href={SESSION_MAILTO}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#111111", textDecoration: "underline" }}
+            >
+              Book a free discovery call first →
+            </a>
           </p>
           <div style={{ height: 1, background: "#E8E3DC", margin: "20px 0" }} />
           <p style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#6b4c44", fontStyle: "italic", lineHeight: 1.6 }}>
