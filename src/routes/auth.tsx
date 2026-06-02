@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { sendTransactionalEmail } from "@/lib/email/send";
+import { linkGuestPurchases } from "@/server/payments.functions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -57,6 +58,7 @@ function AuthPage() {
       if (data.session) {
         const u = data.session.user;
         maybeSendWelcome(u.id, u.email ?? null);
+        linkGuestPurchases().catch(() => {});
         navigate({ to: "/app" });
       }
     });
@@ -84,6 +86,7 @@ function AuthPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        linkGuestPurchases().catch(() => {});
         navigate({ to: "/app" });
       }
     } catch (err: any) {

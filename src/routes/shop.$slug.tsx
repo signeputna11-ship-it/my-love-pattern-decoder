@@ -179,29 +179,21 @@ function SessionProductView({ product }: { product: Product }) {
             per private session
           </div>
           <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "#6b4c44", marginTop: 20, lineHeight: 1.65 }}>
-            Email Signe to arrange a short discovery call first. She responds to every message personally within 48 hours.
+            Reserve your session now with secure checkout. Signe will email you within 24 hours with the pre-session worksheet and scheduling link.
           </p>
-          <a
-            href={SESSION_MAILTO}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "block",
-              textAlign: "center",
-              background: "#111111",
-              color: "white",
-              borderRadius: 100,
-              padding: "14px 24px",
-              fontSize: 14,
-              fontWeight: 500,
-              marginTop: 20,
-              textDecoration: "none",
-            }}
-          >
-            Email Signe to arrange a discovery call →
-          </a>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8A8480", marginTop: 12 }}>
-            This opens your email directly to Signe. Limited spots each month.
+          <div className="mt-5">
+            <StripeBuyForm product={product} ctaLabel="Reserve your session · $333" />
+          </div>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8A8480", marginTop: 14, textAlign: "center" }}>
+            Not ready yet?{" "}
+            <a
+              href={SESSION_MAILTO}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#111111", textDecoration: "underline" }}
+            >
+              Book a free discovery call first →
+            </a>
           </p>
           <div style={{ height: 1, background: "#E8E3DC", margin: "20px 0" }} />
           <p style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#6b4c44", fontStyle: "italic", lineHeight: 1.6 }}>
@@ -213,7 +205,13 @@ function SessionProductView({ product }: { product: Product }) {
   );
 }
 
-function StripeProductView({ product }: { product: Product }) {
+function StripeBuyForm({
+  product,
+  ctaLabel,
+}: {
+  product: Product;
+  ctaLabel?: string;
+}) {
   const { slug } = product;
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -249,13 +247,10 @@ function StripeProductView({ product }: { product: Product }) {
     setSubmitting(true);
     try {
       const secret = await fetchClientSecret();
-      console.log("[checkout] client secret received", secret ? "ok" : "empty");
       setClientSecret(secret);
       setStarted(true);
     } catch (e) {
-      const msg = (e as Error)?.message ?? "Could not start checkout";
-      console.error("[checkout] failed", e);
-      setCheckoutError(msg);
+      setCheckoutError((e as Error)?.message ?? "Could not start checkout");
     } finally {
       setSubmitting(false);
     }
@@ -281,6 +276,125 @@ function StripeProductView({ product }: { product: Product }) {
     fontFamily: "Inter, sans-serif",
   };
 
+  const defaultCta = `Continue to payment · ${formatPrice(product.price_cents, product.currency)}`;
+
+  if (started) {
+    return (
+      <div className="space-y-3">
+        <button
+          type="button"
+          onClick={() => {
+            setStarted(false);
+            setCheckoutError(null);
+          }}
+          style={{
+            fontSize: 12,
+            color: "#8A8480",
+            textDecoration: "underline",
+            fontFamily: "Inter, sans-serif",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+          }}
+        >
+          ← Edit your details
+        </button>
+        <div className="overflow-hidden rounded-2xl bg-white p-2">
+          <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
+            <EmbeddedCheckout />
+          </EmbeddedCheckoutProvider>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <label style={{ ...labelStyle, display: "block" }}>First name</label>
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          onBlur={() => setTouched((t) => ({ ...t, firstName: true }))}
+          placeholder="Your first name"
+          autoComplete="given-name"
+          required
+          maxLength={80}
+          style={inputStyle}
+        />
+        {touched.firstName && !firstNameOk && (
+          <p style={errorStyle}>Please enter your first name.</p>
+        )}
+      </div>
+      <div>
+        <label style={{ ...labelStyle, display: "block" }}>Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+          placeholder="you@example.com"
+          autoComplete="email"
+          required
+          style={inputStyle}
+        />
+        {touched.email && !emailOk ? (
+          <p style={errorStyle}>Enter a valid email address.</p>
+        ) : (
+          <p style={{ marginTop: 8, fontSize: 12, color: "#8A8480" }}>
+            Your access link goes to this email. Double-check spelling.
+          </p>
+        )}
+      </div>
+
+      {checkoutError && (
+        <div
+          style={{
+            borderRadius: 12,
+            background: "rgba(179,50,44,0.08)",
+            border: "1px solid rgba(179,50,44,0.3)",
+            color: "#7a221d",
+            padding: "10px 14px",
+            fontSize: 13,
+            fontFamily: "Inter, sans-serif",
+          }}
+        >
+          {checkoutError}
+        </div>
+      )}
+
+      <button
+        type="button"
+        disabled={!formValid || submitting}
+        onClick={handleContinue}
+        style={{
+          width: "100%",
+          background: "#111111",
+          color: "white",
+          borderRadius: 100,
+          padding: "14px 20px",
+          fontSize: 14,
+          fontWeight: 500,
+          opacity: !formValid || submitting ? 0.45 : 1,
+          cursor: !formValid || submitting ? "not-allowed" : "pointer",
+          transition: "all 0.2s",
+          border: "none",
+        }}
+      >
+        {submitting ? "Starting secure checkout…" : ctaLabel ?? defaultCta}
+      </button>
+      {!formValid && (
+        <p style={{ textAlign: "center", fontSize: 12, color: "#8A8480", marginTop: 4 }}>
+          Fill in all fields above to continue.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function StripeProductView({ product }: { product: Product }) {
   return (
     <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
       <div>
@@ -372,124 +486,15 @@ function StripeProductView({ product }: { product: Product }) {
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#8A8480", marginTop: 4 }}>
             one-time, lifetime access
           </div>
-
-          {!started ? (
-            <div className="mt-6 space-y-4">
-              <div>
-                <label style={{ ...labelStyle, display: "block" }}>First name</label>
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  onBlur={() => setTouched((t) => ({ ...t, firstName: true }))}
-                  placeholder="Your first name"
-                  autoComplete="given-name"
-                  required
-                  maxLength={80}
-                  style={inputStyle}
-                />
-                {touched.firstName && !firstNameOk && (
-                  <p style={errorStyle}>Please enter your first name.</p>
-                )}
-              </div>
-              <div>
-                <label style={{ ...labelStyle, display: "block" }}>Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  required
-                  style={inputStyle}
-                />
-                {touched.email && !emailOk ? (
-                  <p style={errorStyle}>Enter a valid email address.</p>
-                ) : (
-                  <p style={{ marginTop: 8, fontSize: 12, color: "#8A8480" }}>
-                    Your access link goes to this email. Double-check spelling.
-                  </p>
-                )}
-              </div>
-
-              {checkoutError && (
-                <div
-                  style={{
-                    borderRadius: 12,
-                    background: "rgba(179,50,44,0.08)",
-                    border: "1px solid rgba(179,50,44,0.3)",
-                    color: "#7a221d",
-                    padding: "10px 14px",
-                    fontSize: 13,
-                    fontFamily: "Inter, sans-serif",
-                  }}
-                >
-                  {checkoutError}
-                </div>
-              )}
-
-              <button
-                type="button"
-                disabled={!formValid || submitting}
-                onClick={handleContinue}
-                style={{
-                  width: "100%",
-                  background: "#111111",
-                  color: "white",
-                  borderRadius: 100,
-                  padding: "14px 20px",
-                  fontSize: 14,
-                  fontWeight: 500,
-                  opacity: !formValid || submitting ? 0.45 : 1,
-                  cursor: !formValid || submitting ? "not-allowed" : "pointer",
-                  transition: "all 0.2s",
-                  border: "none",
-                }}
-              >
-                {submitting
-                  ? "Starting secure checkout…"
-                  : `Continue to payment · ${formatPrice(product.price_cents, product.currency)}`}
-              </button>
-              {!formValid && (
-                <p style={{ textAlign: "center", fontSize: 12, color: "#8A8480", marginTop: 4 }}>
-                  Fill in all fields above to continue.
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="mt-6 space-y-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setStarted(false);
-                  setCheckoutError(null);
-                }}
-                style={{
-                  fontSize: 12,
-                  color: "#8A8480",
-                  textDecoration: "underline",
-                  fontFamily: "Inter, sans-serif",
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                }}
-              >
-                ← Edit your details
-              </button>
-              <div className="overflow-hidden rounded-2xl bg-white p-2">
-                <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>
-                  <EmbeddedCheckout />
-                </EmbeddedCheckoutProvider>
-              </div>
-            </div>
-          )}
+          <div className="mt-6">
+            <StripeBuyForm product={product} />
+          </div>
         </div>
       </aside>
     </div>
   );
 }
+
 
 
 function ShopProductPage() {

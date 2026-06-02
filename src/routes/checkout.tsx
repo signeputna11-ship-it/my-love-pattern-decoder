@@ -9,10 +9,13 @@ import coverImage from "@/assets/my-love-pattern-cover.png";
 
 export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    slug: typeof search.slug === "string" ? search.slug : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Unlock the Reset Kit · My Love Pattern" },
-      { name: "description", content: "Lifetime access to the My Love Pattern Reset Kit for $49." },
+      { name: "description", content: "Lifetime access to the My Love Pattern Reset Kit." },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -20,6 +23,8 @@ export const Route = createFileRoute("/checkout")({
 
 function CheckoutPage() {
   const navigate = useNavigate();
+  const { slug } = Route.useSearch();
+  const productSlug = slug ?? "love-pattern-reset-kit";
   const [ready, setReady] = useState(false);
   const [user, setUser] = useState<{ id: string; email: string } | null>(null);
 
@@ -37,7 +42,7 @@ function CheckoutPage() {
   const fetchClientSecret = async (): Promise<string> => {
     const secret = await createCheckoutSession({
       data: {
-        priceId: "love_pattern_reset_kit_usd",
+        slug: productSlug,
         customerEmail: user?.email,
         userId: user?.id,
         returnUrl: `${window.location.origin}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
@@ -57,7 +62,8 @@ function CheckoutPage() {
         playsInline
         className="absolute inset-0 z-0 h-full w-full object-cover opacity-50"
         src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4"
-      preload="metadata" />
+        preload="metadata"
+      />
       <div className="absolute inset-0 z-[1] bg-black/70" />
       <div className="relative z-10 mx-auto max-w-2xl px-4 py-10 sm:py-16">
         <Link
@@ -74,9 +80,9 @@ function CheckoutPage() {
             loading="eager"
           />
         </div>
-        <h1 className="mt-6 font-serif text-4xl sm:text-5xl">Unlock the Reset Kit</h1>
+        <h1 className="mt-6 font-serif text-4xl sm:text-5xl">Complete your purchase</h1>
         <p className="mt-2 text-sm text-white/70">
-          My Love Pattern Reset Kit. All worksheets included. Lifetime access. $49.
+          Lifetime access. Secure checkout below.
         </p>
 
         <div className="mt-8 liquid-glass-strong overflow-hidden rounded-3xl p-2">
