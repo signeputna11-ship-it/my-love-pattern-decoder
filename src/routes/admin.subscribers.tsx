@@ -6,7 +6,7 @@ import {
   adminGetSubscribers,
   adminToggleSubscriberPause,
   adminResendLast,
-} from "@/server/admin.functions";
+} from "@/lib/server-fns/admin.functions";
 
 type Sub = {
   id: string;

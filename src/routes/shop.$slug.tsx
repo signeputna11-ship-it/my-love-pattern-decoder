@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
 import { getStripe, getStripeEnvironment } from "@/lib/stripe";
-import { getShopProduct, createGuestCheckout } from "@/server/shop.functions";
+import { getShopProduct, createGuestCheckout } from "@/lib/server-fns/shop.functions";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
 import { SiteNav } from "@/components/healthy-love/SiteNav";

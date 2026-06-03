@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { getEmailDeliveryDashboard, checkIsAdmin } from "@/server/admin-emails.functions";
+import { getEmailDeliveryDashboard, checkIsAdmin } from "@/lib/server-fns/admin-emails.functions";
 
 export const Route = createFileRoute("/app/admin/emails")({
   component: AdminEmailsPage,

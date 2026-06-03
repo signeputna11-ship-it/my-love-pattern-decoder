@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { getKitByToken, markStageComplete } from "@/server/access.functions";
+import { getKitByToken, markStageComplete } from "@/lib/server-fns/access.functions";
 import { Check, Loader2 } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
 
