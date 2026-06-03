@@ -4,8 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, LogOut, Shield } from "lucide-react";
 import { toast } from "sonner";
 import mlpLogo from "@/assets/mlp-logo.png";
-import { checkIsAdmin } from "@/server/admin-emails.functions";
-import { linkGuestPurchases } from "@/server/payments.functions";
+import { checkIsAdmin } from "@/lib/server-fns/admin-emails.functions";
+import { linkGuestPurchases } from "@/lib/server-fns/payments.functions";
 
 export const Route = createFileRoute("/app")({
   component: AppLayout,

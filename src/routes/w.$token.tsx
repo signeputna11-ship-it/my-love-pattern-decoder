@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { getWorksheetByToken, saveWorksheetResponse } from "@/server/access.functions";
+import { getWorksheetByToken, saveWorksheetResponse } from "@/lib/server-fns/access.functions";
 import { Loader2, Check } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
 

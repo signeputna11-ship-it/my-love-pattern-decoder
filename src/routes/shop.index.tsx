@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { getShopProducts } from "@/server/shop.functions";
+import { getShopProducts } from "@/lib/server-fns/shop.functions";
 import { Loader2 } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
 import { SiteNav } from "@/components/healthy-love/SiteNav";

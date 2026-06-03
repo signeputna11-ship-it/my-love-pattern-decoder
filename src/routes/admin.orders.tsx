@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
-import { adminGetOrders } from "@/server/admin.functions";
+import { adminGetOrders } from "@/lib/server-fns/admin.functions";
 
 type Order = {
   id: string;
