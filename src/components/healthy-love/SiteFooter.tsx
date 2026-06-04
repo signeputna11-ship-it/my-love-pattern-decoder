@@ -92,7 +92,7 @@ export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } 
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Explore</p>
             <ul className="mt-3 space-y-2 text-sm">
               <li><Link to="/" className="text-foreground hover:underline">Home</Link></li>
-              <li><Link to="/about" className="text-foreground hover:underline">About</Link></li>
+              <li><Link to="/deep-reset" className="text-foreground hover:underline">About</Link></li>
               <li><Link to="/blog" className="text-foreground hover:underline">Blog</Link></li>
               <li><Link to="/" hash="diagnosis" className="text-foreground hover:underline">Take the quiz</Link></li>
             </ul>

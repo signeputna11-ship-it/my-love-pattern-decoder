@@ -35,7 +35,7 @@ export const Route = createFileRoute("/blog/$slug")({
       author: {
         "@type": "Person",
         name: "Signe Putna",
-        url: "https://mylovepattern.com/about",
+        url: "https://mylovepattern.com/deep-reset",
       },
       publisher: {
         "@type": "Organization",
