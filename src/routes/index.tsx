@@ -1,7 +1,7 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { HomePage, buildHomeHead } from "./home";
 
 export const Route = createFileRoute("/")({
-  beforeLoad: () => {
-    throw redirect({ to: "/home" });
-  },
+  component: HomePage,
+  head: () => buildHomeHead("https://mylovepattern.com/"),
 });

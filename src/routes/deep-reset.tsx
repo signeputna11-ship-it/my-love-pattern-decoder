@@ -50,6 +50,8 @@ export const Route = createFileRoute("/deep-reset")({
   component: AboutPage,
 });
 
+export { AboutPage as DeepResetPage };
+
 const eyebrow =
   "font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground";
 
