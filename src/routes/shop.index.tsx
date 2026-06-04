@@ -24,7 +24,15 @@ export const Route = createFileRoute("/shop/")({
         content:
           "Worksheets, the complete Reset Kit, and private sessions with Signe.",
       },
+      { property: "og:title", content: "Shop · My Love Pattern" },
+      {
+        property: "og:description",
+        content:
+          "Worksheets, the complete Reset Kit, and private sessions with Signe.",
+      },
+      { property: "og:url", content: "https://mylovepattern.com/shop" },
     ],
+    links: [{ rel: "canonical", href: "https://mylovepattern.com/shop" }],
   }),
 });
 
