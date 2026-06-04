@@ -11,7 +11,7 @@ const ABOUT_VIDEO =
 const SIGNE_MAILTO =
   "https://calendly.com/mylovepattern/30min";
 
-export const Route = createFileRoute("/about")({
+export const Route = createFileRoute("/deep-reset")({
   head: () => ({
     meta: [
       { title: "About My Love Pattern" },
@@ -26,9 +26,9 @@ export const Route = createFileRoute("/about")({
         content:
           "My Love Pattern was created to help women understand the relationship patterns keeping them stuck. Founded by Signe.",
       },
-      { property: "og:url", content: "https://mylovepattern.com/about" },
+      { property: "og:url", content: "https://mylovepattern.com/deep-reset" },
     ],
-    links: [{ rel: "canonical", href: "https://mylovepattern.com/about" }],
+    links: [{ rel: "canonical", href: "https://mylovepattern.com/deep-reset" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/about")({
           "@context": "https://schema.org",
           "@type": "AboutPage",
           name: "About My Love Pattern",
-          url: "https://mylovepattern.com/about",
+          url: "https://mylovepattern.com/deep-reset",
           mainEntity: {
             "@type": "Person",
             name: "Signe Putna",
