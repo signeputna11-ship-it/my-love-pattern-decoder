@@ -57,7 +57,7 @@ export function RelatedPatterns({ currentSlug }: { currentSlug: string }) {
           The quiz takes 60 seconds. No sign-up required.
         </p>
         <Link
-          to="/"
+          to="/home"
           hash="diagnosis"
           className="mt-6 inline-block"
           style={{

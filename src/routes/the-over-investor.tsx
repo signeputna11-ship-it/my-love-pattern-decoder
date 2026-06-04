@@ -71,7 +71,7 @@ function Page() {
       <p>When that belief runs in the background, early investment does not feel like a risk. It feels like strategy. The problem is what it selects for. The people who match your energy feel boring. The ones who make you work for it feel like home. That is not chemistry. That is a pattern.</p>
       <p><strong>Where it starts:</strong> Most Over-Investors learned early that love was conditional on performance. Affection was inconsistent. You learned to work for the warm moments. That adaptation followed you into adult relationships where the other person never asked for that level of effort.</p>
       <p><strong>What shifts it:</strong> Learning to let the situation establish itself before you invest in it. Not how do I show up for this person, but what is this person actually showing me.</p>
-      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/">mylovepattern.com</Link></p>
+      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/home">mylovepattern.com</Link></p>
     </PatternPageShell>
   );
 }

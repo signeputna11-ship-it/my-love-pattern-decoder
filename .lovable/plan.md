@@ -1,45 +1,47 @@
 ## Goal
 
-1. Make every page show the same top nav order: **Home · Shop · Deep Reset · Blog · Patterns**.
-2. Replace every "Book a Deep Pattern Reset" mailto link with the Calendly 30-min discovery call: `https://calendly.com/mylovepattern/30min` (open in new tab).
+Make the homepage live at `/home` so its URL matches the "Home" nav label, while keeping the old `/` URL working for anyone who lands on the bare domain.
 
-## 1. Nav consistency
+## Changes
 
-There are currently two nav components and they disagree.
+1. **New route `src/routes/home.tsx`**
+   - Move the entire current contents of `src/routes/index.tsx` here (component, `head()`, all JSON-LD scripts).
+   - Update `createFileRoute("/")` → `createFileRoute("/home")`.
+   - Update canonical + `og:url` from `https://mylovepattern.com/` → `https://mylovepattern.com/home`.
 
-**`src/components/healthy-love/sections.tsx` (`Nav`)** — used on the home page.
-- Today: Home · Shop · Patterns · Blog (no Deep Reset).
-- Change to: Home · Shop · Deep Reset · Blog · Patterns.
-- "Deep Reset" links to `/about` (that route hosts the Deep Reset content) — both desktop and mobile menus.
+2. **Replace `src/routes/index.tsx` with a redirect**
+   - Same pattern already used in `src/routes/about.tsx`:
+     ```ts
+     export const Route = createFileRoute("/")({
+       beforeLoad: () => { throw redirect({ to: "/home" }); },
+     });
+     ```
 
-**`src/components/healthy-love/SiteNav.tsx`** — used on every other page.
-- Today desktop: Home · Shop · Deep Reset · Blog · Patterns ✅ already correct.
-- Today mobile: shows "Signe" for the /about link — rename to "Deep Reset" to match desktop.
+3. **Update nav links `to="/"` → `to="/home"`** in:
+   - `src/components/healthy-love/SiteNav.tsx` (desktop + mobile "Home" link; logo link; "Take the quiz" button which uses `to="/"` + `hash="diagnosis"`)
+   - `src/components/healthy-love/sections.tsx` (`Nav` component used on the home page itself, plus any internal `to="/"` + `hash` links like Diagnosis/FinalCTA CTAs)
+   - `src/components/healthy-love/SiteFooter.tsx` (logo + Home link)
+   - `src/components/healthy-love/StickyMobileCTA.tsx` (if it links to `/` + hash)
+   - `src/components/healthy-love/DeepResetPopup.tsx`, `DeepResetSection.tsx` — only if they link to `/`
+   - Any `to="/"` in pattern pages (`the-over-investor.tsx`, etc.) and `blog.*`, `shop.*`, `thank-you.tsx`
 
-No route files change; `/about` continues to serve the Deep Reset page.
+4. **Sitemap** — `src/routes/sitemap[.]xml.ts`: replace `/` entry with `/home` (priority 1.0).
 
-## 2. Calendly CTA swap
+5. **Structured data on `/home`** — update the `WebSite` / `Organization` / `Product` JSON-LD `url` fields from `https://mylovepattern.com` (root) to `https://mylovepattern.com/home` where they reference the homepage URL specifically. Keep brand-level `url: "https://mylovepattern.com"` as-is for `Organization`.
 
-Replace the `BOOKING_HREF` / equivalent constant (and any inline mailto for "Deep Pattern Reset — Discovery Call") in these files so the button/link points to Calendly and opens in a new tab (`target="_blank"`, `rel="noopener noreferrer"`):
+## SEO note
 
-- `src/components/healthy-love/DeepResetSection.tsx`
-- `src/components/healthy-love/DeepResetPopup.tsx`
-- `src/components/healthy-love/SiteFooter.tsx`
-- `src/routes/about.tsx` (3 CTAs)
-- `src/routes/shop.index.tsx`
-- `src/routes/shop.$slug.tsx`
-- `src/routes/thank-you.tsx`
-
-New value: `const BOOKING_HREF = "https://calendly.com/mylovepattern/30min";`
-
-Email templates (`src/lib/email-templates/nurture-sequence.tsx`) are out of scope — emails are already sent and shouldn't be silently retargeted unless you ask.
+Moving the homepage off `/` is unusual and Google may take time to re-index. The 307 redirect from `/` → `/home` preserves traffic but you'll temporarily split link equity. If you'd rather keep `/` as the canonical homepage and only rename the nav label, say the word and I'll switch approach.
 
 ## Out of scope
 
-- No copy rewrites beyond the link target.
-- No changes to the JSON-LD FAQ text on the home route (still references emailing Signe); can update next pass if you want it aligned.
-- No route renames.
+- No copy or design changes.
+- No changes to `/about` redirect (already points to `/deep-reset`).
+- No Meta Pixel changes.
 
 ## Verification
 
-After build: load `/` and `/about`, confirm nav order matches on both, click "Book a Deep Pattern Reset" on home, about, shop, footer → opens Calendly in a new tab.
+- Visit `/` → redirects to `/home`, full homepage renders.
+- Nav "Home" link is active on `/home`.
+- All in-page anchors (`#diagnosis`, etc.) work from other pages.
+- `/sitemap.xml` lists `/home`.

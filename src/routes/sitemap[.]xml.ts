@@ -7,7 +7,7 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         const today = new Date().toISOString().split("T")[0];
         const staticUrls = [
-          { loc: "https://mylovepattern.com/", changefreq: "weekly", lastmod: today },
+          { loc: "https://mylovepattern.com/home", changefreq: "weekly", lastmod: today },
           { loc: "https://mylovepattern.com/deep-reset", changefreq: "monthly", lastmod: today },
           { loc: "https://mylovepattern.com/blog", changefreq: "weekly", lastmod: today },
           { loc: "https://mylovepattern.com/shop", changefreq: "weekly", lastmod: today },

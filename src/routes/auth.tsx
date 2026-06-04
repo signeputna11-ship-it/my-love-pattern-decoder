@@ -149,7 +149,7 @@ function AuthPage() {
           className="liquid-glass-strong w-full max-w-md rounded-3xl p-8"
         >
           <Link
-            to="/"
+            to="/home"
             className="mb-6 inline-block text-xs uppercase tracking-[0.3em] text-white/60 hover:text-white"
           >
             ← My Love Pattern

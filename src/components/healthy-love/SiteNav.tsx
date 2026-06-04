@@ -16,7 +16,7 @@ export function SiteNav() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-        <Link to="/" className="flex items-center gap-2 text-foreground">
+        <Link to="/home" className="flex items-center gap-2 text-foreground">
           <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-black">
             <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
           </span>
@@ -24,7 +24,7 @@ export function SiteNav() {
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
-          <Link to="/" className="text-sm text-muted-foreground hover:text-foreground" activeOptions={{ exact: true }} activeProps={{ className: "text-sm text-foreground font-medium" }}>
+          <Link to="/home" className="text-sm text-muted-foreground hover:text-foreground" activeOptions={{ exact: true }} activeProps={{ className: "text-sm text-foreground font-medium" }}>
             Home
           </Link>
           <Link to="/shop" className="text-sm text-muted-foreground hover:text-foreground" activeProps={{ className: "text-sm text-foreground font-medium" }}>
@@ -58,7 +58,7 @@ export function SiteNav() {
 
 
         <Link
-          to="/"
+          to="/home"
           hash="diagnosis"
           className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 md:inline-flex"
         >
@@ -77,7 +77,7 @@ export function SiteNav() {
       {open && (
         <div className="border-t border-border bg-background md:hidden">
           <div className="mx-auto max-w-6xl px-4 py-2">
-            <Link to="/" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Home</Link>
+            <Link to="/home" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Home</Link>
             <Link to="/shop" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Shop</Link>
             <Link to="/deep-reset" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Deep Reset</Link>
             <Link to="/blog" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Blog</Link>
@@ -89,7 +89,7 @@ export function SiteNav() {
               </Link>
             ))}
             <Link
-              to="/"
+              to="/home"
               hash="diagnosis"
               onClick={() => setOpen(false)}
               className="mt-2 block rounded-full bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground"

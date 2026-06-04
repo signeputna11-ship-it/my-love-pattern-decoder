@@ -70,7 +70,7 @@ function Page() {
       <p>The Boundary Softener pattern usually forms when expressing needs created conflict early on. So you learned to shrink them. To be agreeable. To prioritise the other person's comfort over your own. You called it love. It was survival.</p>
       <p>The problem is it makes you invisible in every relationship you are in. The other person never meets the real version of you. And you never find out whether they could actually handle it.</p>
       <p><strong>What shifts it:</strong> Starting to notice the moment you soften. Not changing it immediately. Just noticing. Then asking: what would I say if I were not afraid of the reaction?</p>
-      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/">mylovepattern.com</Link></p>
+      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/home">mylovepattern.com</Link></p>
     </PatternPageShell>
   );
 }

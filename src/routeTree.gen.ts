@@ -16,6 +16,7 @@ import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
 import { Route as TheBoundarySoftenerRouteImport } from './routes/the-boundary-softener'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as DeepResetRouteImport } from './routes/deep-reset'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -81,6 +82,11 @@ const ThankYouRoute = ThankYouRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DeepResetRoute = DeepResetRouteImport.update({
@@ -251,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
+  '/home': typeof HomeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
@@ -290,6 +297,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
+  '/home': typeof HomeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
@@ -331,6 +339,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
+  '/home': typeof HomeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
@@ -373,6 +382,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/deep-reset'
+    | '/home'
     | '/sitemap.xml'
     | '/thank-you'
     | '/the-boundary-softener'
@@ -412,6 +422,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/deep-reset'
+    | '/home'
     | '/sitemap.xml'
     | '/thank-you'
     | '/the-boundary-softener'
@@ -452,6 +463,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/checkout'
     | '/deep-reset'
+    | '/home'
     | '/sitemap.xml'
     | '/thank-you'
     | '/the-boundary-softener'
@@ -493,6 +505,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CheckoutRoute: typeof CheckoutRouteWithChildren
   DeepResetRoute: typeof DeepResetRoute
+  HomeRoute: typeof HomeRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ThankYouRoute: typeof ThankYouRoute
   TheBoundarySoftenerRoute: typeof TheBoundarySoftenerRoute
@@ -572,6 +585,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/deep-reset': {
@@ -827,6 +847,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CheckoutRoute: CheckoutRouteWithChildren,
   DeepResetRoute: DeepResetRoute,
+  HomeRoute: HomeRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ThankYouRoute: ThankYouRoute,
   TheBoundarySoftenerRoute: TheBoundarySoftenerRoute,
@@ -859,12 +880,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

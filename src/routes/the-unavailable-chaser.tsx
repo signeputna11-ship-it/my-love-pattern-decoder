@@ -70,7 +70,7 @@ function Page() {
       <p>The Unavailable Chaser pattern forms when early love was inconsistent. Not cruel, not absent. Inconsistent. You learned that connection requires vigilance. That you have to read the room, earn the moment, work to bring the warm version back. That vigilance became a reflex.</p>
       <p>Your nervous system does not evaluate people objectively. It pattern-matches. When someone is clear and consistent, something feels off. When someone is ambiguous, warm one day and quiet the next, something lights up. Your system recognises the pattern. The chase begins. And you call it chemistry because you have no other word for what it actually is.</p>
       <p><strong>What shifts it:</strong> Learning to name the spike in real time. This is the pattern activating. This is not information about them. This is information about me.</p>
-      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/">mylovepattern.com</Link></p>
+      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/home">mylovepattern.com</Link></p>
     </PatternPageShell>
   );
 }
