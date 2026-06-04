@@ -10,12 +10,15 @@ import {
 } from "@/components/healthy-love/sections";
 import { StickyMobileCTA } from "@/components/healthy-love/StickyMobileCTA";
 import { DeepResetSection } from "@/components/healthy-love/DeepResetSection";
-import { DeepResetPopup } from "@/components/healthy-love/DeepResetPopup";
 import { PageBackground } from "@/components/healthy-love/PageBackground";
 
-export const Route = createFileRoute("/home")({
-  component: Index,
-  head: () => ({
+/**
+ * Build the homepage <head>. The canonical URL is passed in so both
+ * `/` and `/home` can render identical content while pointing Google
+ * at the same canonical URL (the apex `/`).
+ */
+export function buildHomeHead(canonicalUrl: string) {
+  return {
     meta: [
       { title: "My Love Pattern, Find Your Pattern in 60 Seconds" },
       {
@@ -28,9 +31,9 @@ export const Route = createFileRoute("/home")({
         property: "og:description",
         content: "Free 60-second quiz: find your love pattern and learn what shifts it.",
       },
-      { property: "og:url", content: "https://mylovepattern.com/home" },
+      { property: "og:url", content: canonicalUrl },
     ],
-    links: [{ rel: "canonical", href: "https://mylovepattern.com/home" }],
+    links: [{ rel: "canonical", href: canonicalUrl }],
     scripts: [
       {
         type: "application/ld+json",
@@ -217,10 +220,10 @@ export const Route = createFileRoute("/home")({
         }),
       },
     ],
-  }),
-});
+  };
+}
 
-function Index() {
+export function HomePage() {
   return (
     <div className="relative min-h-screen bg-black pb-24 text-white md:pb-0">
       <PageBackground image="floating-heart" />
@@ -233,7 +236,12 @@ function Index() {
       <DeepResetSection />
       <FinalCTA />
       <StickyMobileCTA />
-      {/* <DeepResetPopup /> disabled */}
     </div>
   );
 }
+
+export const Route = createFileRoute("/home")({
+  component: HomePage,
+  // Canonical points to "/" so Google de-dupes /home into the apex homepage.
+  head: () => buildHomeHead("https://mylovepattern.com/"),
+});

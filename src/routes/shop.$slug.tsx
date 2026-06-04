@@ -36,9 +36,58 @@ const DEFAULT_VIDEO = {
 
 export const Route = createFileRoute("/shop/$slug")({
   component: ShopProductPage,
-  head: () => ({
-    meta: [{ title: "Checkout · My Love Pattern" }, { name: "robots", content: "noindex, nofollow" }],
-  }),
+  loader: async ({ params }) => {
+    try {
+      const res = await getShopProduct({ data: { slug: params.slug } });
+      return { product: res.product as Product };
+    } catch {
+      return { product: null as Product | null };
+    }
+  },
+  head: ({ params, loaderData }) => {
+    const product = loaderData?.product ?? null;
+    const url = `https://mylovepattern.com/shop/${params.slug}`;
+    const title = product
+      ? `${product.name} · My Love Pattern`
+      : "Shop · My Love Pattern";
+    const desc =
+      product?.short_description ??
+      "Worksheets, the complete Reset Kit, and private sessions with Signe.";
+    const scripts = product
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              name: product.name,
+              description: product.short_description ?? desc,
+              url,
+              brand: { "@type": "Brand", name: "My Love Pattern" },
+              offers: {
+                "@type": "Offer",
+                price: (product.price_cents / 100).toFixed(2),
+                priceCurrency: product.currency.toUpperCase(),
+                availability: "https://schema.org/InStock",
+                url,
+              },
+            }),
+          },
+        ]
+      : [];
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "product" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts,
+    };
+  },
 });
 
 function formatPrice(cents: number, currency: string) {
