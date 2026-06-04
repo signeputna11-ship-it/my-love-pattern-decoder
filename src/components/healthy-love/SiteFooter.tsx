@@ -50,7 +50,7 @@ export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } 
               Four questions. One clear answer about why your relationships keep ending the same way.
             </p>
             <Link
-              to="/"
+              to="/home"
               hash="diagnosis"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
             >
@@ -91,10 +91,10 @@ export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } 
           <div>
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Explore</p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li><Link to="/" className="text-foreground hover:underline">Home</Link></li>
+              <li><Link to="/home" className="text-foreground hover:underline">Home</Link></li>
               <li><Link to="/deep-reset" className="text-foreground hover:underline">About</Link></li>
               <li><Link to="/blog" className="text-foreground hover:underline">Blog</Link></li>
-              <li><Link to="/" hash="diagnosis" className="text-foreground hover:underline">Take the quiz</Link></li>
+              <li><Link to="/home" hash="diagnosis" className="text-foreground hover:underline">Take the quiz</Link></li>
             </ul>
           </div>
           <div>

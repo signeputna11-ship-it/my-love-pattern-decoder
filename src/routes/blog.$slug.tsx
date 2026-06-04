@@ -329,7 +329,7 @@ function PostPage() {
               The quiz takes 60 seconds. No sign-up required.
             </p>
             <Link
-              to="/"
+              to="/home"
               hash="diagnosis"
               className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-semibold text-white"
               style={{ backgroundColor: "#111111", fontFamily: "Inter" }}

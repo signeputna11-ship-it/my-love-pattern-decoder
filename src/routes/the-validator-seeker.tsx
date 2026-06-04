@@ -70,7 +70,7 @@ function Page() {
       <p>The Validator Seeker pattern forms when your sense of being okay became tied to external signals. A response, a choice, a look, a text back. Not because you are needy. Because at some point the people around you made their approval feel conditional, and your nervous system learned to scan for it constantly.</p>
       <p>This is not about the person you are dating. It is about the story running underneath: that you are only as lovable as someone's last response to you.</p>
       <p><strong>What shifts it:</strong> Separating your internal state from their external behaviour. Building a source of okayness that does not depend on what they do next.</p>
-      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/">mylovepattern.com</Link></p>
+      <p>Take the free 60-second quiz to confirm your pattern at <Link to="/home">mylovepattern.com</Link></p>
     </PatternPageShell>
   );
 }
