@@ -407,6 +407,12 @@ export function Diagnosis() {
               >
                 Reveal My Pattern <ArrowUpRight className="h-4 w-4" />
               </button>
+              <button
+                onClick={handleSkipToReset}
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/[0.08]"
+              >
+                Skip the quiz · Get My Reset ($49) <ArrowUpRight className="h-4 w-4" />
+              </button>
             </>
           ) : (
             <motion.div
