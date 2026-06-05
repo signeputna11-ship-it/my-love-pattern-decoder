@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DeepResetPage } from "./deep-reset";
+import { DeepResetPage } from "@/components/healthy-love/DeepResetPage";
 
 // /about renders the same content as /deep-reset (the page was renamed).
 // Returns 200 instead of a 30x redirect so Google can index the canonical
