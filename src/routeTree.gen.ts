@@ -17,6 +17,7 @@ import { Route as TheBoundarySoftenerRouteImport } from './routes/the-boundary-s
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as HomeRouteImport } from './routes/home'
+import { Route as DeepResetRouteImport } from './routes/deep-reset'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
@@ -86,6 +87,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeepResetRoute = DeepResetRouteImport.update({
+  id: '/deep-reset',
+  path: '/deep-reset',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -250,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
+  '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
@@ -289,6 +296,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
+  '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
@@ -330,6 +338,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/checkout': typeof CheckoutRouteWithChildren
+  '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
@@ -372,6 +381,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/checkout'
+    | '/deep-reset'
     | '/home'
     | '/sitemap.xml'
     | '/thank-you'
@@ -411,6 +421,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/checkout'
+    | '/deep-reset'
     | '/home'
     | '/sitemap.xml'
     | '/thank-you'
@@ -451,6 +462,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/checkout'
+    | '/deep-reset'
     | '/home'
     | '/sitemap.xml'
     | '/thank-you'
@@ -492,6 +504,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   CheckoutRoute: typeof CheckoutRouteWithChildren
+  DeepResetRoute: typeof DeepResetRoute
   HomeRoute: typeof HomeRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ThankYouRoute: typeof ThankYouRoute
@@ -579,6 +592,13 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deep-reset': {
+      id: '/deep-reset'
+      path: '/deep-reset'
+      fullPath: '/deep-reset'
+      preLoaderRoute: typeof DeepResetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -826,6 +846,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   CheckoutRoute: CheckoutRouteWithChildren,
+  DeepResetRoute: DeepResetRoute,
   HomeRoute: HomeRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ThankYouRoute: ThankYouRoute,
