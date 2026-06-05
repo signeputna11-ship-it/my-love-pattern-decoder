@@ -1,37 +1,45 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DeepResetPage } from "@/components/healthy-love/DeepResetPage";
 
+const TITLE =
+  "The Deep Pattern Reset — Private Session with Signe · My Love Pattern";
+const DESC =
+  "A private 90-minute session that resets the belief driving your love pattern at the level where it lives. Book a free 20-minute discovery call with Signe.";
+const URL = "https://mylovepattern.com/deep-reset";
+
 export const Route = createFileRoute("/deep-reset")({
   head: () => ({
     meta: [
-      { title: "About My Love Pattern" },
-      {
-        name: "description",
-        content:
-          "My Love Pattern was created to help women understand the relationship patterns keeping them stuck. Founded by Signe.",
-      },
-      { property: "og:title", content: "About My Love Pattern" },
-      {
-        property: "og:description",
-        content:
-          "My Love Pattern was created to help women understand the relationship patterns keeping them stuck. Founded by Signe.",
-      },
-      { property: "og:url", content: "https://mylovepattern.com/deep-reset" },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:url", content: URL },
+      { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "https://mylovepattern.com/deep-reset" }],
+    links: [{ rel: "canonical", href: URL }],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "AboutPage",
-          name: "About My Love Pattern",
-          url: "https://mylovepattern.com/deep-reset",
-          mainEntity: {
+          "@type": "Service",
+          name: "The Deep Pattern Reset",
+          provider: {
             "@type": "Person",
             name: "Signe Putna",
-            jobTitle: "Founder, My Love Pattern",
             url: "https://mylovepattern.com",
+          },
+          areaServed: "Worldwide",
+          serviceType: "Private 1:1 subconscious pattern reset session",
+          url: URL,
+          description: DESC,
+          offers: {
+            "@type": "Offer",
+            price: "333",
+            priceCurrency: "USD",
+            url: URL,
+            availability: "https://schema.org/InStock",
           },
         }),
       },

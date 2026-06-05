@@ -1,488 +1,651 @@
-import { SiteNav } from "@/components/healthy-love/SiteNav";
+import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
-import { VideoBackground } from "@/components/blog/VideoBackground";
-import signePortrait from "@/assets/signe-her-own-roots.jpg";
-import rttBadge from "@/assets/rtt-certified-badge.png";
+import mlpLogo from "@/assets/mlp-logo.png";
 
-const ABOUT_VIDEO =
-  "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4";
+const CALENDLY = "https://calendly.com/mylovepattern/30min";
+const HERO_VIDEO =
+  "https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20CRYSTAL%20BALL.mp4";
 
-const SIGNE_MAILTO =
-  "https://calendly.com/mylovepattern/30min";
+const labelCls =
+  "inline-block font-sans text-[11px] uppercase tracking-[3px] text-[#8A8480]";
 
-const eyebrow =
-  "font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground";
-
-function Ornament() {
+function PrimaryBtn({
+  href,
+  children,
+  large = false,
+}: {
+  href: string;
+  children: React.ReactNode;
+  large?: boolean;
+}) {
   return (
-    <div className="mx-auto flex max-w-5xl items-center gap-6 px-6 py-6 opacity-40">
-      <div className="h-px flex-1 bg-border" />
-      <span className="font-serif text-xs italic tracking-[0.2em] text-muted-foreground">
-        ✦
-      </span>
-      <div className="h-px flex-1 bg-border" />
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center justify-center rounded-full bg-[#111] font-medium text-white transition hover:opacity-90"
+      style={{
+        padding: large ? "16px 40px" : "16px 36px",
+        fontSize: large ? 16 : 15,
+      }}
+    >
+      {children}
+    </a>
+  );
+}
+
+function RoseBtn({
+  href,
+  children,
+  size = "md",
+}: {
+  href: string;
+  children: React.ReactNode;
+  size?: "sm" | "md" | "lg";
+}) {
+  const pad =
+    size === "sm" ? "12px 28px" : size === "lg" ? "16px 40px" : "14px 32px";
+  const fs = size === "sm" ? 14 : 16;
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center justify-center rounded-full font-medium text-white transition hover:opacity-95"
+      style={{
+        padding: pad,
+        fontSize: fs,
+        background: "linear-gradient(135deg,#c9857a,#a0574e)",
+        boxShadow: "0 8px 32px rgba(160,87,78,0.4)",
+      }}
+    >
+      {children}
+    </a>
+  );
+}
+
+function Star({ color = "#EDB200" }: { color?: string }) {
+  return <span style={{ color }}>✦</span>;
+}
+
+const PAIN = [
+  {
+    t: "You have done the work.",
+    b: "You have read the books. You know your attachment style. You can describe the pattern clearly. And you are still ending up in the same place.",
+  },
+  {
+    t: "Insight is not enough.",
+    b: "Patterns do not live in the mind. They live in the nervous system, in the part of you that formed its beliefs about love before you had language for any of it.",
+  },
+  {
+    t: "Something has to actually shift.",
+    b: "Not managed. Not reframed. Updated at the level where it was formed. That is what this session does.",
+  },
+];
+
+const INCLUDES = [
+  "90-minute private 1:1 session with Signe",
+  "Personalised 21-day reset audio meditation to anchor the shift",
+  "Pre-session pattern clarity worksheet",
+  "Follow-up voice note from Signe within 48 hours",
+];
+
+const STEPS = [
+  {
+    n: "01 · Before",
+    t: "Pattern Discovery Call",
+    b: "A free 20-minute conversation. We identify what is currently running, how long it has been showing up, and what shift would change the most for you right now.",
+  },
+  {
+    n: "02 · The Session",
+    t: "The Pattern Reset",
+    b: "A private 90-minute session in a deeply relaxed meditative state. We go to the root of the belief and update it at the level where it was formed. You leave different.",
+  },
+  {
+    n: "03 · After",
+    t: "Your 21-Day Audio",
+    b: "A personalised audio created specifically for your reset. Listen daily while the shift settles and becomes the new normal.",
+  },
+];
+
+const FOR_YOU = [
+  "You have done the self-development work and something still runs underneath",
+  "You recognise the pattern and understand where it comes from. And it keeps happening anyway.",
+  "You are ready for root-level change, not another round of managing the symptoms",
+  "You want to work with someone who understands both the subconscious mechanism and the emotional reality",
+  "You are willing to be honest in a session, not just insightful",
+  "You are ready to invest in the shift, not just the understanding",
+];
+
+const NOT_FOR_YOU = [
+  "You are looking for a quick fix or a pre-recorded course",
+  "You are not ready to look honestly at your own patterns",
+  "You need clinical or psychiatric support",
+];
+
+const FAQ = [
+  {
+    q: "What actually happens in the session?",
+    a: "You enter a deeply relaxed meditative state. From there we locate the belief driving your pattern, understand where it came from, and update it using a subconscious-level approach. You leave with a personalised 21-day audio to anchor the shift.",
+  },
+  {
+    q: "Is this therapy?",
+    a: "No. It is a private 1:1 session using a focused subconscious approach. It is not talk therapy, psychiatric care, or a substitute for clinical mental health support.",
+  },
+  {
+    q: "How quickly will I notice a difference?",
+    a: "Most women notice a shift in the week following the session. The 21-day audio supports the integration. Some shifts are immediate. Some unfold over weeks. Both are normal.",
+  },
+  {
+    q: "What is the discovery call for?",
+    a: "It is a 20-minute conversation so Signe can understand what is currently running for you and confirm this is the right fit. There is no pressure and no obligation.",
+  },
+  {
+    q: "Can I do this online?",
+    a: "Yes. All sessions are held online via video call. Signe works with women globally.",
+  },
+  {
+    q: "What if I am not sure which pattern is driving me?",
+    a: "Take the free quiz at mylovepattern.com before your discovery call. It takes 60 seconds and gives Signe useful context before you speak.",
+  },
+];
+
+function StepArrow() {
+  return (
+    <svg
+      width="40"
+      height="12"
+      viewBox="0 0 40 12"
+      fill="none"
+      aria-hidden
+      className="hidden md:block shrink-0"
+    >
+      <path
+        d="M0 6 H36 M30 1 L36 6 L30 11"
+        stroke="#E8E3DC"
+        strokeWidth="1.5"
+        fill="none"
+      />
+    </svg>
+  );
+}
+
+function Check() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden className="mt-1 shrink-0">
+      <path
+        d="M3 9.5 L7 13.5 L15 4.5"
+        stroke="#EDB200"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function XIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden className="mt-1 shrink-0">
+      <path
+        d="M4 4 L14 14 M14 4 L4 14"
+        stroke="#8A8480"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function FaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b" style={{ borderColor: "#E8E3DC" }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between gap-4 py-5 text-left"
+      >
+        <span className="font-sans text-[17px] font-medium text-[#111]">{q}</span>
+        <span
+          className="font-serif text-2xl text-[#8A8480] transition-transform"
+          style={{ transform: open ? "rotate(45deg)" : "rotate(0)" }}
+        >
+          +
+        </span>
+      </button>
+      <div
+        className="grid overflow-hidden transition-all duration-300 ease-out"
+        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+      >
+        <div className="min-h-0">
+          <p
+            className="pb-5 font-sans text-[15px] text-[#6b4c44]"
+            style={{ lineHeight: 1.75 }}
+          >
+            {a}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
 
-const FOR_ITEMS: Array<[string, string, string]> = [
-  [
-    "01",
-    "You have done the work and something is still running",
-    "You can name the pattern. You understand it. You cannot stop it. That gap between knowing and changing is where this work lives.",
-  ],
-  [
-    "02",
-    "You moved somewhere new and the same feeling followed you",
-    "New city, new life, new version of you. And a few months in , the same pattern. Different context. Same root. The root travels with you until it is touched.",
-  ],
-  [
-    "03",
-    "You are exhausted from performing your own life",
-    "You give before anything is established. You adjust, soften, over-explain. You have lost the thread back to yourself and are not sure when that happened.",
-  ],
-  [
-    "04",
-    "Anxiety that makes no logical sense",
-    "Your nervous system learned that peace was not safe. It learned to stay alert. That is not who you are. That is a programme running. It can be changed.",
-  ],
-  [
-    "05",
-    "You keep attracting the same person",
-    "Different face, same energy. The familiar feels like home even when home was painful. Your subconscious is just selecting what it already knows.",
-  ],
-  [
-    "06",
-    "You are ready for something that actually goes there",
-    "Not another framework. The real thing. Work that reaches where nothing else has. You already know the difference. That is why you are still reading.",
-  ],
-];
-
-const PROOF_BULLETS = [
-  "Healed Juvenile Idiopathic Arthritis through Reiki and inner work. Not managed. Healed.",
-  "Ended years of panic attacks in a single RTT session. Have not had one since.",
-  "Broke a 15-year relationship pattern across different people, same ending, same root.",
-];
-
-const CREDENTIALS = [
-  "RTT · Marisa Peer",
-  "Reiki 20+ years",
-  "Kundalini Yoga",
-  "Intuitive Coaching",
-];
-
-const SESSION_STEPS: Array<[string, string, string]> = [
-  [
-    "i",
-    "We find the root",
-    "RTT process takes you to the subconscious origin , the original moment the pattern was installed. Not as a concept. As a felt experience.",
-  ],
-  [
-    "ii",
-    "We change it there",
-    "We reframe the original decision at the root. New neural pathways form. The old response loses its grip. Not intellectually , in the body.",
-  ],
-  [
-    "iii",
-    "Energetic clearing",
-    "Reiki energy work releases what the body has been holding. The mind and body are not separate. Both need to let go.",
-  ],
-  [
-    "iv",
-    "Your personalised recording",
-    "A custom audio made specifically for you to continue the rewiring for 21 days after the session. This is where the change compounds.",
-  ],
-];
-
 export function DeepResetPage() {
+  const [showSticky, setShowSticky] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowSticky(window.scrollY > window.innerHeight * 0.9);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <>
-      <VideoBackground src={ABOUT_VIDEO} />
-      <SiteNav />
-      <main className="relative z-[1]">
-        {/* HERO */}
-        <section className="px-6 pb-16 pt-20 sm:pt-28">
-          <div className="mx-auto grid max-w-6xl items-end gap-12 md:grid-cols-2 md:gap-16">
-            <div>
-              <p className={eyebrow}>About Signe ✦ Porto</p>
-              <h1 className="mt-6 font-serif text-[clamp(44px,7vw,84px)] font-normal leading-[0.95] tracking-tight text-foreground">
-                You already know
-                <br />
-                something needs
-                <br />
-                <em>to change.</em>
-              </h1>
-              <p className="mt-6 max-w-md text-base font-light leading-[1.7] text-muted-foreground sm:text-[17px]">
-                One session. Ninety minutes. We go to the root of what is running
-                and change it there. Not talk about it. Change it.
-              </p>
-            </div>
+    <div style={{ backgroundColor: "#F8F5F0" }} className="min-h-screen">
+      {/* MINIMAL NAV */}
+      <header className="sticky top-0 z-40 w-full" style={{ backgroundColor: "rgba(248,245,240,0.92)", backdropFilter: "blur(10px)" }}>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <Link to="/home" className="flex items-center gap-2">
+            <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-black">
+              <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
+            </span>
+            <span className="font-serif text-base text-[#111] sm:text-lg">My Love Pattern</span>
+          </Link>
+          <a
+            href={CALENDLY}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-[#111] px-5 py-2.5 font-sans text-[13px] font-medium text-white transition hover:opacity-90"
+          >
+            Book a Discovery Call
+          </a>
+        </div>
+      </header>
 
-            <div className="flex flex-col items-start gap-5 md:items-end">
-              <div className="md:text-right">
-                <p className={eyebrow}>Deep Pattern Reset</p>
-                <p className="mt-3 font-serif text-3xl italic text-foreground sm:text-4xl">
-                  A private 90-minute session
-                </p>
-                <p className="mt-2 text-xs font-light tracking-wider text-muted-foreground">
-                  Online or in person · Porto
-                </p>
-              </div>
-              <a
-                href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center rounded-full bg-foreground px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-background transition hover:opacity-90"
-              >
-                Book a Deep Pattern Reset
-              </a>
-              <a
-                href="#session"
-                className="inline-flex items-center rounded-full border border-border px-7 py-3 text-[11px] font-normal uppercase tracking-[0.15em] text-muted-foreground transition hover:border-foreground hover:text-foreground"
-              >
-                What happens in a session
-              </a>
-            </div>
+      {/* SECTION 1 — HERO */}
+      <section className="relative flex min-h-[100vh] items-center justify-center overflow-hidden px-6">
+        <div aria-hidden className="absolute inset-0">
+          <video
+            autoPlay
+            muted
+            playsInline
+            loop
+            preload="none"
+            className="absolute inset-0 h-full w-full object-cover"
+          >
+            <source src={HERO_VIDEO} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0" style={{ backgroundColor: "rgba(248,245,240,0.88)" }} />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
+          <p className={labelCls}><Star color="#EDB200" /> Private 1:1 Work with Signe</p>
+          <h1
+            className="mx-auto mt-6 font-serif italic text-[#111]"
+            style={{
+              fontSize: "clamp(52px,7vw,88px)",
+              lineHeight: 1.02,
+              textWrap: "balance",
+              maxWidth: 800,
+              fontFamily: '"Instrument Serif", serif',
+            }}
+          >
+            The pattern keeps repeating. This is where it stops.
+          </h1>
+          <p
+            className="mx-auto font-sans text-[#6b4c44]"
+            style={{ fontSize: 18, maxWidth: 520, marginTop: 28, marginBottom: 40, lineHeight: 1.75 }}
+          >
+            A private 90-minute session that works at the level where your pattern actually lives. Not managing it. Not understanding it. Resetting it.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <PrimaryBtn href={CALENDLY}>Book Your Free Discovery Call →</PrimaryBtn>
+            <button
+              onClick={() => document.getElementById("whatitis")?.scrollIntoView({ behavior: "smooth" })}
+              className="inline-flex items-center justify-center rounded-full bg-transparent font-sans text-[#6b4c44]"
+              style={{ border: "1px solid rgba(17,17,17,0.2)", padding: "16px 28px", fontSize: 15 }}
+            >
+              See what is included ↓
+            </button>
           </div>
+        </div>
+      </section>
 
-          {/* Credentials strip */}
-          <div className="mx-auto mt-16 flex max-w-6xl flex-wrap items-center gap-6 border-t border-border pt-6">
-            {CREDENTIALS.map((t) => (
-              <div key={t} className="flex items-center gap-2">
-                <span className="h-1 w-1 rounded-full bg-muted-foreground/60" />
-                <p className="text-[11px] font-light tracking-wider text-muted-foreground">
-                  {t}
+      {/* SECTION 2 — PROBLEM */}
+      <section style={{ backgroundColor: "#ffffff" }}>
+        <div className="mx-auto" style={{ maxWidth: 760, padding: "100px 24px", textAlign: "center" }}>
+          <p className={labelCls}><Star /> If this sounds familiar</p>
+          <h2
+            className="mt-5 font-serif italic text-[#111]"
+            style={{ fontSize: 48, lineHeight: 1.1, textWrap: "balance", marginBottom: 48, fontFamily: '"Instrument Serif", serif' }}
+          >
+            You already know something is running underneath.
+          </h2>
+          <div className="grid gap-5 md:grid-cols-3">
+            {PAIN.map((p) => (
+              <div
+                key={p.t}
+                className="text-left"
+                style={{
+                  background: "rgba(255,255,255,0.8)",
+                  border: "1px solid #E8E3DC",
+                  borderRadius: 20,
+                  padding: 32,
+                }}
+              >
+                <p className="text-sm"><Star /></p>
+                <p
+                  className="font-serif italic text-[#111]"
+                  style={{ fontSize: 20, marginTop: 6, marginBottom: 12, fontFamily: '"Instrument Serif", serif' }}
+                >
+                  {p.t}
+                </p>
+                <p className="font-sans text-[#6b4c44]" style={{ fontSize: 15, lineHeight: 1.75 }}>
+                  {p.b}
                 </p>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <Ornament />
-
-        {/* MIRROR */}
-        <section className="mx-auto max-w-6xl px-6 py-16">
-          <div className="grid items-start gap-12 md:grid-cols-2 md:gap-16">
+      {/* SECTION 3 — WHAT IT IS */}
+      <section id="whatitis" style={{ backgroundColor: "#F8F5F0" }}>
+        <div className="mx-auto" style={{ maxWidth: 1000, padding: "100px 24px" }}>
+          <div className="grid items-start gap-12 md:grid-cols-2 md:gap-14">
             <div>
-              <p className={eyebrow}>The truth of it</p>
-              <h2 className="mt-5 font-serif text-[clamp(28px,3.5vw,44px)] font-normal leading-[1.3] text-foreground">
-                You have tried
-                <br />
-                everything.
-                <br />
-                <br />
-                <em>And something
-                <br />
-                is still there.</em>
-              </h2>
+              <div
+                className="relative flex items-center justify-center overflow-hidden"
+                style={{
+                  aspectRatio: "3 / 4",
+                  borderRadius: 24,
+                  background: "rgba(201,133,122,0.08)",
+                  border: "1px solid #E8E3DC",
+                }}
+              >
+                <p className="font-serif italic text-[#8A8480]" style={{ fontSize: 18, fontFamily: '"Instrument Serif", serif' }}>
+                  Photo of Signe
+                </p>
+              </div>
+              <p className="mt-3 text-center font-sans text-[#8A8480]" style={{ fontSize: 12 }}>
+                Signe Putna · RTT Practitioner · 20 years experience
+              </p>
             </div>
-            <div className="flex flex-col gap-5">
-              <p className="text-[15px] font-light leading-[1.85] text-foreground">
-                You have done the therapy. You have read every book. You have
-                journalled, retreated, set intentions. You are self-aware. You
-                are trying. And underneath all of it, the same pattern keeps
-                running. The same feeling. The same ending.
+
+            <div>
+              <p className={labelCls}><Star /> The Deep Pattern Reset</p>
+              <h2
+                className="mt-5 font-serif italic text-[#111]"
+                style={{ fontSize: 42, lineHeight: 1.15, textWrap: "balance", marginBottom: 24, fontFamily: '"Instrument Serif", serif' }}
+              >
+                One session. A different nervous system story.
+              </h2>
+              <p className="font-sans text-[#2c1f1a]" style={{ fontSize: 17, lineHeight: 1.85, marginBottom: 20 }}>
+                In the session you enter a deeply relaxed meditative state. From that place we work directly on the belief that has been driving your pattern. The one formed early, before you had words for it. We locate it, understand it with the mind of an adult, and update it.
               </p>
-              <p className="text-[15px] font-light leading-[1.85] text-foreground">
-                That is not weakness. That is not a lack of effort. That is what
-                happens when healing stays in the mind and never reaches the
-                root.
+              <p className="font-sans text-[#2c1f1a]" style={{ fontSize: 17, lineHeight: 1.85 }}>
+                This is not talk therapy. It is not coaching. It is targeted work at the subconscious level where the pattern actually lives.
               </p>
-              <p className="text-[15px] font-light leading-[1.85] text-foreground">
-                The root is not in your thoughts. It is in your body, your
-                subconscious, your nervous system , the decisions you made
-                before you were old enough to know you were making them.{" "}
-                <strong className="font-medium">
-                  That is where I work. That is the only place this actually
-                  changes.
-                </strong>
+
+              <div style={{ borderTop: "1px solid #E8E3DC", margin: "32px 0" }} />
+
+              <ul className="space-y-2">
+                {INCLUDES.map((i) => (
+                  <li key={i} className="flex gap-3 font-sans text-[#2c1f1a]" style={{ fontSize: 16, lineHeight: 1.85 }}>
+                    <Star /> <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <p
+                className="font-serif text-[#111]"
+                style={{ fontSize: 56, marginTop: 32, marginBottom: 8, lineHeight: 1, fontFamily: '"Instrument Serif", serif' }}
+              >
+                $333
+              </p>
+              <p className="font-sans text-[#8A8480]" style={{ fontSize: 14, marginBottom: 28 }}>
+                per private session
+              </p>
+
+              <PrimaryBtn href={CALENDLY}>Book Your Free Discovery Call →</PrimaryBtn>
+              <p className="mt-4 font-sans text-[#8A8480]" style={{ fontSize: 13 }}>
+                The discovery call is 20 minutes. Signe responds to every application personally.
               </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <Ornament />
+      {/* SECTION 4 — HOW IT WORKS */}
+      <section style={{ backgroundColor: "#ffffff" }}>
+        <div className="mx-auto" style={{ maxWidth: 900, padding: "100px 24px" }}>
+          <p className={`${labelCls} block text-center`}><Star /> The process</p>
+          <h2
+            className="mt-5 text-center font-serif italic text-[#111]"
+            style={{ fontSize: 48, lineHeight: 1.1, textWrap: "balance", marginBottom: 56, fontFamily: '"Instrument Serif", serif' }}
+          >
+            Three steps to a different story.
+          </h2>
 
-        {/* WHO THIS IS FOR */}
-        <section className="border-y border-border bg-accent/40 px-6 py-16">
-          <div className="mx-auto max-w-6xl">
-            <p className={eyebrow}>You are in the right place if</p>
-            <h2 className="mt-5 font-serif text-[clamp(30px,4.5vw,52px)] font-normal italic leading-[1.05] text-foreground">
-              Any of this sounds like your inner voice
-            </h2>
-            <div className="mt-10 grid gap-[2px] sm:grid-cols-2 lg:grid-cols-3">
-              {FOR_ITEMS.map(([n, title, body]) => (
-                <div
-                  key={n}
-                  className="border border-border bg-background p-7 transition hover:border-foreground"
-                >
-                  <p className="font-serif text-4xl italic leading-none text-border">
-                    {n}
+          <div className="flex flex-col items-stretch gap-8 md:flex-row md:items-start md:gap-4">
+            {STEPS.map((s, i) => (
+              <div key={s.n} className="flex flex-1 items-start gap-4 md:contents">
+                <div className="flex-1">
+                  <p className="font-sans uppercase text-[#EDB200]" style={{ fontSize: 11, letterSpacing: 2, marginBottom: 12 }}>
+                    {s.n}
                   </p>
-                  <h3 className="mt-5 text-sm font-medium leading-tight text-foreground">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-xs font-light leading-[1.7] text-muted-foreground">
-                    {body}
+                  <p className="font-serif italic text-[#111]" style={{ fontSize: 26, marginBottom: 10, fontFamily: '"Instrument Serif", serif' }}>
+                    {s.t}
+                  </p>
+                  <p className="font-sans text-[#6b4c44]" style={{ fontSize: 15, lineHeight: 1.75 }}>
+                    {s.b}
                   </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <Ornament />
-
-        {/* ABOUT SIGNE */}
-        <section id="about" className="mx-auto max-w-6xl px-6 py-16">
-          <div className="grid items-start gap-12 md:grid-cols-[1fr_1.5fr] md:gap-16">
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-accent">
-              <img
-                src={signePortrait}
-                alt="Signe Putna, founder of My Love Pattern"
-                className="aspect-[3/4] h-full w-full object-cover"
-              />
-              <p className="absolute bottom-3 left-4 font-mono text-[9px] uppercase tracking-[0.15em] text-background/90 drop-shadow">
-                Signe Putna
-              </p>
-            </div>
-            <div>
-              <p className={eyebrow}>Who you are working with</p>
-              <h2 className="mt-5 font-serif text-[clamp(30px,3.5vw,48px)] font-normal leading-[1.05] text-foreground">
-                I do not teach
-                <br />
-                what I studied.
-                <br />
-                <em>I show you
-                <br />
-                what I lived.</em>
-              </h2>
-              <p className="mt-6 text-[15px] font-light leading-[1.85] text-foreground">
-                I have been doing this work since I was 14. Reiki found me
-                first. Then meditation, kundalini, and RTT. I have used this
-                work on myself first , before I ever offered it to anyone else.
-              </p>
-
-              <div className="mt-6 border-t border-border">
-                {PROOF_BULLETS.map((t) => (
-                  <div
-                    key={t}
-                    className="flex items-baseline gap-4 border-b border-border py-3"
-                  >
-                    <span className="shrink-0 font-serif text-xs italic text-muted-foreground">
-                      ✦
-                    </span>
-                    <p className="text-[13px] font-light leading-[1.55] text-foreground">
-                      {t}
-                    </p>
+                {i < STEPS.length - 1 && (
+                  <div className="hidden self-center md:flex">
+                    <StepArrow />
                   </div>
-                ))}
+                )}
               </div>
-
-              <p className="mt-6 text-[15px] font-light leading-[1.85] text-foreground">
-                I know exactly what you are carrying. I know because I carried
-                it too. And I know what it takes to put it down.{" "}
-                <strong className="font-medium">
-                  Not manage it. Put it down.
-                </strong>
-              </p>
-              <p className="mt-4 text-[15px] font-light leading-[1.85] text-foreground">
-                When we work together, something ancient moves through the
-                room. I am just the channel. You are the destination. You
-                always were.
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-1.5">
-                {CREDENTIALS.map((c) => (
-                  <span
-                    key={c}
-                    className="rounded-full border border-border px-3 py-1 text-[9px] font-normal uppercase tracking-[0.14em] text-muted-foreground"
-                  >
-                    {c}
-                  </span>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
-        </section>
 
-        <Ornament />
-
-        {/* THE SESSION */}
-        <section
-          id="session"
-          className="bg-foreground px-6 py-16 text-background"
-        >
-          <div className="mx-auto max-w-6xl">
-            <div className="grid items-start gap-12 md:grid-cols-2 md:gap-16">
-              <div>
-                <p className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-background/40">
-                  The Deep Pattern Reset
-                </p>
-                <h2 className="mt-5 font-serif text-[clamp(36px,5vw,60px)] font-normal leading-none">
-                  One session.
-                  <br />
-                  <em className="opacity-60">The root.</em>
-                  <br />
-                  Changed.
-                </h2>
-                <p className="mt-6 text-[15px] font-light leading-[1.82] text-background/65">
-                  This is not a consultation. This is not a discovery call.
-                  This is the work itself , 90 minutes that go to the exact
-                  origin of the pattern and change it there.
-                </p>
-              </div>
-
-              <div>
-                {SESSION_STEPS.map(([n, title, desc]) => (
-                  <div
-                    key={n}
-                    className="grid grid-cols-[2rem_1fr] items-start gap-5 border-b border-background/10 py-5"
-                  >
-                    <span className="pt-0.5 font-serif text-sm italic text-background/30">
-                      {n}
-                    </span>
-                    <div>
-                      <p className="text-[13px] font-medium tracking-wide">
-                        {title}
-                      </p>
-                      <p className="mt-1 text-xs font-light leading-[1.65] text-background/55">
-                        {desc}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-                <a
-                  href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
-                  className="mt-8 inline-flex items-center rounded-full bg-background px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground transition hover:opacity-90"
-                >
-                  Book a Deep Pattern Reset
-                </a>
-              </div>
-            </div>
+          <div className="mt-12 text-center">
+            <PrimaryBtn href={CALENDLY}>Book Your Free Discovery Call →</PrimaryBtn>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <Ornament />
-
-        {/* RTT EXPLAINER */}
-        <section
-          className="border-y px-6 py-20"
-          style={{ backgroundColor: "#ffffff", borderColor: "#E8E3DC" }}
-        >
-          <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1fr_1.4fr] md:gap-16">
-            <div className="flex flex-col items-center text-center">
-              <img
-                src={rttBadge}
-                alt="Certified RTT Practitioner badge, Marisa Peer Rapid Transformational Therapy"
-                loading="lazy"
-                width={1024}
-                height={1024}
-                className="h-auto w-[230px] sm:w-[280px]"
-              />
-              <p className="mt-6 font-serif text-2xl italic text-foreground">
-                Certified RTT Practitioner
-              </p>
-              <p className="mt-1 text-xs font-light tracking-wider text-muted-foreground">
-                Marisa Peer · Rapid Transformational Therapy
-              </p>
-            </div>
-
-            <div>
-              <p className={eyebrow}>The method behind the session</p>
-              <h2 className="mt-5 font-serif text-[clamp(28px,3.5vw,44px)] font-normal italic leading-[1.1] text-foreground">
-                What is Rapid Transformational Therapy?
-              </h2>
-              <div className="mt-6 space-y-4">
-                <p className="text-[15px] font-light leading-[1.85] text-foreground">
-                  RTT was created by Marisa Peer and combines hypnotherapy, NLP,
-                  CBT and neuroscience to go directly to the subconscious, where
-                  patterns actually live.
-                </p>
-                <p className="text-[15px] font-light leading-[1.85] text-foreground">
-                  Unlike talk therapy, RTT bypasses the thinking mind and finds
-                  the original moment the pattern was created, the exact age,
-                  the exact scene, the decision your nervous system made before
-                  you were old enough to question it.
-                </p>
-                <p className="text-[15px] font-light leading-[1.85] text-foreground">
-                  Once that moment is found, we reframe it at the root. New
-                  neural pathways form. The old response loses its grip.
-                </p>
-              </div>
-
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                {[
-                  [
-                    "One session",
-                    "Most clients experience a significant shift in a single 90-minute session.",
-                  ],
-                  [
-                    "The subconscious",
-                    "RTT works where the pattern actually lives, not in the thoughts, but underneath them.",
-                  ],
-                  [
-                    "Lasting change",
-                    "Combined with a personalised 21-day audio, the rewiring continues long after the session ends.",
-                  ],
-                ].map(([title, body]) => (
-                  <div
-                    key={title}
-                    className="rounded-lg border p-5"
-                    style={{
-                      backgroundColor: "#F8F5F0",
-                      borderColor: "#E8E3DC",
-                    }}
-                  >
-                    <p className="font-serif text-base italic text-foreground">
-                      {title}
-                    </p>
-                    <p className="mt-2 text-xs font-light leading-[1.65] text-muted-foreground">
-                      {body}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <Ornament />
-
-        {/* CLOSING */}
-        <section className="relative overflow-hidden px-6 py-24 text-center">
-          <p
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-serif text-[18vw] italic leading-none text-border/50"
+      {/* SECTION 5 — FOR YOU */}
+      <section style={{ backgroundColor: "#F8F5F0" }}>
+        <div className="mx-auto" style={{ maxWidth: 760, padding: "80px 24px" }}>
+          <p className={`${labelCls} block text-center`}><Star /> This is for you</p>
+          <h2
+            className="mt-5 text-center font-serif italic text-[#111]"
+            style={{ fontSize: 42, lineHeight: 1.1, textWrap: "balance", marginBottom: 40, fontFamily: '"Instrument Serif", serif' }}
           >
-            Return
-          </p>
-          <p className={`${eyebrow} relative`}>You have been looking for this</p>
-          <h2 className="relative mt-5 font-serif text-[clamp(40px,6vw,76px)] font-normal leading-[0.95] text-foreground">
-            You are not here
-            <br />
-            <em>by accident.</em>
+            You are ready for this if...
           </h2>
-          <p className="relative mx-auto mt-6 max-w-md text-[17px] font-light leading-[1.7] text-muted-foreground">
-            Something in you recognises this. That recognition is not coincidence.
-            It is you, knowing you have finally found the right door. Step
-            through.
-          </p>
-          <div className="relative mt-10 flex flex-wrap justify-center gap-3">
-            <a
-              href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full bg-foreground px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-background transition hover:opacity-90"
-            >
-              Book a Deep Pattern Reset
-            </a>
-            <a
-              href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center rounded-full border border-border px-7 py-3 text-[11px] font-normal uppercase tracking-[0.15em] text-muted-foreground transition hover:border-foreground hover:text-foreground"
-            >
-              Write to Signe first
-            </a>
+
+          <div className="grid gap-x-8 gap-y-4 md:grid-cols-2">
+            {FOR_YOU.map((t) => (
+              <div key={t} className="flex gap-3 font-sans text-[#2c1f1a]" style={{ fontSize: 16, lineHeight: 1.7 }}>
+                <Check />
+                <span>{t}</span>
+              </div>
+            ))}
           </div>
-        </section>
-      </main>
+
+          <div style={{ borderTop: "1px solid #E8E3DC", margin: "40px 0" }} />
+
+          <h3
+            className="text-center font-serif italic text-[#111]"
+            style={{ fontSize: 28, marginBottom: 20, fontFamily: '"Instrument Serif", serif' }}
+          >
+            This is not for you if...
+          </h3>
+          <div className="mx-auto grid max-w-xl gap-y-4">
+            {NOT_FOR_YOU.map((t) => (
+              <div key={t} className="flex gap-3 font-sans text-[#2c1f1a]" style={{ fontSize: 16, lineHeight: 1.7 }}>
+                <XIcon />
+                <span>{t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6 — TESTIMONIAL */}
+      <section style={{ backgroundColor: "#ffffff" }}>
+        <div className="mx-auto text-center" style={{ maxWidth: 700, padding: "80px 24px" }}>
+          <p
+            className="font-serif"
+            style={{ fontSize: 100, color: "rgba(201,133,122,0.15)", lineHeight: 0.7, marginBottom: 16, fontFamily: '"Instrument Serif", serif' }}
+          >
+            “
+          </p>
+          <p
+            className="font-serif italic text-[#2c1f1a]"
+            style={{ fontSize: "clamp(22px,3vw,30px)", lineHeight: 1.6, marginBottom: 28, fontFamily: '"Instrument Serif", serif' }}
+          >
+            I came to Signe feeling lost despite having everything. Her intuition and method helped me rediscover joy in the simplest moments. I am no longer chasing. I am creating from alignment.
+          </p>
+          <div className="flex items-center justify-center gap-3.5">
+            <div
+              className="grid place-items-center rounded-full font-sans text-white"
+              style={{ width: 48, height: 48, fontSize: 18, background: "linear-gradient(135deg,#c9857a,#8a9e8c)" }}
+            >
+              A
+            </div>
+            <div className="text-left">
+              <p className="font-sans font-medium text-[#111]" style={{ fontSize: 15 }}>Alexandra T.</p>
+              <p className="font-sans font-light text-[#8A8480]" style={{ fontSize: 13 }}>Deep Reset client</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 7 — PRICING */}
+      <section style={{ backgroundColor: "#F8F5F0" }}>
+        <div className="mx-auto" style={{ maxWidth: 700, padding: "80px 24px" }}>
+          <div
+            className="relative overflow-hidden text-center"
+            style={{
+              background: "linear-gradient(135deg, rgba(30,15,25,0.97), rgba(25,15,35,0.97))",
+              border: "1px solid rgba(201,133,122,0.25)",
+              borderRadius: 28,
+              padding: "60px 52px",
+            }}
+          >
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                width: 250,
+                height: 250,
+                borderRadius: "50%",
+                background: "rgba(201,133,122,0.12)",
+                filter: "blur(80px)",
+                top: -40,
+                right: -40,
+              }}
+            />
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                width: 250,
+                height: 250,
+                borderRadius: "50%",
+                background: "rgba(122,92,138,0.08)",
+                filter: "blur(80px)",
+                bottom: -40,
+                left: -40,
+              }}
+            />
+            <div className="relative" style={{ zIndex: 2 }}>
+              <span
+                className="inline-flex items-center gap-2 rounded-full font-sans"
+                style={{
+                  padding: "6px 14px",
+                  fontSize: 11,
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.8)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "rgba(255,255,255,0.04)",
+                }}
+              >
+                <Star /> Limited spots each month
+              </span>
+              <h2
+                className="mt-6 font-serif italic text-white"
+                style={{ fontSize: 42, lineHeight: 1.1, textWrap: "balance", marginBottom: 16, fontFamily: '"Instrument Serif", serif' }}
+              >
+                Ready to find out if this is right for you?
+              </h2>
+              <p
+                className="mx-auto font-sans"
+                style={{ fontSize: 16, color: "rgba(255,255,255,0.65)", maxWidth: 440, marginBottom: 32, lineHeight: 1.7 }}
+              >
+                The discovery call is free, 20 minutes, and completely without pressure. Signe will tell you honestly whether this session is the right fit.
+              </p>
+              <p
+                className="font-serif text-white"
+                style={{ fontSize: 64, lineHeight: 1, marginBottom: 4, fontFamily: '"Instrument Serif", serif' }}
+              >
+                $333
+              </p>
+              <p className="font-sans" style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginBottom: 32 }}>
+                per private session · free discovery call first
+              </p>
+              <RoseBtn href={CALENDLY} size="lg">Book Your Free Discovery Call →</RoseBtn>
+              <p className="font-sans" style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginTop: 16 }}>
+                Signe reads every application personally. She responds within 48 hours.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 8 — FAQ */}
+      <section style={{ backgroundColor: "#ffffff" }}>
+        <div className="mx-auto" style={{ maxWidth: 680, padding: "80px 24px 140px" }}>
+          <p className={`${labelCls} block text-center`}><Star /> Questions</p>
+          <h2
+            className="mt-5 text-center font-serif italic text-[#111]"
+            style={{ fontSize: 42, lineHeight: 1.1, textWrap: "balance", marginBottom: 40, fontFamily: '"Instrument Serif", serif' }}
+          >
+            Before you reach out.
+          </h2>
+          <div>
+            {FAQ.map((f) => (
+              <FaqItem key={f.q} q={f.q} a={f.a} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <SiteFooter />
-    </>
+
+      {/* STICKY FOOTER BAR */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-[100] transition-opacity duration-500"
+        style={{
+          background: "rgba(17,17,17,0.97)",
+          backdropFilter: "blur(20px)",
+          padding: "16px 24px",
+          opacity: showSticky ? 1 : 0,
+          pointerEvents: showSticky ? "auto" : "none",
+        }}
+      >
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+          <p className="font-serif italic text-white" style={{ fontSize: 18, fontFamily: '"Instrument Serif", serif' }}>
+            The Deep Pattern Reset · $333
+          </p>
+          <RoseBtn href={CALENDLY} size="sm">Book Free Discovery Call →</RoseBtn>
+        </div>
+      </div>
+    </div>
   );
 }
