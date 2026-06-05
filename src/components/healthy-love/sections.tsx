@@ -312,8 +312,14 @@ export function PatternSection() {
 }
 
 export function Diagnosis() {
+  const navigate = useNavigate();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
+
+  const handleSkipToReset = async () => {
+    const { data } = await supabase.auth.getSession();
+    navigate({ to: data.session ? "/checkout" : "/auth" });
+  };
   const resultRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
