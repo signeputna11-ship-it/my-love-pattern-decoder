@@ -312,8 +312,14 @@ export function PatternSection() {
 }
 
 export function Diagnosis() {
+  const navigate = useNavigate();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
+
+  const handleSkipToReset = async () => {
+    const { data } = await supabase.auth.getSession();
+    navigate({ to: data.session ? "/checkout" : "/auth" });
+  };
   const resultRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -400,6 +406,12 @@ export function Diagnosis() {
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-black transition disabled:cursor-not-allowed disabled:opacity-35"
               >
                 Reveal My Pattern <ArrowUpRight className="h-4 w-4" />
+              </button>
+              <button
+                onClick={handleSkipToReset}
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/[0.08]"
+              >
+                Skip the quiz · Get My Reset ($49) <ArrowUpRight className="h-4 w-4" />
               </button>
             </>
           ) : (
