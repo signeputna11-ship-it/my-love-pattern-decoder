@@ -48,7 +48,41 @@ export const listPublishedPosts = createServerFn({ method: "GET" })
     return { posts: (posts ?? []) as BlogPost[] };
   });
 
-// PUBLIC: single post by slug + related posts
+export type MatchedProduct = {
+  slug: string;
+  name: string;
+  short_description: string | null;
+  price_cents: number;
+  currency: string;
+};
+
+const FALLBACK_PRODUCT_SLUG = "love-pattern-reset-kit";
+
+async function matchProductFor(
+  tags: string[] | null,
+  category: string | null,
+): Promise<MatchedProduct | null> {
+  const candidates: string[] = [];
+  if (tags) for (const t of tags) candidates.push(t.toLowerCase().trim());
+  if (category) candidates.push(category.toLowerCase().trim().replace(/\s+/g, "-"));
+  candidates.push(FALLBACK_PRODUCT_SLUG);
+
+  const { data: products } = await supabaseAdmin
+    .from("shop_products")
+    .select("slug,name,short_description,price_cents,currency")
+    .eq("active", true)
+    .in("slug", candidates);
+  if (!products || products.length === 0) return null;
+
+  const bySlug = new Map(products.map((p) => [p.slug, p]));
+  for (const c of candidates) {
+    const hit = bySlug.get(c);
+    if (hit) return hit as MatchedProduct;
+  }
+  return null;
+}
+
+// PUBLIC: single post by slug + related posts + matched shop product
 export const getPostBySlug = createServerFn({ method: "GET" })
   .inputValidator((d: { slug: string }) =>
     z.object({ slug: z.string().min(1).max(255) }).parse(d),
@@ -61,7 +95,8 @@ export const getPostBySlug = createServerFn({ method: "GET" })
       .eq("published", true)
       .maybeSingle();
     if (error) throw new Error(error.message);
-    if (!post) return { post: null, related: [] as BlogPost[] };
+    if (!post)
+      return { post: null, related: [] as BlogPost[], product: null as MatchedProduct | null };
 
     let related: BlogPost[] = [];
     if (post.category) {
@@ -75,7 +110,9 @@ export const getPostBySlug = createServerFn({ method: "GET" })
         .limit(2);
       related = (rel ?? []) as BlogPost[];
     }
-    return { post: post as BlogPost, related };
+
+    const product = await matchProductFor(post.tags, post.category);
+    return { post: post as BlogPost, related, product };
   });
 
 // PUBLIC: list categories
