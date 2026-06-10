@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import { VideoBackground } from "@/components/blog/VideoBackground";
 import { SubscribeForm } from "@/components/blog/SubscribeForm";
 import { PostCard } from "@/components/blog/PostCard";
+import { InlineProductCard } from "@/components/blog/InlineProductCard";
 import "@/components/blog/blog-prose.css";
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -90,8 +91,28 @@ function youTubeId(url: string | null): string | null {
   return m ? m[1] : null;
 }
 
+function splitHtmlMidpoint(html: string): [string, string] {
+  if (!html) return ["", ""];
+  const target = Math.floor(html.length / 2);
+  // Find the </p> closest to the midpoint
+  let bestIdx = -1;
+  let bestDist = Infinity;
+  const re = /<\/p>/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const end = m.index + m[0].length;
+    const d = Math.abs(end - target);
+    if (d < bestDist) {
+      bestDist = d;
+      bestIdx = end;
+    }
+  }
+  if (bestIdx < 0) return [html, ""];
+  return [html.slice(0, bestIdx), html.slice(bestIdx)];
+}
+
 function PostPage() {
-  const { post, related } = Route.useLoaderData();
+  const { post, related, product } = Route.useLoaderData();
   const [copied, setCopied] = useState(false);
   const [currentUrl, setCurrentUrl] = useState("");
 
@@ -245,10 +266,24 @@ function PostPage() {
           )}
 
           {/* Body */}
-          <div
-            className="blog-prose"
-            dangerouslySetInnerHTML={{ __html: safeHtml }}
-          />
+          {(() => {
+            const [first, second] = splitHtmlMidpoint(safeHtml);
+            if (!product || !second) {
+              return (
+                <div
+                  className="blog-prose"
+                  dangerouslySetInnerHTML={{ __html: safeHtml }}
+                />
+              );
+            }
+            return (
+              <>
+                <div className="blog-prose" dangerouslySetInnerHTML={{ __html: first }} />
+                <InlineProductCard product={product} />
+                <div className="blog-prose" dangerouslySetInnerHTML={{ __html: second }} />
+              </>
+            );
+          })()}
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
