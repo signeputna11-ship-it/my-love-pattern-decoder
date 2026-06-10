@@ -90,8 +90,28 @@ function youTubeId(url: string | null): string | null {
   return m ? m[1] : null;
 }
 
+function splitHtmlMidpoint(html: string): [string, string] {
+  if (!html) return ["", ""];
+  const target = Math.floor(html.length / 2);
+  // Find the </p> closest to the midpoint
+  let bestIdx = -1;
+  let bestDist = Infinity;
+  const re = /<\/p>/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const end = m.index + m[0].length;
+    const d = Math.abs(end - target);
+    if (d < bestDist) {
+      bestDist = d;
+      bestIdx = end;
+    }
+  }
+  if (bestIdx < 0) return [html, ""];
+  return [html.slice(0, bestIdx), html.slice(bestIdx)];
+}
+
 function PostPage() {
-  const { post, related } = Route.useLoaderData();
+  const { post, related, product } = Route.useLoaderData();
   const [copied, setCopied] = useState(false);
   const [currentUrl, setCurrentUrl] = useState("");
 
