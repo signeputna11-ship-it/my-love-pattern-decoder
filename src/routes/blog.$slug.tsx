@@ -265,10 +265,24 @@ function PostPage() {
           )}
 
           {/* Body */}
-          <div
-            className="blog-prose"
-            dangerouslySetInnerHTML={{ __html: safeHtml }}
-          />
+          {(() => {
+            const [first, second] = splitHtmlMidpoint(safeHtml);
+            if (!product || !second) {
+              return (
+                <div
+                  className="blog-prose"
+                  dangerouslySetInnerHTML={{ __html: safeHtml }}
+                />
+              );
+            }
+            return (
+              <>
+                <div className="blog-prose" dangerouslySetInnerHTML={{ __html: first }} />
+                <InlineProductCard product={product} />
+                <div className="blog-prose" dangerouslySetInnerHTML={{ __html: second }} />
+              </>
+            );
+          })()}
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
