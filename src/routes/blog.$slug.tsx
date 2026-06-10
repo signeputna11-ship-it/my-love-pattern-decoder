@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import { VideoBackground } from "@/components/blog/VideoBackground";
 import { SubscribeForm } from "@/components/blog/SubscribeForm";
 import { PostCard } from "@/components/blog/PostCard";
+import { InlineProductCard } from "@/components/blog/InlineProductCard";
 import "@/components/blog/blog-prose.css";
 
 export const Route = createFileRoute("/blog/$slug")({
