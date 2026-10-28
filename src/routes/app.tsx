@@ -69,12 +69,13 @@ function AppLayout() {
         }
         // Don't trap the user on an error screen — the access check is an
         // upsell gate, not a security boundary (RLS enforces real access).
-        // Default to the upsell screen so they have a path forward.
-        setState("no-access");
+        // The free tier is open to every signed-in user, so continue.
+        setState("ready");
         return;
       }
 
-      setState(rpcRes.data ? "ready" : "no-access");
+      // Free tier: every signed-in user enters. Paid content is locked per module by RLS.
+      setState("ready");
     } catch (e) {
       console.error("[AppLayout.check]", e);
       // Soft retry once before showing the error card — guards against transient
@@ -201,6 +202,12 @@ function AppLayout() {
         </Link>
         <div className="flex items-center gap-3 text-xs text-white/60">
           <span className="hidden truncate max-w-[160px] sm:inline">{email}</span>
+          <Link
+            to="/app/membership"
+            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
+          >
+            Membership
+          </Link>
           {isAdmin && (
             <Link
               to="/app/admin/emails"

@@ -32,6 +32,7 @@ import { Route as KitTokenRouteImport } from './routes/kit.$token'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AppMembershipRouteImport } from './routes/app.membership'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
@@ -165,6 +166,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppMembershipRoute = AppMembershipRouteImport.update({
+  id: '/membership',
+  path: '/membership',
+  getParentRoute: () => AppRoute,
+} as any)
 const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
   id: '/admin/subscribers',
   path: '/admin/subscribers',
@@ -273,6 +279,7 @@ export interface FileRoutesByFullPath {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/app/membership': typeof AppMembershipRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -314,6 +321,7 @@ export interface FileRoutesByTo {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/app/membership': typeof AppMembershipRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -357,6 +365,7 @@ export interface FileRoutesById {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/app/membership': typeof AppMembershipRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -401,6 +410,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/orders'
     | '/admin/subscribers'
+    | '/app/membership'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -442,6 +452,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/orders'
     | '/admin/subscribers'
+    | '/app/membership'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -484,6 +495,7 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/orders'
     | '/admin/subscribers'
+    | '/app/membership'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -711,6 +723,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/membership': {
+      id: '/app/membership'
+      path: '/membership'
+      fullPath: '/app/membership'
+      preLoaderRoute: typeof AppMembershipRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/admin/subscribers': {
       id: '/admin/subscribers'
       path: '/admin/subscribers'
@@ -834,6 +853,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppMembershipRoute: typeof AppMembershipRoute
   AppIndexRoute: typeof AppIndexRoute
   AppAdminAudioRoute: typeof AppAdminAudioRoute
   AppAdminEmailsRoute: typeof AppAdminEmailsRoute
@@ -841,6 +861,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppMembershipRoute: AppMembershipRoute,
   AppIndexRoute: AppIndexRoute,
   AppAdminAudioRoute: AppAdminAudioRoute,
   AppAdminEmailsRoute: AppAdminEmailsRoute,

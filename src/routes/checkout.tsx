@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
 import { getStripe, getStripeEnvironment } from "@/lib/stripe";
-import { createCheckoutSession } from "@/lib/server-fns/payments.functions";
+import { createProductCheckout } from "@/lib/server-fns/membership.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import coverImage from "@/assets/my-love-pattern-cover.png";
@@ -40,11 +40,9 @@ function CheckoutPage() {
   }, [navigate]);
 
   const fetchClientSecret = async (): Promise<string> => {
-    const secret = await createCheckoutSession({
+    const secret = await createProductCheckout({
       data: {
         slug: productSlug,
-        customerEmail: user?.email,
-        userId: user?.id,
         returnUrl: `${window.location.origin}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
         environment: getStripeEnvironment(),
       },

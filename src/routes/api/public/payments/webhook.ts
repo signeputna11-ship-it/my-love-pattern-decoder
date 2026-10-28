@@ -178,12 +178,52 @@ async function revokeAccessByPaymentIntent(paymentIntentId: string, env: StripeE
     .eq("environment", env);
 }
 
+async function upsertSubscription(sub: any, env: StripeEnv) {
+  let userId: string | null = sub.metadata?.userId ?? null;
+  const customerId: string | null = typeof sub.customer === "string" ? sub.customer : sub.customer?.id ?? null;
+  if (!userId && customerId) {
+    try {
+      const customer: any = await createStripeClient(env).customers.retrieve(customerId);
+      userId = customer?.metadata?.userId ?? null;
+    } catch (e) {
+      console.warn("Could not resolve customer for subscription:", (e as Error).message);
+    }
+  }
+  if (!userId) {
+    console.warn("Subscription without userId", sub.id);
+    return;
+  }
+  const item = sub.items?.data?.[0];
+  const periodEnd: number | null = item?.current_period_end ?? sub.current_period_end ?? null;
+  await getSupabase().from("subscriptions").upsert(
+    {
+      user_id: userId,
+      stripe_subscription_id: sub.id,
+      stripe_customer_id: customerId,
+      price_lookup_key: item?.price?.lookup_key ?? null,
+      status: sub.status,
+      current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
+      cancel_at_period_end: !!sub.cancel_at_period_end,
+      environment: env,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "stripe_subscription_id" },
+  );
+}
+
 async function handleWebhook(req: Request, env: StripeEnv) {
   const event = await verifyWebhook(req, env);
 
   switch (event.type) {
     case "checkout.session.completed":
+      // Membership checkouts are tracked through customer.subscription.* events.
+      if (event.data.object?.mode === "subscription") break;
       await upsertPurchaseFromSession(event.data.object, env);
+      break;
+    case "customer.subscription.created":
+    case "customer.subscription.updated":
+    case "customer.subscription.deleted":
+      await upsertSubscription(event.data.object, env);
       break;
     case "transaction.completed": {
       const obj: any = event.data.object;

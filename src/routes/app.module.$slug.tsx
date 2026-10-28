@@ -20,6 +20,7 @@ type Module = {
   audio_title?: string | null;
   audio_minutes?: number | null;
   audio_binaural?: boolean;
+  is_free?: boolean;
 };
 type Exercise = {
   id: string;
@@ -41,6 +42,7 @@ function ModulePage() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [answers, setAnswers] = useState<Record<string, { text: string; data: any }>>({});
   const [completed, setCompleted] = useState(false);
+  const [locked, setLocked] = useState(false);
   const [userId, setUserId] = useState<string>("");
   const [savingId, setSavingId] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -74,6 +76,11 @@ function ModulePage() {
         }
         if (cancelled) return;
         setModule(mod as Module);
+        const { data: canOpen } = await (supabase as any).rpc("can_access_module", {
+          _user_id: uid,
+          _module_id: (mod as any).id,
+        });
+        if (!cancelled) setLocked(canOpen === false);
 
         supabase
           .from("modules")
@@ -288,12 +295,27 @@ function ModulePage() {
         </div>
       )}
 
-      <AudioPlayer
+      {locked && (
+        <div className="mt-8 liquid-glass-strong rounded-3xl p-6 text-center">
+          <p className="font-serif text-2xl">This module is for members</p>
+          <p className="mt-2 text-sm text-white/60">
+            Join for 4,99 € a month to open every journey, workbook and audio.
+          </p>
+          <Link
+            to="/app/membership"
+            className="mt-4 inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black"
+          >
+            See membership
+          </Link>
+        </div>
+      )}
+
+      {!locked && <AudioPlayer
         path={module.audio_path ?? null}
         title={module.audio_title}
         minutes={module.audio_minutes}
         binaural={module.audio_binaural}
-      />
+      />}
 
       <div className="mt-8 space-y-4">
         {exercises.map((ex, i) => {
@@ -357,6 +379,8 @@ function ModulePage() {
         })}
       </div>
 
+      {!locked && (
+        <>
       <PatternGuideCard moduleSlug={module.slug} />
 
       <div id="in-app-tools">
@@ -397,6 +421,8 @@ function ModulePage() {
           </div>
         );
       })()}
+        </>
+      )}
 
       <div className="fixed bottom-4 left-1/2 z-40 w-[calc(100%-1.5rem)] max-w-xl -translate-x-1/2">
         <div className="liquid-glass flex items-center justify-center gap-2 rounded-full px-3 py-2 shadow-2xl backdrop-blur">

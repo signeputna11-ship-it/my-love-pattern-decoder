@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { CheckCircle2, Circle, ArrowRight } from "lucide-react";
+import { CheckCircle2, Circle, ArrowRight, Lock } from "lucide-react";
 
 type Module = {
   id: string;
@@ -11,6 +11,7 @@ type Module = {
   title: string;
   subtitle: string | null;
   journey_id?: string | null;
+  is_free?: boolean;
 };
 type Journey = { id: string; slug: string; position: number; title: string; subtitle: string | null };
 
@@ -21,6 +22,8 @@ export const Route = createFileRoute("/app/")({
 function Dashboard() {
   const [modules, setModules] = useState<Module[]>([]);
   const [journeys, setJourneys] = useState<Journey[]>([]);
+  const [isMember, setIsMember] = useState(false);
+  const [hasKit, setHasKit] = useState(false);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [pattern, setPattern] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
@@ -43,6 +46,14 @@ function Dashboard() {
         if (!cancelled) setJourneys((jRes.data as Journey[]) ?? []);
 
         if (userId) {
+          const [memRes, kitRes] = await Promise.all([
+            (supabase as any).rpc("has_membership", { _user_id: userId }),
+            supabase.rpc("has_paid_access", { _user_id: userId }),
+          ]);
+          if (!cancelled) {
+            setIsMember(!!memRes.data);
+            setHasKit(!!kitRes.data);
+          }
           const [progRes, profileRes] = await Promise.all([
             supabase.from("user_progress").select("module_id, completed_at").eq("user_id", userId),
             supabase
@@ -104,6 +115,11 @@ function Dashboard() {
   const completedCount = modules.filter((m) => completedIds.has(m.id)).length;
   const total = modules.length || 5;
   const percent = Math.round((completedCount / total) * 100);
+  const relationshipsId = journeys.find((j) => j.slug === "relationships")?.id;
+  const isLocked = (m: Module) =>
+    !m.is_free &&
+    !isMember &&
+    !(hasKit && (!m.journey_id || m.journey_id === relationshipsId));
   const groups =
     journeys.length > 0
       ? journeys
@@ -172,6 +188,23 @@ function Dashboard() {
         </div>
       </div>
 
+      {!isMember && (
+        <div className="mt-8 liquid-glass-strong rounded-3xl p-6 sm:flex sm:items-center sm:justify-between">
+          <div>
+            <p className="font-serif text-xl">Unlock every journey</p>
+            <p className="mt-1 text-sm text-white/60">
+              Members get all workbooks and audio for 4,99 € a month, plus a discount on 1:1 sessions.
+            </p>
+          </div>
+          <Link
+            to="/app/membership"
+            className="mt-4 inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black sm:mt-0"
+          >
+            See membership
+          </Link>
+        </div>
+      )}
+
       {groups.map((group) => (
         <div key={group.key} className="mt-12">
           <p className="text-xs uppercase tracking-[0.3em] text-white/50">{group.title}</p>
@@ -179,6 +212,7 @@ function Dashboard() {
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {group.modules.map((m, i) => {
             const done = completedIds.has(m.id);
+            const locked = isLocked(m);
             return (
               <motion.div
                 key={m.id}
@@ -193,7 +227,9 @@ function Dashboard() {
                 >
                   <div className="flex items-start gap-4">
                     <div className="mt-0.5">
-                      {done ? (
+                      {locked ? (
+                        <Lock className="h-6 w-6 text-white/40" />
+                      ) : done ? (
                         <CheckCircle2 className="h-6 w-6 text-white" />
                       ) : (
                         <Circle className="h-6 w-6 text-white/40" />
