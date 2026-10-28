@@ -149,18 +149,20 @@ function Dashboard() {
         <p className="text-xs uppercase tracking-[0.3em] text-foreground/50">Welcome back{name ? "," : ""}</p>
         {name && <h1 className="mt-1 font-serif text-3xl sm:text-5xl">{name}</h1>}
         <h1 className={`${name ? "mt-1 text-lg text-foreground/70" : "mt-1 font-serif text-3xl sm:text-5xl"}`}>
-          Your reset is in motion.
+          Your space, at your pace.
         </h1>
       </motion.div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="liquid-glass-strong rounded-3xl p-6">
-          <p className="text-xs uppercase tracking-widest text-foreground/50">Your pattern</p>
-          <p className="mt-2 font-serif text-2xl">{pattern ?? "Not yet detected"}</p>
+          <p className="text-xs uppercase tracking-widest text-foreground/50">Your starting point</p>
+          <p className="mt-2 font-serif text-2xl">{startPoint ? QUIZ_JOURNEYS[startPoint].title : "Not chosen yet"}</p>
           <p className="mt-2 text-xs text-foreground/50">
-            {pattern
-              ? "Each module loops back to this."
-              : "Complete the quiz on the home page to find yours."}
+            {startPoint ? (
+              QUIZ_JOURNEYS[startPoint].tagline
+            ) : (
+              <Link to="/quiz" className="underline">Take the two-minute quiz to find it.</Link>
+            )}
           </p>
         </div>
         <div className="liquid-glass-strong rounded-3xl p-6">
@@ -191,14 +193,6 @@ function Dashboard() {
           )}
         </div>
       </div>
-
-      {startPoint && (
-        <div className="mt-8 liquid-glass rounded-3xl p-6">
-          <p className="text-xs uppercase tracking-widest text-foreground/50">Your starting point</p>
-          <p className="mt-2 font-serif text-2xl">{QUIZ_JOURNEYS[startPoint].title}</p>
-          <p className="mt-1 text-sm text-foreground/70">{QUIZ_JOURNEYS[startPoint].reflection}</p>
-        </div>
-      )}
 
       {!isMember && (
         <div className="mt-8 liquid-glass-strong rounded-3xl p-6 sm:flex sm:items-center sm:justify-between">

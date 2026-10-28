@@ -11,8 +11,8 @@ export const Route = createFileRoute("/app")({
   component: AppLayout,
   head: () => ({
     meta: [
-      { title: "Your Reset · My Love Pattern" },
-      { name: "description", content: "Your private reset path." },
+      { title: "Your space · Signe Coach" },
+      { name: "description", content: "Your private space." },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
