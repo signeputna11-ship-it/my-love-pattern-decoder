@@ -96,8 +96,24 @@ function AuthPage() {
     }
   };
 
+  // Outside Lovable (own Supabase + Cloudflare) Google runs through Supabase itself.
+  // Enable it with VITE_GOOGLE_AUTH=true once Google is configured in the Supabase dashboard.
+  const nativeAuth = import.meta.env.VITE_AUTH_PROVIDER === "supabase";
+  const showGoogle = !nativeAuth || import.meta.env.VITE_GOOGLE_AUTH === "true";
+
   const handleGoogle = async () => {
     setLoading(true);
+    if (nativeAuth) {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: `${window.location.origin}/app` },
+      });
+      if (error) {
+        toast.error("Google sign-in failed");
+        setLoading(false);
+      }
+      return;
+    }
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: `${window.location.origin}/app`,
@@ -188,6 +204,8 @@ function AuthPage() {
                   : "Create an account to access your reset."}
               </p>
 
+              {showGoogle && (
+                <>
               <button
                 onClick={handleGoogle}
                 disabled={loading}
@@ -217,6 +235,8 @@ function AuthPage() {
               <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-widest text-white/40">
                 <span className="h-px flex-1 bg-white/15" /> or <span className="h-px flex-1 bg-white/15" />
               </div>
+                </>
+              )}
 
               <form onSubmit={handleEmailAuth} className="space-y-3">
                 <input
