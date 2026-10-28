@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, ArrowRight, CheckCircle2, Loader2, Save, Download, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
+import { AudioPlayer } from "@/components/AudioPlayer";
 import { InAppTools } from "@/components/healthy-love/InAppTools";
 import { PatternGuideCard } from "@/components/healthy-love/PatternGuideCard";
 
@@ -15,6 +16,10 @@ type Module = {
   title: string;
   subtitle: string | null;
   intro: string | null;
+  audio_path?: string | null;
+  audio_title?: string | null;
+  audio_minutes?: number | null;
+  audio_binaural?: boolean;
 };
 type Exercise = {
   id: string;
@@ -282,6 +287,13 @@ function ModulePage() {
           {module.intro}
         </div>
       )}
+
+      <AudioPlayer
+        path={module.audio_path ?? null}
+        title={module.audio_title}
+        minutes={module.audio_minutes}
+        binaural={module.audio_binaural}
+      />
 
       <div className="mt-8 space-y-4">
         {exercises.map((ex, i) => {

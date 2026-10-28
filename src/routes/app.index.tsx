@@ -10,7 +10,9 @@ type Module = {
   position: number;
   title: string;
   subtitle: string | null;
+  journey_id?: string | null;
 };
+type Journey = { id: string; slug: string; position: number; title: string; subtitle: string | null };
 
 export const Route = createFileRoute("/app/")({
   component: Dashboard,
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/app/")({
 
 function Dashboard() {
   const [modules, setModules] = useState<Module[]>([]);
+  const [journeys, setJourneys] = useState<Journey[]>([]);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [pattern, setPattern] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
@@ -34,6 +37,10 @@ function Dashboard() {
         if (cancelled) return;
         if (modsRes.error) console.error("[modules]", modsRes.error);
         setModules((modsRes.data as Module[]) ?? []);
+
+        const jRes = await (supabase as any).from("journeys").select("*").order("position");
+        if (jRes.error) console.warn("[journeys]", jRes.error);
+        if (!cancelled) setJourneys((jRes.data as Journey[]) ?? []);
 
         if (userId) {
           const [progRes, profileRes] = await Promise.all([
@@ -97,6 +104,19 @@ function Dashboard() {
   const completedCount = modules.filter((m) => completedIds.has(m.id)).length;
   const total = modules.length || 5;
   const percent = Math.round((completedCount / total) * 100);
+  const groups =
+    journeys.length > 0
+      ? journeys
+          .map((j) => ({
+            key: j.id,
+            title: j.title,
+            subtitle: j.subtitle,
+            modules: modules.filter(
+              (m) => m.journey_id === j.id || (!m.journey_id && j.position === journeys[0].position),
+            ),
+          }))
+          .filter((g) => g.modules.length > 0)
+      : [{ key: "all", title: "The 5 modules", subtitle: null as string | null, modules }];
   const next = modules.find((m) => !completedIds.has(m.id)) ?? modules[0];
 
   return (
@@ -152,10 +172,12 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-12">
-        <p className="text-xs uppercase tracking-[0.3em] text-white/50">The 5 modules</p>
+      {groups.map((group) => (
+        <div key={group.key} className="mt-12">
+          <p className="text-xs uppercase tracking-[0.3em] text-white/50">{group.title}</p>
+          {group.subtitle && <p className="mt-1 text-sm text-white/60">{group.subtitle}</p>}
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {modules.map((m, i) => {
+          {group.modules.map((m, i) => {
             const done = completedIds.has(m.id);
             return (
               <motion.div
@@ -192,6 +214,7 @@ function Dashboard() {
           })}
         </div>
       </div>
+      ))}
     </div>
   );
 }
