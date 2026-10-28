@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle2, Circle, ArrowRight, Lock } from "lucide-react";
+import { getMyStartingPoint } from "@/lib/server-fns/quiz.functions";
+import { JOURNEYS as QUIZ_JOURNEYS, type JourneyKey } from "@/lib/quiz";
 
 type Module = {
   id: string;
@@ -22,6 +24,7 @@ export const Route = createFileRoute("/app/")({
 function Dashboard() {
   const [modules, setModules] = useState<Module[]>([]);
   const [journeys, setJourneys] = useState<Journey[]>([]);
+  const [startPoint, setStartPoint] = useState<JourneyKey | null>(null);
   const [isMember, setIsMember] = useState(false);
   const [hasKit, setHasKit] = useState(false);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
@@ -77,6 +80,7 @@ function Dashboard() {
           setName(profileRes.data?.display_name ?? "");
         }
 
+        getMyStartingPoint().then((r) => { if (!cancelled) setStartPoint(r.primary); }).catch(() => {});
         setStatus("ready");
       } catch (e) {
         console.error("[Dashboard.load]", e);
@@ -187,6 +191,14 @@ function Dashboard() {
           )}
         </div>
       </div>
+
+      {startPoint && (
+        <div className="mt-8 liquid-glass rounded-3xl p-6">
+          <p className="text-xs uppercase tracking-widest text-foreground/50">Your starting point</p>
+          <p className="mt-2 font-serif text-2xl">{QUIZ_JOURNEYS[startPoint].title}</p>
+          <p className="mt-1 text-sm text-foreground/70">{QUIZ_JOURNEYS[startPoint].reflection}</p>
+        </div>
+      )}
 
       {!isMember && (
         <div className="mt-8 liquid-glass-strong rounded-3xl p-6 sm:flex sm:items-center sm:justify-between">

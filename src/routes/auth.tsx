@@ -9,10 +9,12 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>): { mode?: "signup" } =>
+    search.mode === "signup" ? { mode: "signup" } : {},
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: "Sign in · My Love Pattern" },
+      { title: "Sign in · Signe Coach" },
       { name: "description", content: "Sign in to access your private reset path." },
       { name: "robots", content: "noindex, nofollow" },
     ],
@@ -47,7 +49,8 @@ async function maybeSendWelcome(userId: string, email: string | null) {
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const initial = Route.useSearch();
+  const [mode, setMode] = useState<"signin" | "signup">(initial.mode === "signup" ? "signup" : "signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -156,10 +159,10 @@ function AuthPage() {
           className="liquid-glass-strong w-full max-w-md rounded-3xl p-8"
         >
           <Link
-            to="/home"
+            to="/"
             className="mb-6 inline-block text-xs uppercase tracking-[0.3em] text-foreground/60 hover:text-foreground"
           >
-            ← My Love Pattern
+            ← Signe Coach
           </Link>
 
           {signupSuccessEmail ? (
@@ -187,12 +190,12 @@ function AuthPage() {
           ) : (
             <>
               <h1 className="font-serif text-4xl">
-                {mode === "signin" ? "Welcome back" : "Begin your reset"}
+                {mode === "signin" ? "Welcome back" : "Create your free space"}
               </h1>
               <p className="mt-2 text-sm text-foreground/70">
                 {mode === "signin"
                   ? "Sign in to continue your path."
-                  : "Create an account to access your reset."}
+                  : "Create a free account to start where you are."}
               </p>
 
               {showGoogle && (

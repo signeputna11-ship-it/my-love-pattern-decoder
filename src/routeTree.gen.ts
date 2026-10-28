@@ -16,6 +16,7 @@ import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
 import { Route as TheBoundarySoftenerRouteImport } from './routes/the-boundary-softener'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as DeepResetRouteImport } from './routes/deep-reset'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -84,6 +85,11 @@ const ThankYouRoute = ThankYouRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -270,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
+  '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
@@ -312,6 +319,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
+  '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
@@ -356,6 +364,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
+  '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
@@ -401,6 +410,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/deep-reset'
     | '/home'
+    | '/quiz'
     | '/sitemap.xml'
     | '/thank-you'
     | '/the-boundary-softener'
@@ -443,6 +453,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/deep-reset'
     | '/home'
+    | '/quiz'
     | '/sitemap.xml'
     | '/thank-you'
     | '/the-boundary-softener'
@@ -486,6 +497,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/deep-reset'
     | '/home'
+    | '/quiz'
     | '/sitemap.xml'
     | '/thank-you'
     | '/the-boundary-softener'
@@ -530,6 +542,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRouteWithChildren
   DeepResetRoute: typeof DeepResetRoute
   HomeRoute: typeof HomeRoute
+  QuizRoute: typeof QuizRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ThankYouRoute: typeof ThankYouRoute
   TheBoundarySoftenerRoute: typeof TheBoundarySoftenerRoute
@@ -609,6 +622,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -890,6 +910,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRouteWithChildren,
   DeepResetRoute: DeepResetRoute,
   HomeRoute: HomeRoute,
+  QuizRoute: QuizRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ThankYouRoute: ThankYouRoute,
   TheBoundarySoftenerRoute: TheBoundarySoftenerRoute,
