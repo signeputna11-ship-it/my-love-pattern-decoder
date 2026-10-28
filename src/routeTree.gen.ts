@@ -39,6 +39,7 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
 import { Route as AppModuleSlugRouteImport } from './routes/app.module.$slug'
 import { Route as AppAdminEmailsRouteImport } from './routes/app.admin.emails'
+import { Route as AppAdminAudioRouteImport } from './routes/app.admin.audio'
 import { Route as AdminBlogNewRouteImport } from './routes/admin.blog.new'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -199,6 +200,11 @@ const AppAdminEmailsRoute = AppAdminEmailsRouteImport.update({
   path: '/admin/emails',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminAudioRoute = AppAdminAudioRouteImport.update({
+  id: '/admin/audio',
+  path: '/admin/audio',
+  getParentRoute: () => AppRoute,
+} as any)
 const AdminBlogNewRoute = AdminBlogNewRouteImport.update({
   id: '/admin/blog/new',
   path: '/admin/blog/new',
@@ -277,6 +283,7 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
   '/shop/': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
+  '/app/admin/audio': typeof AppAdminAudioRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
@@ -317,6 +324,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogIndexRoute
   '/shop': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
+  '/app/admin/audio': typeof AppAdminAudioRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
@@ -359,6 +367,7 @@ export interface FileRoutesById {
   '/blog/': typeof BlogIndexRoute
   '/shop/': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
+  '/app/admin/audio': typeof AppAdminAudioRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
@@ -402,6 +411,7 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/shop/'
     | '/admin/blog/new'
+    | '/app/admin/audio'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/blog/category/$category'
@@ -442,6 +452,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/shop'
     | '/admin/blog/new'
+    | '/app/admin/audio'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/blog/category/$category'
@@ -483,6 +494,7 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/shop/'
     | '/admin/blog/new'
+    | '/app/admin/audio'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/blog/category/$category'
@@ -748,6 +760,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminEmailsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/admin/audio': {
+      id: '/app/admin/audio'
+      path: '/admin/audio'
+      fullPath: '/app/admin/audio'
+      preLoaderRoute: typeof AppAdminAudioRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/admin/blog/new': {
       id: '/admin/blog/new'
       path: '/admin/blog/new'
@@ -816,12 +835,14 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppAdminAudioRoute: typeof AppAdminAudioRoute
   AppAdminEmailsRoute: typeof AppAdminEmailsRoute
   AppModuleSlugRoute: typeof AppModuleSlugRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppAdminAudioRoute: AppAdminAudioRoute,
   AppAdminEmailsRoute: AppAdminEmailsRoute,
   AppModuleSlugRoute: AppModuleSlugRoute,
 }

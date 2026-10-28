@@ -209,6 +209,14 @@ function AppLayout() {
               <Shield className="h-3.5 w-3.5" /> Admin
             </Link>
           )}
+          {isAdmin && (
+            <Link
+              to="/app/admin/audio"
+              className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
+            >
+              Audio
+            </Link>
+          )}
           <button
             onClick={signOut}
             className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
