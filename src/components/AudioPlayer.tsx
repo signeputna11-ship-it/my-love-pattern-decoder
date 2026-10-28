@@ -31,7 +31,7 @@ export function AudioPlayer({ path, title, minutes, binaural }: Props) {
 
   if (!path) {
     return (
-      <div className="mt-6 liquid-glass rounded-3xl p-5 text-sm text-white/60">
+      <div className="mt-6 liquid-glass rounded-3xl p-5 text-sm text-foreground/60">
         <p className="flex items-center gap-2">
           <Headphones className="h-4 w-4" /> Audio for this module is being recorded by Signe.
         </p>
@@ -41,18 +41,18 @@ export function AudioPlayer({ path, title, minutes, binaural }: Props) {
 
   return (
     <div className="mt-6 liquid-glass-strong rounded-3xl p-5 sm:p-6">
-      <p className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/50">
+      <p className="flex items-center gap-2 text-xs uppercase tracking-widest text-foreground/50">
         <Headphones className="h-4 w-4" /> Listen{minutes ? ` · ${minutes} min` : ""}
       </p>
       {title && <h3 className="mt-1 font-serif text-xl">{title}</h3>}
       {failed ? (
-        <p className="mt-3 text-sm text-white/60">We couldn't load the audio. Please refresh.</p>
+        <p className="mt-3 text-sm text-foreground/60">We couldn't load the audio. Please refresh.</p>
       ) : url ? (
         <audio controls preload="none" src={url} className="mt-3 w-full" />
       ) : (
-        <p className="mt-3 text-sm text-white/50">Loading audio…</p>
+        <p className="mt-3 text-sm text-foreground/50">Loading audio…</p>
       )}
-      <p className="mt-3 text-xs leading-relaxed text-white/50">
+      <p className="mt-3 text-xs leading-relaxed text-foreground/50">
         {binaural ? "Use headphones for this recording. " : ""}
         Listen somewhere safe and comfortable. Never while driving or using machinery. If you have
         epilepsy, are pregnant or have a heart-rhythm condition, check with your doctor before

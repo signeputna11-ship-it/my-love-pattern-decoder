@@ -171,7 +171,7 @@ function AdminOrders() {
         </div>
         <button
           onClick={exportCsv}
-          className="rounded-full px-4 py-1.5 text-xs text-white"
+          className="rounded-full px-4 py-1.5 text-xs text-foreground"
           style={{ backgroundColor: "#111" }}
         >
           Export paid as CSV

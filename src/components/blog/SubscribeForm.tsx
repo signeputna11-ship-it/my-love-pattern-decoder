@@ -76,7 +76,7 @@ export function SubscribeForm({ compact = false }: { compact?: boolean }) {
         <button
           type="submit"
           disabled={loading}
-          className="rounded-full px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+          className="rounded-full px-6 py-3 text-sm font-semibold text-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
           style={{ backgroundColor: "#111111", fontFamily: "Inter, sans-serif" }}
         >
           {loading ? "Sending..." : "Get the weekly letter →"}

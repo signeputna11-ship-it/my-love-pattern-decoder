@@ -103,7 +103,7 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
   if (loading) {
     return (
       <section className="mt-10">
-        <div className="liquid-glass rounded-3xl p-6 flex items-center gap-3 text-white/60">
+        <div className="liquid-glass rounded-3xl p-6 flex items-center gap-3 text-foreground/60">
           <Loader2 className="h-4 w-4 animate-spin" />
           <span className="text-sm">Loading tools…</span>
         </div>
@@ -114,7 +114,7 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
   if (tools.length === 0) {
     return (
       <section className="mt-10">
-        <div className="liquid-glass rounded-3xl p-6 text-sm text-white/60">
+        <div className="liquid-glass rounded-3xl p-6 text-sm text-foreground/60">
           No in-app tools found for this module yet.
         </div>
       </section>
@@ -125,10 +125,10 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
     <section className="mt-10">
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-white/40">Module resources</p>
-          <h2 className="mt-1 font-serif text-2xl text-white">Your in-app tools</h2>
+          <p className="text-xs uppercase tracking-[0.3em] text-foreground/40">Module resources</p>
+          <h2 className="mt-1 font-serif text-2xl text-foreground">Your in-app tools</h2>
         </div>
-        <div className="hidden sm:flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-white/40">
+        <div className="hidden sm:flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-foreground/40">
           <Lock className="h-3 w-3" /> Private to you
         </div>
       </div>
@@ -141,19 +141,19 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: i * 0.04 }}
             className={`liquid-glass rounded-3xl p-5 flex flex-col ${
-              activeId === t.id ? "ring-1 ring-white/30" : ""
+              activeId === t.id ? "ring-1 ring-foreground/30" : ""
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className="rounded-2xl bg-white/5 p-3 ring-1 ring-white/10">
-                <Sparkles className="h-5 w-5 text-white/80" />
+              <div className="rounded-2xl bg-foreground/5 p-3 ring-1 ring-foreground/10">
+                <Sparkles className="h-5 w-5 text-foreground/80" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-serif text-lg text-white">{t.title}</h3>
+                <h3 className="font-serif text-lg text-foreground">{t.title}</h3>
                 {t.description && (
-                  <p className="mt-1 text-sm text-white/60">{t.description}</p>
+                  <p className="mt-1 text-sm text-foreground/60">{t.description}</p>
                 )}
-                <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/5 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white/50 ring-1 ring-white/10">
+                <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-foreground/5 px-2.5 py-1 text-[10px] uppercase tracking-widest text-foreground/50 ring-1 ring-foreground/10">
                   <Wand2 className="h-3 w-3" /> Guided tool
                 </span>
               </div>
@@ -161,7 +161,7 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
 
             <button
               onClick={() => setActiveId(activeId === t.id ? null : t.id)}
-              className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-white/90"
+              className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               <Sparkles className="h-4 w-4" />
               {activeId === t.id ? "Close tool" : "Start Tool"}
@@ -310,18 +310,18 @@ function ToolRunner({ tool, onClose }: { tool: Tool; onClose: () => void }) {
     <div className="liquid-glass-strong rounded-3xl p-5 sm:p-7">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-white/40">In-app tool</p>
-          <h3 className="mt-1 font-serif text-2xl text-white">{tool.title}</h3>
+          <p className="text-xs uppercase tracking-[0.3em] text-foreground/40">In-app tool</p>
+          <h3 className="mt-1 font-serif text-2xl text-foreground">{tool.title}</h3>
           {tool.description && (
-            <p className="mt-1 text-sm text-white/60">{tool.description}</p>
+            <p className="mt-1 text-sm text-foreground/60">{tool.description}</p>
           )}
         </div>
         <div className="flex items-center gap-2">
-          {saving && <Loader2 className="h-3.5 w-3.5 animate-spin text-white/40" />}
+          {saving && <Loader2 className="h-3.5 w-3.5 animate-spin text-foreground/40" />}
           <button
             onClick={onClose}
             aria-label="Close tool"
-            className="rounded-full p-2 text-white/60 hover:bg-white/10 hover:text-white"
+            className="rounded-full p-2 text-foreground/60 hover:bg-foreground/5 hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </button>
@@ -330,7 +330,7 @@ function ToolRunner({ tool, onClose }: { tool: Tool; onClose: () => void }) {
 
       <div className="mt-5">
         {loading ? (
-          <div className="flex items-center gap-2 text-sm text-white/50">
+          <div className="flex items-center gap-2 text-sm text-foreground/50">
             <Loader2 className="h-4 w-4 animate-spin" /> Loading your progress…
           </div>
         ) : tool.kind === "worksheet" ? (
@@ -349,14 +349,14 @@ function ToolRunner({ tool, onClose }: { tool: Tool; onClose: () => void }) {
       <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <button
           onClick={saveNow}
-          className="inline-flex items-center justify-center gap-2 rounded-full liquid-glass px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+          className="inline-flex items-center justify-center gap-2 rounded-full liquid-glass px-4 py-2.5 text-sm font-medium text-foreground hover:bg-foreground/5"
         >
           <Save className="h-4 w-4" /> Save progress
         </button>
         {hasAnswers && (
           <button
             onClick={downloadAnswers}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-black hover:bg-white/90"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             <Download className="h-4 w-4" /> Download my answers
           </button>
@@ -384,7 +384,7 @@ function FieldInput({
         value={value ?? ""}
         placeholder={field.placeholder ?? "Write what comes up. Nothing is wrong."}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-2xl bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+        className="w-full rounded-2xl bg-white/60 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
       />
     );
   }
@@ -393,7 +393,7 @@ function FieldInput({
       <select
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-2xl bg-black/30 px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white/30"
+        className="w-full rounded-2xl bg-white/60 px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-foreground/30"
       >
         <option value="">Select…</option>
         {(field.options ?? []).map((o) => (
@@ -410,7 +410,7 @@ function FieldInput({
       value={value ?? ""}
       placeholder={field.placeholder ?? ""}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-2xl bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+      className="w-full rounded-2xl bg-white/60 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
     />
   );
 }
@@ -431,7 +431,7 @@ function WorksheetRunner({
     <div className="space-y-5">
       {prompts.map((p) => (
         <div key={p.key}>
-          <label className="text-sm font-medium text-white/80">{p.label}</label>
+          <label className="text-sm font-medium text-foreground/80">{p.label}</label>
           <div className="mt-2">
             <FieldInput
               field={p}
@@ -462,12 +462,12 @@ function CheatsheetRunner({
     <div className="space-y-6">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((c: any, i: number) => (
-          <div key={i} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
-            <p className="font-serif text-base text-white">{c.title}</p>
-            <ul className="mt-2 space-y-1.5 text-sm text-white/70">
+          <div key={i} className="rounded-2xl bg-foreground/5 p-4 ring-1 ring-foreground/10">
+            <p className="font-serif text-base text-foreground">{c.title}</p>
+            <ul className="mt-2 space-y-1.5 text-sm text-foreground/70">
               {(c.points ?? []).map((p: string, j: number) => (
                 <li key={j} className="flex gap-2">
-                  <span className="text-white/40">•</span>
+                  <span className="text-foreground/40">•</span>
                   <span>{p}</span>
                 </li>
               ))}
@@ -479,7 +479,7 @@ function CheatsheetRunner({
         <div className="space-y-5">
           {prompts.map((p) => (
             <div key={p.key}>
-              <label className="text-sm font-medium text-white/80">{p.label}</label>
+              <label className="text-sm font-medium text-foreground/80">{p.label}</label>
               <div className="mt-2">
                 <FieldInput
                   field={p}
@@ -528,10 +528,10 @@ function TrackerRunner({
   return (
     <div className="space-y-6">
       <div className="liquid-glass rounded-2xl p-4 space-y-4">
-        <p className="text-xs uppercase tracking-widest text-white/50">New entry</p>
+        <p className="text-xs uppercase tracking-widest text-foreground/50">New entry</p>
         {fields.map((f) => (
           <div key={f.key}>
-            <label className="text-sm font-medium text-white/80">{f.label}</label>
+            <label className="text-sm font-medium text-foreground/80">{f.label}</label>
             <div className="mt-2">
               <FieldInput
                 field={f}
@@ -543,7 +543,7 @@ function TrackerRunner({
         ))}
         <button
           onClick={addEntry}
-          className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-black hover:bg-white/90"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
         >
           <Plus className="h-4 w-4" /> Save entry
         </button>
@@ -551,25 +551,25 @@ function TrackerRunner({
 
       {entries.length > 0 && (
         <div className="space-y-3">
-          <p className="text-xs uppercase tracking-widest text-white/50">Your entries</p>
+          <p className="text-xs uppercase tracking-widest text-foreground/50">Your entries</p>
           {entries.map((e, i) => (
-            <div key={i} className="rounded-2xl bg-black/20 p-4 ring-1 ring-white/10">
+            <div key={i} className="rounded-2xl bg-white/60 p-4 ring-1 ring-foreground/10">
               <div className="flex items-start justify-between gap-3">
-                <p className="text-[11px] uppercase tracking-widest text-white/40">
+                <p className="text-[11px] uppercase tracking-widest text-foreground/40">
                   {new Date(e._at ?? Date.now()).toLocaleString()}
                 </p>
                 <button
                   onClick={() => removeEntry(i)}
-                  className="rounded-full p-1.5 text-white/40 hover:bg-white/10 hover:text-white"
+                  className="rounded-full p-1.5 text-foreground/40 hover:bg-foreground/5 hover:text-foreground"
                   aria-label="Delete entry"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
-              <div className="mt-2 space-y-2 text-sm text-white/80">
+              <div className="mt-2 space-y-2 text-sm text-foreground/80">
                 {fields.map((f) => (
                   <div key={f.key}>
-                    <span className="text-white/50">{f.label}: </span>
+                    <span className="text-foreground/50">{f.label}: </span>
                     <span>{String(e[f.key] ?? "-")}</span>
                   </div>
                 ))}
@@ -611,21 +611,21 @@ function ScriptsRunner({
       {scenarios.map((s, i) => {
         const myKey = `s_${i}`;
         return (
-          <div key={i} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
-            <p className="font-serif text-lg text-white">{s.title}</p>
-            <div className="mt-3 rounded-xl bg-black/30 p-3 text-sm text-white/85">
+          <div key={i} className="rounded-2xl bg-foreground/5 p-4 ring-1 ring-foreground/10">
+            <p className="font-serif text-lg text-foreground">{s.title}</p>
+            <div className="mt-3 rounded-xl bg-white/60 p-3 text-sm text-foreground/85">
               {s.script}
             </div>
             {s.pushback && (
-              <div className="mt-2 rounded-xl bg-black/20 p-3 text-xs text-white/60">
-                <span className="text-white/40">If they push back: </span>
+              <div className="mt-2 rounded-xl bg-white/60 p-3 text-xs text-foreground/60">
+                <span className="text-foreground/40">If they push back: </span>
                 {s.pushback}
               </div>
             )}
             <div className="mt-3 flex flex-wrap gap-2">
               <button
                 onClick={() => copy(s.script, i)}
-                className="inline-flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 text-xs text-white hover:bg-white/10"
+                className="inline-flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 text-xs text-foreground hover:bg-foreground/5"
               >
                 {copied === i ? (
                   <>
@@ -639,7 +639,7 @@ function ScriptsRunner({
               </button>
             </div>
             <div className="mt-3">
-              <label className="text-xs uppercase tracking-widest text-white/50">
+              <label className="text-xs uppercase tracking-widest text-foreground/50">
                 Make it yours
               </label>
               <textarea
@@ -647,7 +647,7 @@ function ScriptsRunner({
                 value={data[myKey] ?? ""}
                 onChange={(e) => onChange({ ...data, [myKey]: e.target.value })}
                 placeholder="Rewrite it in your voice."
-                className="mt-2 w-full rounded-2xl bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+                className="mt-2 w-full rounded-2xl bg-white/60 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
               />
             </div>
           </div>
@@ -683,25 +683,25 @@ function PlannerRunner({
         const dd = data[key] ?? {};
         const checks: Record<string, boolean> = dd.checks ?? {};
         return (
-          <div key={i} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">
-            <p className="text-xs uppercase tracking-widest text-white/50">Day {i + 1}</p>
+          <div key={i} className="rounded-2xl bg-foreground/5 p-4 ring-1 ring-foreground/10">
+            <p className="text-xs uppercase tracking-widest text-foreground/50">Day {i + 1}</p>
             <input
               type="text"
               value={dd.intention ?? ""}
               onChange={(e) => updateDay(i, { intention: e.target.value })}
               placeholder="Intention for today"
-              className="mt-2 w-full rounded-xl bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+              className="mt-2 w-full rounded-xl bg-white/60 px-3 py-2 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
             />
             <div className="mt-3 space-y-1.5">
               {actions.map((a) => (
-                <label key={a} className="flex cursor-pointer items-center gap-2 text-sm text-white/80">
+                <label key={a} className="flex cursor-pointer items-center gap-2 text-sm text-foreground/80">
                   <input
                     type="checkbox"
                     checked={!!checks[a]}
                     onChange={(e) =>
                       updateDay(i, { checks: { ...checks, [a]: e.target.checked } })
                     }
-                    className="h-4 w-4 accent-white"
+                    className="h-4 w-4 accent-[#173D34]"
                   />
                   <span>{a}</span>
                 </label>
@@ -712,7 +712,7 @@ function PlannerRunner({
               value={dd.note ?? ""}
               onChange={(e) => updateDay(i, { note: e.target.value })}
               placeholder="Note (optional)"
-              className="mt-2 w-full rounded-xl bg-black/30 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+              className="mt-2 w-full rounded-xl bg-white/60 px-3 py-2 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
             />
           </div>
         );

@@ -49,7 +49,7 @@ function AdminBlogIndex() {
     <main className="mx-auto max-w-6xl px-6 py-12" style={{ backgroundColor: "#F8F5F0", minHeight: "100vh" }}>
       <div className="flex items-center justify-between">
         <h1 className="font-serif text-3xl italic" style={{ color: "#111", fontFamily: "Instrument Serif" }}>Blog Posts</h1>
-        <Link to="/admin/blog/new" className="rounded-full px-5 py-2 text-sm text-white" style={{ backgroundColor: "#111" }}>+ New Post</Link>
+        <Link to="/admin/blog/new" className="rounded-full px-5 py-2 text-sm text-foreground" style={{ backgroundColor: "#111" }}>+ New Post</Link>
       </div>
 
       <div className="mt-6 flex gap-2">

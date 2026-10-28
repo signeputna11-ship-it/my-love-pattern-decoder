@@ -159,7 +159,7 @@ function PostPage() {
             <Link
               to="/blog/category/$category"
               params={{ category: post.category }}
-              className="inline-block rounded-full px-3 py-1 text-[11px] uppercase text-white"
+              className="inline-block rounded-full px-3 py-1 text-[11px] uppercase text-foreground"
               style={{
                 backgroundColor: "#111111",
                 letterSpacing: "1.5px",
@@ -218,24 +218,6 @@ function PostPage() {
                 marginBottom: "40px",
               }}
             />
-          )}
-          {post.featured_image_url && isVideoFeatured && (
-            <video
-              className="w-full"
-              style={{
-                borderRadius: "16px",
-                maxHeight: "480px",
-                objectFit: "cover",
-                marginBottom: "40px",
-              }}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            >
-              <source src={post.featured_image_url} type="video/mp4" />
-            </video>
           )}
 
           {/* YouTube */}
@@ -366,7 +348,7 @@ function PostPage() {
             <Link
               to="/home"
               hash="diagnosis"
-              className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-semibold text-white"
+              className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-semibold text-foreground"
               style={{ backgroundColor: "#111111", fontFamily: "Inter" }}
             >
               Take the free quiz →

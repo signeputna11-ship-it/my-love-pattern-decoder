@@ -252,7 +252,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
             />
             <div className="mt-3 flex gap-2">
               <button onClick={() => doSave(false)} className="rounded-full border px-4 py-2 text-sm" style={{ borderColor: "#E8E3DC" }}>Save draft</button>
-              <button onClick={() => doSave(true)} className="rounded-full px-4 py-2 text-sm text-white" style={{ backgroundColor: "#111" }}>Publish</button>
+              <button onClick={() => doSave(true)} className="rounded-full px-4 py-2 text-sm text-foreground" style={{ backgroundColor: "#111" }}>Publish</button>
             </div>
           </Section>
 

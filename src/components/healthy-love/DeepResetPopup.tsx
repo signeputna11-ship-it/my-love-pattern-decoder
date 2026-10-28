@@ -71,7 +71,7 @@ export function DeepResetPopup() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-4 py-6 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-white/60 px-4 py-6 backdrop-blur-sm"
           onClick={close}
         >
           <motion.div
@@ -80,13 +80,13 @@ export function DeepResetPopup() {
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
-            className="liquid-glass-strong relative flex max-h-[92vh] w-full max-w-lg flex-col rounded-3xl bg-black/85 text-white"
+            className="liquid-glass-strong relative flex max-h-[92vh] w-full max-w-lg flex-col rounded-3xl bg-white/60 text-foreground"
           >
           <div className="overflow-y-auto p-6 sm:p-8">
             <button
               onClick={close}
               aria-label="Close"
-              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white/70 transition hover:bg-white/20 hover:text-white"
+              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-foreground/10 text-foreground/70 transition hover:bg-foreground/5 hover:text-foreground"
             >
               <X className="h-4 w-4" />
             </button>
@@ -94,12 +94,12 @@ export function DeepResetPopup() {
             <h3 className="pr-8 font-serif text-2xl leading-tight sm:text-3xl">
               Ready to go deeper than a pattern?
             </h3>
-            <p className="mt-3 font-serif text-sm italic text-white/75 sm:text-base">
+            <p className="mt-3 font-serif text-sm italic text-foreground/75 sm:text-base">
               Some patterns live below what a quiz can reach. This session goes
               there.
             </p>
 
-            <div className="mt-5 space-y-3 text-sm leading-relaxed text-white/80">
+            <div className="mt-5 space-y-3 text-sm leading-relaxed text-foreground/80">
               <p>
                 The Deep Pattern Reset is a private 1:1 session with Signe.
               </p>
@@ -124,11 +124,11 @@ export function DeepResetPopup() {
               </p>
             </div>
 
-            <div className="mt-5 border-t border-white/10 pt-4">
-              <p className="text-[10px] uppercase tracking-widest text-white/45">
+            <div className="mt-5 border-t border-foreground/10 pt-4">
+              <p className="text-[10px] uppercase tracking-widest text-foreground/45">
                 What is included
               </p>
-              <ul className="mt-3 space-y-1.5 text-sm text-white/80">
+              <ul className="mt-3 space-y-1.5 text-sm text-foreground/80">
                 <li>✦ 90-minute private 1:1 session with Signe</li>
                 <li>
                   ✦ Personalised 21-day reset audio meditation to anchor your
@@ -139,29 +139,29 @@ export function DeepResetPopup() {
               </ul>
             </div>
 
-            <div className="mt-5 flex items-baseline justify-between border-t border-white/10 pt-4">
-              <p className="text-[10px] uppercase tracking-widest text-white/45">
+            <div className="mt-5 flex items-baseline justify-between border-t border-foreground/10 pt-4">
+              <p className="text-[10px] uppercase tracking-widest text-foreground/45">
                 Investment
               </p>
-              <p className="font-serif text-3xl text-white sm:text-4xl">$333</p>
+              <p className="font-serif text-3xl text-foreground sm:text-4xl">$333</p>
             </div>
 
-            <p className="mt-4 text-xs italic text-white/60">
+            <p className="mt-4 text-xs italic text-foreground/60">
               Signe takes a limited number of sessions each month. If you feel
               the pull toward this, that feeling is worth following.
             </p>
             </div>
 
-            <div className="border-t border-white/10 bg-black/85 p-6 sm:p-8 sm:pt-6 rounded-b-3xl">
+            <div className="border-t border-foreground/10 bg-white/60 p-6 sm:p-8 sm:pt-6 rounded-b-3xl">
               <a
                 href={MAILTO} target="_blank" rel="noopener noreferrer"
                 onClick={handleCtaClick}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
               >
                 Email Signe to arrange a discovery call{" "}
                 <ArrowUpRight className="h-4 w-4" />
               </a>
-              <p className="mt-3 text-center text-[11px] text-white/50">
+              <p className="mt-3 text-center text-[11px] text-foreground/50">
                 The discovery call is a short conversation to make sure this is
                 the right fit for you. Signe responds personally within 48 hours.
               </p>

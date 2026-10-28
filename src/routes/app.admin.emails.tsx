@@ -63,7 +63,7 @@ function AdminEmailsPage() {
   if (authState === "checking") {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-white/60" />
+        <Loader2 className="h-6 w-6 animate-spin text-foreground/60" />
       </div>
     );
   }
@@ -71,10 +71,10 @@ function AdminEmailsPage() {
     return (
       <div className="px-6 py-12 text-center">
         <h1 className="font-serif text-2xl">Admin access required</h1>
-        <p className="mt-2 text-sm text-white/60">You don't have permission to view this page.</p>
+        <p className="mt-2 text-sm text-foreground/60">You don't have permission to view this page.</p>
         <button
           onClick={() => navigate({ to: "/app" })}
-          className="mt-6 rounded-full bg-white px-5 py-2 text-sm text-black"
+          className="mt-6 rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground"
         >
           Back to app
         </button>
@@ -87,7 +87,7 @@ function AdminEmailsPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <h1 className="font-serif text-3xl sm:text-4xl">Email Delivery</h1>
-      <p className="mt-2 text-sm text-white/60">Track sends, failures, and suppressions.</p>
+      <p className="mt-2 text-sm text-foreground/60">Track sends, failures, and suppressions.</p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
         {[
@@ -98,7 +98,7 @@ function AdminEmailsPage() {
           { label: "Pending", value: stats.pending, tone: "text-white/70" },
         ].map((s) => (
           <div key={s.label} className="liquid-glass-strong rounded-2xl p-4">
-            <div className="text-xs uppercase tracking-widest text-white/50">{s.label}</div>
+            <div className="text-xs uppercase tracking-widest text-foreground/50">{s.label}</div>
             <div className={`mt-1 font-serif text-2xl ${s.tone ?? ""}`}>{s.value}</div>
           </div>
         ))}
@@ -110,7 +110,7 @@ function AdminEmailsPage() {
             <button
               key={r.days}
               onClick={() => { setRangeDays(r.days); setPage(0); }}
-              className={`rounded-full px-3 py-1 text-xs ${rangeDays === r.days ? "bg-white text-black" : "text-white/70"}`}
+              className={`rounded-full px-3 py-1 text-xs ${rangeDays === r.days ? "bg-primary text-primary-foreground" : "text-foreground/70"}`}
             >
               {r.label}
             </button>
@@ -119,7 +119,7 @@ function AdminEmailsPage() {
         <select
           value={template}
           onChange={(e) => { setTemplate(e.target.value); setPage(0); }}
-          className="rounded-full liquid-glass px-3 py-1.5 text-xs text-white"
+          className="rounded-full liquid-glass px-3 py-1.5 text-xs text-foreground"
         >
           <option value="">All templates</option>
           {(data?.templates ?? []).map((t: string) => (
@@ -129,18 +129,18 @@ function AdminEmailsPage() {
         <select
           value={status}
           onChange={(e) => { setStatus(e.target.value); setPage(0); }}
-          className="rounded-full liquid-glass px-3 py-1.5 text-xs text-white"
+          className="rounded-full liquid-glass px-3 py-1.5 text-xs text-foreground"
         >
           {STATUSES.map((s) => (
             <option key={s} value={s}>{s}</option>
           ))}
         </select>
-        {loading && <Loader2 className="h-4 w-4 animate-spin text-white/60" />}
+        {loading && <Loader2 className="h-4 w-4 animate-spin text-foreground/60" />}
       </div>
 
       <div className="mt-6 overflow-x-auto rounded-2xl liquid-glass-strong">
         <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase tracking-widest text-white/50">
+          <thead className="text-xs uppercase tracking-widest text-foreground/50">
             <tr>
               <th className="px-4 py-3">Template</th>
               <th className="px-4 py-3">Recipient</th>
@@ -151,26 +151,26 @@ function AdminEmailsPage() {
           </thead>
           <tbody>
             {(data?.items ?? []).map((r: any) => (
-              <tr key={r.id} className="border-t border-white/10">
+              <tr key={r.id} className="border-t border-foreground/10">
                 <td className="px-4 py-3 font-mono text-xs">{r.template_name}</td>
-                <td className="px-4 py-3 text-white/80">{r.recipient_email}</td>
+                <td className="px-4 py-3 text-foreground/80">{r.recipient_email}</td>
                 <td className="px-4 py-3">
                   <span className={`rounded-full px-2 py-0.5 text-xs ${statusColor(r.status)}`}>
                     {r.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-xs text-white/60">{new Date(r.created_at).toLocaleString()}</td>
+                <td className="px-4 py-3 text-xs text-foreground/60">{new Date(r.created_at).toLocaleString()}</td>
                 <td className="px-4 py-3 text-xs text-red-300/80">{r.error_message ?? ""}</td>
               </tr>
             ))}
             {!loading && (data?.items ?? []).length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-10 text-center text-white/50">No email events in this range.</td></tr>
+              <tr><td colSpan={5} className="px-4 py-10 text-center text-foreground/50">No email events in this range.</td></tr>
             )}
           </tbody>
         </table>
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-xs text-white/60">
+      <div className="mt-4 flex items-center justify-between text-xs text-foreground/60">
         <button
           onClick={() => setPage((p) => Math.max(0, p - 1))}
           disabled={page === 0}

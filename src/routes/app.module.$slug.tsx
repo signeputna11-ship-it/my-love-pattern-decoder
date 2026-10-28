@@ -241,17 +241,17 @@ function ModulePage() {
   if (loadError || notFound) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-6 text-center">
-        <h2 className="font-serif text-2xl text-white">
+        <h2 className="font-serif text-2xl text-foreground">
           {notFound ? "We couldn't find that module" : "We couldn't load this module"}
         </h2>
-        <p className="mt-2 text-sm text-white/60">
+        <p className="mt-2 text-sm text-foreground/60">
           {notFound
             ? "It may have been renamed or moved."
             : loadError ?? "Please try again in a moment."}
         </p>
         <Link
           to="/app"
-          className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90"
+          className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
         >
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
@@ -262,7 +262,7 @@ function ModulePage() {
   if (!module) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-white/50" />
+        <Loader2 className="h-6 w-6 animate-spin text-foreground/50" />
       </div>
     );
   }
@@ -271,7 +271,7 @@ function ModulePage() {
     <div className="mx-auto max-w-3xl px-4 py-10 pb-32 sm:px-6 sm:py-16 sm:pb-32">
       <Link
         to="/app"
-        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50 hover:text-white"
+        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-foreground/50 hover:text-foreground"
       >
         <ArrowLeft className="h-3.5 w-3.5" /> Dashboard
       </Link>
@@ -282,15 +282,15 @@ function ModulePage() {
         transition={{ duration: 0.6 }}
         className="mt-6"
       >
-        <p className="text-xs uppercase tracking-[0.3em] text-white/50">Module {module.position}</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-foreground/50">Module {module.position}</p>
         <h1 className="mt-2 font-serif text-4xl sm:text-5xl">{module.title}</h1>
         {module.subtitle && (
-          <p className="mt-2 font-serif italic text-lg text-white/70">{module.subtitle}</p>
+          <p className="mt-2 font-serif italic text-lg text-foreground/70">{module.subtitle}</p>
         )}
       </motion.div>
 
       {module.intro && (
-        <div className="mt-6 liquid-glass-strong rounded-3xl p-6 text-sm leading-relaxed text-white/80">
+        <div className="mt-6 liquid-glass-strong rounded-3xl p-6 text-sm leading-relaxed text-foreground/80">
           {module.intro}
         </div>
       )}
@@ -298,12 +298,12 @@ function ModulePage() {
       {locked && (
         <div className="mt-8 liquid-glass-strong rounded-3xl p-6 text-center">
           <p className="font-serif text-2xl">This module is for members</p>
-          <p className="mt-2 text-sm text-white/60">
+          <p className="mt-2 text-sm text-foreground/60">
             Join for 4,99 € a month to open every journey, workbook and audio.
           </p>
           <Link
             to="/app/membership"
-            className="mt-4 inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black"
+            className="mt-4 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
           >
             See membership
           </Link>
@@ -330,14 +330,14 @@ function ModulePage() {
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-white/40">
+                  <p className="text-xs uppercase tracking-widest text-foreground/40">
                     {ex.kind === "checklist" ? "Commitment" : `Question ${i + 1}`}
                   </p>
                   <h3 className="mt-1 font-serif text-xl">{ex.title}</h3>
-                  {ex.body && <p className="mt-1.5 text-sm text-white/60">{ex.body}</p>}
+                  {ex.body && <p className="mt-1.5 text-sm text-foreground/60">{ex.body}</p>}
                 </div>
                 {savingId === ex.id && (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin text-white/40" />
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-foreground/40" />
                 )}
               </div>
 
@@ -347,7 +347,7 @@ function ModulePage() {
                   onChange={(e) => updateAnswer(ex.id, e.target.value, null)}
                   rows={4}
                   placeholder="Write what comes up. Nothing is wrong."
-                  className="mt-4 w-full rounded-2xl bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+                  className="mt-4 w-full rounded-2xl bg-white/60 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
                 />
               ) : (
                 <div className="mt-4 space-y-2">
@@ -357,7 +357,7 @@ function ModulePage() {
                     return (
                       <label
                         key={opt}
-                        className="flex cursor-pointer items-center gap-3 rounded-2xl bg-black/20 px-4 py-3 text-sm transition hover:bg-black/30"
+                        className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white/60 px-4 py-3 text-sm transition hover:bg-white/60"
                       >
                         <input
                           type="checkbox"
@@ -366,7 +366,7 @@ function ModulePage() {
                             const nextData = { ...data, [opt]: e.target.checked };
                             updateAnswer(ex.id, "", nextData);
                           }}
-                          className="h-4 w-4 accent-white"
+                          className="h-4 w-4 accent-[#173D34]"
                         />
                         <span>{opt}</span>
                       </label>
@@ -395,7 +395,7 @@ function ModulePage() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <button
               onClick={markComplete}
-              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black hover:bg-white/90"
+              className="flex flex-1 items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               <CheckCircle2 className="h-4 w-4" />
               {completed ? "Completed. Re-confirm" : "Mark module complete"}
@@ -404,7 +404,7 @@ function ModulePage() {
               <Link
                 to="/app/module/$slug"
                 params={{ slug: nextModule.slug }}
-                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/30 bg-transparent px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-foreground/30 bg-transparent px-5 py-3 text-sm font-medium text-foreground hover:bg-foreground/5"
               >
                 <span className="truncate">Go to next module: {nextModule.title}</span>
                 <ArrowRight className="h-4 w-4 shrink-0" />
@@ -412,7 +412,7 @@ function ModulePage() {
             ) : (
               <Link
                 to="/app"
-                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/30 bg-transparent px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-foreground/30 bg-transparent px-5 py-3 text-sm font-medium text-foreground hover:bg-foreground/5"
               >
                 Back to dashboard
                 <ArrowRight className="h-4 w-4 shrink-0" />
@@ -428,14 +428,14 @@ function ModulePage() {
         <div className="liquid-glass flex items-center justify-center gap-2 rounded-full px-3 py-2 shadow-2xl backdrop-blur">
           <button
             onClick={saveAll}
-            className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+            className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-foreground hover:bg-foreground/5"
           >
             <Save className="h-4 w-4" /> Save progress
           </button>
-          <div className="h-6 w-px bg-white/10" />
+          <div className="h-6 w-px bg-foreground/10" />
           <button
             onClick={downloadPdf}
-            className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10"
+            className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-foreground hover:bg-foreground/5"
           >
             <Download className="h-4 w-4" /> Download my answers
           </button>

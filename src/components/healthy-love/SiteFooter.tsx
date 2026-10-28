@@ -19,7 +19,7 @@ const PATTERN_LABELS: Record<PatternSlug, string> = {
 
 export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } = {}) {
   return (
-    <footer className="mt-16 border-t border-border bg-background">
+    <footer className="mt-16 border-t border-border bg-transparent">
       {relatedPattern && (
         <section className="border-b border-border bg-accent/40">
           <div className="mx-auto max-w-6xl px-6 py-6 text-sm">
@@ -71,7 +71,7 @@ export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } 
             </p>
             <a
               href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-background px-5 py-3 text-sm font-semibold text-foreground hover:opacity-90"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-transparent px-5 py-3 text-sm font-semibold text-foreground hover:opacity-90"
             >
               Email Signe <ArrowUpRight className="h-4 w-4" />
             </a>

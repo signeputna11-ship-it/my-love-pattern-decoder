@@ -17,7 +17,7 @@ export function SiteNav() {
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link to="/home" className="flex items-center gap-2 text-foreground">
-          <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-black">
+          <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-transparent">
             <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
           </span>
           <span className="font-serif text-base sm:text-lg">My Love Pattern</span>
@@ -75,7 +75,7 @@ export function SiteNav() {
       </div>
 
       {open && (
-        <div className="border-t border-border bg-background md:hidden">
+        <div className="border-t border-border bg-transparent md:hidden">
           <div className="mx-auto max-w-6xl px-4 py-2">
             <Link to="/home" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Home</Link>
             <Link to="/shop" onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm text-foreground">Shop</Link>

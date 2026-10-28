@@ -55,24 +55,13 @@ export function PostCard({ post, index = 0 }: { post: BlogPost; index?: number }
     >
       <div className="relative h-[220px] w-full overflow-hidden">
         {isVideo ? (
-          <video
-            ref={videoRef}
-            className="h-full w-full"
-            style={{ width: "100%", height: "220px", objectFit: "cover", display: "block" }}
-            muted
-            loop
-            playsInline
-            autoPlay
-            preload={preload}
-          >
-            <source src={src} type="video/mp4" />
-          </video>
+          <div className="h-full w-full bg-gradient-to-br from-[#BBDCF0] to-[#E8BAC9]" />
         ) : (
           <img src={src} alt={post.title} className="h-full w-full object-cover" />
         )}
         {post.category && (
           <span
-            className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] uppercase text-white"
+            className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] uppercase text-foreground"
             style={{
               backgroundColor: "#111111",
               letterSpacing: "1.5px",

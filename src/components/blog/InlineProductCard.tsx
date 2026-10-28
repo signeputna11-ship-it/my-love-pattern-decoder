@@ -76,7 +76,7 @@ export function InlineProductCard({ product }: { product: MatchedProduct }) {
         <Link
           to="/checkout"
           search={{ slug: product.slug }}
-          className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white"
+          className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-foreground"
           style={{ backgroundColor: "#111111", fontFamily: "Inter, sans-serif" }}
         >
           Get the template →

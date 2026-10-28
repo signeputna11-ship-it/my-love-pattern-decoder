@@ -52,7 +52,7 @@ function RoseBtn({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center justify-center rounded-full font-medium text-white transition hover:opacity-95"
+      className="inline-flex items-center justify-center rounded-full font-medium text-foreground transition hover:opacity-95"
       style={{
         padding: pad,
         fontSize: fs,
@@ -246,7 +246,7 @@ export function DeepResetPage() {
       <header className="sticky top-0 z-40 w-full" style={{ backgroundColor: "rgba(248,245,240,0.92)", backdropFilter: "blur(10px)" }}>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link to="/home" className="flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-black">
+            <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-transparent">
               <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
             </span>
             <span className="font-serif text-base text-[#111] sm:text-lg">My Love Pattern</span>
@@ -265,16 +265,6 @@ export function DeepResetPage() {
       {/* SECTION 1 — HERO */}
       <section className="relative flex min-h-[100vh] items-center justify-center overflow-hidden px-6">
         <div aria-hidden className="absolute inset-0">
-          <video
-            autoPlay
-            muted
-            playsInline
-            loop
-            preload="none"
-            className="absolute inset-0 h-full w-full object-cover"
-          >
-            <source src={HERO_VIDEO} type="video/mp4" />
-          </video>
           <div className="absolute inset-0" style={{ backgroundColor: "rgba(248,245,240,0.88)" }} />
         </div>
 
@@ -512,7 +502,7 @@ export function DeepResetPage() {
           </p>
           <div className="flex items-center justify-center gap-3.5">
             <div
-              className="grid place-items-center rounded-full font-sans text-white"
+              className="grid place-items-center rounded-full font-sans text-foreground"
               style={{ width: 48, height: 48, fontSize: 18, background: "linear-gradient(135deg,#c9857a,#8a9e8c)" }}
             >
               A
@@ -579,7 +569,7 @@ export function DeepResetPage() {
                 <Star /> Limited spots each month
               </span>
               <h2
-                className="mt-6 font-serif italic text-white"
+                className="mt-6 font-serif italic text-foreground"
                 style={{ fontSize: 42, lineHeight: 1.1, textWrap: "balance", marginBottom: 16, fontFamily: '"Instrument Serif", serif' }}
               >
                 Ready to find out if this is right for you?
@@ -591,7 +581,7 @@ export function DeepResetPage() {
                 The discovery call is free, 20 minutes, and completely without pressure. Signe will tell you honestly whether this session is the right fit.
               </p>
               <p
-                className="font-serif text-white"
+                className="font-serif text-foreground"
                 style={{ fontSize: 64, lineHeight: 1, marginBottom: 4, fontFamily: '"Instrument Serif", serif' }}
               >
                 $333
@@ -640,7 +630,7 @@ export function DeepResetPage() {
         }}
       >
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
-          <p className="font-serif italic text-white" style={{ fontSize: 18, fontFamily: '"Instrument Serif", serif' }}>
+          <p className="font-serif italic text-foreground" style={{ fontSize: 18, fontFamily: '"Instrument Serif", serif' }}>
             The Deep Pattern Reset · $333
           </p>
           <RoseBtn href={CALENDLY} size="sm">Book Free Discovery Call →</RoseBtn>

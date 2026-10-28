@@ -84,14 +84,14 @@ function MembershipPage() {
   if (loading)
     return (
       <div className="flex min-h-[40vh] items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-white/50" />
+        <Loader2 className="h-6 w-6 animate-spin text-foreground/50" />
       </div>
     );
 
   if (plan) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 sm:py-16">
-        <button onClick={() => setPlan(null)} className="text-xs uppercase tracking-widest text-white/50 hover:text-white">
+        <button onClick={() => setPlan(null)} className="text-xs uppercase tracking-widest text-foreground/50 hover:text-foreground">
           Back
         </button>
         <div className="mt-6 liquid-glass-strong overflow-hidden rounded-3xl p-2">
@@ -116,13 +116,13 @@ function MembershipPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
-      <p className="text-xs uppercase tracking-[0.3em] text-white/50">Membership</p>
+      <p className="text-xs uppercase tracking-[0.3em] text-foreground/50">Membership</p>
       <h1 className="mt-2 font-serif text-4xl sm:text-5xl">Grow at your own pace</h1>
 
       {active ? (
         <div className="mt-8 liquid-glass-strong rounded-3xl p-6">
           <p className="font-serif text-2xl">You are a member</p>
-          <p className="mt-2 text-sm text-white/60">
+          <p className="mt-2 text-sm text-foreground/60">
             {sub?.cancel_at_period_end
               ? "Your membership ends on "
               : "Your membership renews on "}
@@ -131,14 +131,14 @@ function MembershipPage() {
           <button
             onClick={portal}
             disabled={busy}
-            className="mt-4 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black disabled:opacity-50"
+            className="mt-4 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
           >
             Manage billing
           </button>
         </div>
       ) : (
         <>
-          <ul className="mt-6 space-y-2 text-sm text-white/80">
+          <ul className="mt-6 space-y-2 text-sm text-foreground/80">
             {PERKS.map((p) => (
               <li key={p} className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0" /> {p}
@@ -147,43 +147,43 @@ function MembershipPage() {
           </ul>
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <div className="liquid-glass-strong rounded-3xl p-6">
-              <p className="text-xs uppercase tracking-widest text-white/50">Monthly</p>
+              <p className="text-xs uppercase tracking-widest text-foreground/50">Monthly</p>
               <p className="mt-2 font-serif text-4xl">4,99 €</p>
-              <p className="text-sm text-white/50">per month. Cancel any time.</p>
+              <p className="text-sm text-foreground/50">per month. Cancel any time.</p>
               <button
                 onClick={() => setPlan("monthly")}
-                className="mt-4 w-full rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black"
+                className="mt-4 w-full rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
               >
                 Join monthly
               </button>
             </div>
             <div className="liquid-glass-strong rounded-3xl p-6">
-              <p className="text-xs uppercase tracking-widest text-white/50">Yearly</p>
+              <p className="text-xs uppercase tracking-widest text-foreground/50">Yearly</p>
               <p className="mt-2 font-serif text-4xl">39 €</p>
-              <p className="text-sm text-white/50">per year. About two months free.</p>
+              <p className="text-sm text-foreground/50">per year. About two months free.</p>
               <button
                 onClick={() => setPlan("yearly")}
-                className="mt-4 w-full rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black"
+                className="mt-4 w-full rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
               >
                 Join yearly
               </button>
             </div>
           </div>
-          <p className="mt-6 text-xs text-white/40">
+          <p className="mt-6 text-xs text-foreground/40">
             Educational self-reflection and coaching tools. They do not replace medical or mental health care.
           </p>
         </>
       )}
 
       {admin && (
-        <div className="mt-10 rounded-3xl border border-white/10 p-5 text-sm text-white/60">
+        <div className="mt-10 rounded-3xl border border-foreground/10 p-5 text-sm text-foreground/60">
           <p>Admin: create the membership product, prices and member coupon in Stripe (safe to run again).</p>
-          <button onClick={setup} disabled={busy} className="mt-3 rounded-full border border-white/30 px-4 py-2 text-white disabled:opacity-50">
+          <button onClick={setup} disabled={busy} className="mt-3 rounded-full border border-foreground/30 px-4 py-2 text-foreground disabled:opacity-50">
             Set up membership in Stripe
           </button>
         </div>
       )}
-      <Link to="/app" className="mt-8 inline-block text-xs uppercase tracking-widest text-white/50 hover:text-white">
+      <Link to="/app" className="mt-8 inline-block text-xs uppercase tracking-widest text-foreground/50 hover:text-foreground">
         Back to dashboard
       </Link>
     </div>

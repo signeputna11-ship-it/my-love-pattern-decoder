@@ -113,8 +113,8 @@ function AppLayout() {
 
   if (state === "loading") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white">
-        <Loader2 className="h-6 w-6 animate-spin text-white/60" />
+      <div className="flex min-h-screen items-center justify-center bg-transparent text-foreground">
+        <Loader2 className="h-6 w-6 animate-spin text-foreground/60" />
       </div>
     );
   }
@@ -127,7 +127,7 @@ function AppLayout() {
         cta={
           <Link
             to="/auth"
-            className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
+            className="inline-block rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Sign in
           </Link>
@@ -144,13 +144,13 @@ function AppLayout() {
         cta={
           <Link
             to="/checkout"
-            className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
+            className="inline-block rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Unlock The Reset for $49
           </Link>
         }
         footer={
-          <button onClick={signOut} className="text-xs text-white/50 hover:text-white">
+          <button onClick={signOut} className="text-xs text-foreground/50 hover:text-foreground">
             Sign out
           </button>
         }
@@ -166,13 +166,13 @@ function AppLayout() {
         cta={
           <button
             onClick={() => check()}
-            className="inline-block rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
+            className="inline-block rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Try again
           </button>
         }
         footer={
-          <button onClick={signOut} className="text-xs text-white/50 hover:text-white">
+          <button onClick={signOut} className="text-xs text-foreground/50 hover:text-foreground">
             Sign out
           </button>
         }
@@ -181,37 +181,29 @@ function AppLayout() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black text-white">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="fixed inset-0 z-0 h-full w-full object-cover opacity-50"
-        src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20ISLAND%20SIDE%20VIEW.mp4"
-      preload="metadata" />
-      <div className="fixed inset-0 z-[1] bg-black/70" />
+    <div className="relative min-h-screen overflow-hidden bg-transparent text-foreground">
+      <div className="fixed inset-0 z-[1] bg-white/60" />
 
       <header className="relative z-10 flex items-center justify-between px-4 pt-4 sm:px-6">
         <Link to="/app" className="flex items-center gap-2 text-sm">
           <span className="grid h-7 w-7 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-white">
             <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
           </span>
-          <span className="font-serif italic text-base">My Love Pattern</span>
-          <span className="hidden text-xs text-white/40 sm:inline">/ Reset Portal</span>
+          <span className="font-serif italic text-base">Signe Coach</span>
+          <span className="hidden text-xs text-foreground/40 sm:inline">/ Member space</span>
         </Link>
-        <div className="flex items-center gap-3 text-xs text-white/60">
+        <div className="flex items-center gap-3 text-xs text-foreground/60">
           <span className="hidden truncate max-w-[160px] sm:inline">{email}</span>
           <Link
             to="/app/membership"
-            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
+            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
           >
             Membership
           </Link>
           {isAdmin && (
             <Link
               to="/app/admin/emails"
-              className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
+              className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
             >
               <Shield className="h-3.5 w-3.5" /> Admin
             </Link>
@@ -219,14 +211,14 @@ function AppLayout() {
           {isAdmin && (
             <Link
               to="/app/admin/audio"
-              className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
+              className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
             >
               Audio
             </Link>
           )}
           <button
             onClick={signOut}
-            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-white/10"
+            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
           >
             <LogOut className="h-3.5 w-3.5" /> Sign out
           </button>
@@ -252,20 +244,11 @@ function CenterCard({
   footer?: React.ReactNode;
 }) {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black text-white">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 z-0 h-full w-full object-cover opacity-50"
-        src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4"
-      preload="metadata" />
-      <div className="absolute inset-0 z-[1] bg-black/65" />
+    <div className="relative min-h-screen overflow-hidden bg-transparent text-foreground">
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4">
         <div className="liquid-glass-strong w-full max-w-md rounded-3xl p-8 text-center">
           <h1 className="font-serif text-3xl">{title}</h1>
-          <p className="mt-3 text-sm text-white/70">{body}</p>
+          <p className="mt-3 text-sm text-foreground/70">{body}</p>
           <div className="mt-6">{cta}</div>
           {footer && <div className="mt-6">{footer}</div>}
         </div>

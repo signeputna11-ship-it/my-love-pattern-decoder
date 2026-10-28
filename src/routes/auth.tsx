@@ -146,16 +146,7 @@ function AuthPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black text-white">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 z-0 h-full w-full object-cover opacity-60"
-        src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4"
-      preload="metadata" />
-      <div className="absolute inset-0 z-[1] bg-black/65" />
+    <div className="relative min-h-screen overflow-hidden bg-transparent text-foreground">
 
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-16">
         <motion.div
@@ -166,7 +157,7 @@ function AuthPage() {
         >
           <Link
             to="/home"
-            className="mb-6 inline-block text-xs uppercase tracking-[0.3em] text-white/60 hover:text-white"
+            className="mb-6 inline-block text-xs uppercase tracking-[0.3em] text-foreground/60 hover:text-foreground"
           >
             ← My Love Pattern
           </Link>
@@ -174,12 +165,12 @@ function AuthPage() {
           {signupSuccessEmail ? (
             <div>
               <h1 className="font-serif text-4xl">Check your email</h1>
-              <p className="mt-3 text-sm text-white/80">
+              <p className="mt-3 text-sm text-foreground/80">
                 We sent a confirmation link to{" "}
-                <span className="font-medium text-white">{signupSuccessEmail}</span>.
+                <span className="font-medium text-foreground">{signupSuccessEmail}</span>.
                 Click it to activate your account, then return here to sign in.
               </p>
-              <p className="mt-3 text-xs text-white/50">
+              <p className="mt-3 text-xs text-foreground/50">
                 Don't see it? Check your spam folder.
               </p>
               <button
@@ -188,7 +179,7 @@ function AuthPage() {
                   setMode("signin");
                   setPassword("");
                 }}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:bg-white/90"
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
               >
                 Back to sign in
               </button>
@@ -198,7 +189,7 @@ function AuthPage() {
               <h1 className="font-serif text-4xl">
                 {mode === "signin" ? "Welcome back" : "Begin your reset"}
               </h1>
-              <p className="mt-2 text-sm text-white/70">
+              <p className="mt-2 text-sm text-foreground/70">
                 {mode === "signin"
                   ? "Sign in to continue your path."
                   : "Create an account to access your reset."}
@@ -209,7 +200,7 @@ function AuthPage() {
               <button
                 onClick={handleGoogle}
                 disabled={loading}
-                className="mt-6 flex w-full items-center justify-center gap-3 rounded-full liquid-glass px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10 disabled:opacity-50"
+                className="mt-6 flex w-full items-center justify-center gap-3 rounded-full liquid-glass px-5 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50"
               >
                 <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
                   <path
@@ -232,8 +223,8 @@ function AuthPage() {
                 Continue with Google
               </button>
 
-              <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-widest text-white/40">
-                <span className="h-px flex-1 bg-white/15" /> or <span className="h-px flex-1 bg-white/15" />
+              <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-widest text-foreground/40">
+                <span className="h-px flex-1 bg-foreground/15" /> or <span className="h-px flex-1 bg-foreground/15" />
               </div>
                 </>
               )}
@@ -245,7 +236,7 @@ function AuthPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-2xl liquid-glass px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-white/30"
+                  className="w-full rounded-2xl liquid-glass px-4 py-3 text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-1 focus:ring-foreground/30"
                 />
                 <input
                   type="password"
@@ -254,12 +245,12 @@ function AuthPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="w-full rounded-2xl liquid-glass px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-white/30"
+                  className="w-full rounded-2xl liquid-glass px-4 py-3 text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-1 focus:ring-foreground/30"
                 />
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-black transition hover:bg-white/90 disabled:opacity-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
                 >
                   {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                   {mode === "signin" ? "Sign in" : "Create account"}
@@ -268,7 +259,7 @@ function AuthPage() {
 
               <button
                 onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-                className="mt-5 w-full text-center text-xs text-white/60 hover:text-white"
+                className="mt-5 w-full text-center text-xs text-foreground/60 hover:text-foreground"
               >
                 {mode === "signin"
                   ? "New here? Create an account"

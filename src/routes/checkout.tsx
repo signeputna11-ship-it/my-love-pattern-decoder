@@ -52,25 +52,15 @@ function CheckoutPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black text-white">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 z-0 h-full w-full object-cover opacity-50"
-        src="https://pub-687d7fb8b7f44636a61754dc527f9690.r2.dev/FLOWER%20AND%20CRYSTALS%20CLOSE%20UP.mp4"
-        preload="metadata"
-      />
-      <div className="absolute inset-0 z-[1] bg-black/70" />
+    <div className="relative min-h-screen overflow-hidden bg-transparent text-foreground">
       <div className="relative z-10 mx-auto max-w-2xl px-4 py-10 sm:py-16">
         <Link
           to="/app"
-          className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/50 hover:text-white"
+          className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-foreground/50 hover:text-foreground"
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Back
         </Link>
-        <div className="mt-6 overflow-hidden rounded-3xl ring-1 ring-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
+        <div className="mt-6 overflow-hidden rounded-3xl ring-1 ring-foreground/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
           <img
             src={coverImage}
             alt="My Love Pattern, The Reset cover"
@@ -79,7 +69,7 @@ function CheckoutPage() {
           />
         </div>
         <h1 className="mt-6 font-serif text-4xl sm:text-5xl">Complete your purchase</h1>
-        <p className="mt-2 text-sm text-white/70">
+        <p className="mt-2 text-sm text-foreground/70">
           Lifetime access. Secure checkout below.
         </p>
 
@@ -90,7 +80,7 @@ function CheckoutPage() {
             </EmbeddedCheckoutProvider>
           ) : (
             <div className="flex h-64 items-center justify-center">
-              <Loader2 className="h-6 w-6 animate-spin text-white/60" />
+              <Loader2 className="h-6 w-6 animate-spin text-foreground/60" />
             </div>
           )}
         </div>

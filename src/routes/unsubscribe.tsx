@@ -55,34 +55,34 @@ function UnsubscribePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-transparent text-foreground flex items-center justify-center px-4">
       <PageBackground image="margherita" />
       <div className="liquid-glass-strong w-full max-w-md rounded-3xl p-8 text-center">
         <img src="/mlp-logo.png" alt="My Love Pattern" className="mx-auto mb-6 h-14 w-14 rounded-full bg-white" />
         <h1 className="font-serif text-3xl mb-3">Unsubscribe</h1>
-        {state === "loading" && <p className="text-sm text-white/70">Checking your link...</p>}
+        {state === "loading" && <p className="text-sm text-foreground/70">Checking your link...</p>}
         {state === "invalid" && (
-          <p className="text-sm text-white/70">This unsubscribe link is invalid or has expired.</p>
+          <p className="text-sm text-foreground/70">This unsubscribe link is invalid or has expired.</p>
         )}
         {state === "already" && (
-          <p className="text-sm text-white/70">You're already unsubscribed. We won't send you any more emails.</p>
+          <p className="text-sm text-foreground/70">You're already unsubscribed. We won't send you any more emails.</p>
         )}
         {state === "valid" && (
           <>
-            <p className="text-sm text-white/70 mb-6">
+            <p className="text-sm text-foreground/70 mb-6">
               Confirm to stop receiving emails from My Love Pattern.
             </p>
             <button
               onClick={confirm}
-              className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black hover:bg-white/90"
+              className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               Confirm Unsubscribe
             </button>
           </>
         )}
-        {state === "submitting" && <p className="text-sm text-white/70">Processing...</p>}
+        {state === "submitting" && <p className="text-sm text-foreground/70">Processing...</p>}
         {state === "done" && (
-          <p className="text-sm text-white/80">You're unsubscribed. Take care.</p>
+          <p className="text-sm text-foreground/80">You're unsubscribed. Take care.</p>
         )}
         {state === "error" && (
           <p className="text-sm text-red-300">Something went wrong. Please try again later.</p>

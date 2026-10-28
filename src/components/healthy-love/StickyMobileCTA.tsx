@@ -62,10 +62,10 @@ export function StickyMobileCTA() {
         hideAtBottom ? "pointer-events-none translate-y-full opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
-      <div className="mx-auto max-w-md rounded-full bg-black/70 p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl ring-1 ring-white/10">
+      <div className="mx-auto max-w-md rounded-full bg-white/60 p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl ring-1 ring-foreground/10">
         <button
           onClick={handleClick}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-black transition active:scale-[0.98]"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition active:scale-[0.98]"
         >
           {label} <ArrowUpRight className="h-4 w-4" />
         </button>

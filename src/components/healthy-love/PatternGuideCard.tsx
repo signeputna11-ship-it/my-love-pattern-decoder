@@ -167,13 +167,13 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
     <div className="mt-8 liquid-glass-strong rounded-3xl p-5 sm:p-7">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
-          <div className="rounded-full bg-white/10 p-2">
-            <Sparkles className="h-4 w-4 text-white/80" />
+          <div className="rounded-full bg-foreground/10 p-2">
+            <Sparkles className="h-4 w-4 text-foreground/80" />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-widest text-white/40">Your Pattern Guide</p>
-            <h3 className="mt-1 text-lg font-medium text-white">Structured self-reflection</h3>
-            <p className="mt-0.5 text-xs text-white/50">
+            <p className="text-xs uppercase tracking-widest text-foreground/40">Your Pattern Guide</p>
+            <h3 className="mt-1 text-lg font-medium text-foreground">Structured self-reflection</h3>
+            <p className="mt-0.5 text-xs text-foreground/50">
               Built from your own answers. Not therapy or diagnosis.
             </p>
           </div>
@@ -181,7 +181,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
         {(reflection || emptyMessage) && !loading && (
           <button
             onClick={generate}
-            className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs text-white/70 hover:bg-white/10"
+            className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs text-foreground/70 hover:bg-foreground/5"
           >
             <RefreshCw className="h-3 w-3" /> Regenerate
           </button>
@@ -197,12 +197,12 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
             exit={{ opacity: 0 }}
             className="mt-5"
           >
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-foreground/70">
               When you're ready, generate a single focused reflection drawn from what you wrote above.
             </p>
             <button
               onClick={generate}
-              className="mt-4 flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90"
+              className="mt-4 flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               <Sparkles className="h-4 w-4" /> Generate Guidance
             </button>
@@ -215,7 +215,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="mt-6 flex items-center gap-3 text-sm text-white/60"
+            className="mt-6 flex items-center gap-3 text-sm text-foreground/60"
           >
             <Loader2 className="h-4 w-4 animate-spin" />
             Reading your answers…
@@ -228,11 +228,11 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4"
+            className="mt-6 rounded-2xl border border-foreground/10 bg-white/60 p-4"
           >
             <div className="flex items-start gap-3">
-              <Lightbulb className="mt-0.5 h-4 w-4 text-white/60" />
-              <p className="text-sm text-white/80">{emptyMessage}</p>
+              <Lightbulb className="mt-0.5 h-4 w-4 text-foreground/60" />
+              <p className="text-sm text-foreground/80">{emptyMessage}</p>
             </div>
           </motion.div>
         )}
@@ -246,24 +246,24 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
             className="mt-6 space-y-5"
           >
             <Section label="What I'm noticing">
-              <p className="text-sm leading-relaxed text-white/85">{reflection.noticing}</p>
+              <p className="text-sm leading-relaxed text-foreground/85">{reflection.noticing}</p>
             </Section>
 
             <Section label="One question to answer">
-              <p className="text-sm italic leading-relaxed text-white/85">"{reflection.question}"</p>
+              <p className="text-sm italic leading-relaxed text-foreground/85">"{reflection.question}"</p>
               <textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Write your private answer here…"
                 rows={3}
-                className="mt-3 w-full rounded-2xl bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
+                className="mt-3 w-full rounded-2xl bg-white/60 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
               />
             </Section>
 
             <Section label="Recommended next step">
-              <p className="text-sm leading-relaxed text-white/85">{reflection.next_step}</p>
+              <p className="text-sm leading-relaxed text-foreground/85">{reflection.next_step}</p>
               {recommended && (
-                <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs text-white/80">
+                <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-foreground/10 px-3 py-1 text-xs text-foreground/80">
                   <Lightbulb className="h-3 w-3" /> Suggested tool: {recommended.title}
                 </p>
               )}
@@ -273,7 +273,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
               <button
                 onClick={saveReflection}
                 disabled={saving || !note.trim()}
-                className="flex items-center justify-center gap-2 rounded-full liquid-glass px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10 disabled:opacity-40"
+                className="flex items-center justify-center gap-2 rounded-full liquid-glass px-5 py-2.5 text-sm font-medium text-foreground hover:bg-foreground/5 disabled:opacity-40"
               >
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                 {hasSavedReflection ? "Update reflection" : "Save AI Reflection"}
@@ -281,7 +281,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
 
               <button
                 onClick={openRecommendedTool}
-                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black hover:bg-white/90"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
                 <ArrowRight className="h-4 w-4" />
                 {recommended ? "Open Recommended Tool" : "Go to Module Resources"}
@@ -291,7 +291,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
         )}
       </AnimatePresence>
 
-      <p className="mt-6 text-[11px] leading-relaxed text-white/35">
+      <p className="mt-6 text-[11px] leading-relaxed text-foreground/35">
         This guide doesn't provide medical or mental-health advice. If you're in crisis, contact a licensed professional or local support line.
       </p>
     </div>
@@ -301,7 +301,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-widest text-white/40">{label}</p>
+      <p className="text-[11px] uppercase tracking-widest text-foreground/40">{label}</p>
       <div className="mt-2">{children}</div>
     </div>
   );

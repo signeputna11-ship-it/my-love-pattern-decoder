@@ -91,7 +91,7 @@ function Dashboard() {
 
   if (status === "loading") {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-20 text-center text-sm text-white/60">
+      <div className="mx-auto max-w-5xl px-4 py-20 text-center text-sm text-foreground/60">
         Loading your dashboard…
       </div>
     );
@@ -101,10 +101,10 @@ function Dashboard() {
     return (
       <div className="mx-auto max-w-5xl px-4 py-20 text-center">
         <p className="font-serif text-2xl">We couldn't load your dashboard.</p>
-        <p className="mt-2 text-sm text-white/60">Please refresh the page.</p>
+        <p className="mt-2 text-sm text-foreground/60">Please refresh the page.</p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-4 rounded-full bg-white px-5 py-2 text-sm text-black"
+          className="mt-4 rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground"
         >
           Refresh
         </button>
@@ -142,29 +142,29 @@ function Dashboard() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <p className="text-xs uppercase tracking-[0.3em] text-white/50">Welcome back{name ? "," : ""}</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-foreground/50">Welcome back{name ? "," : ""}</p>
         {name && <h1 className="mt-1 font-serif text-3xl sm:text-5xl">{name}</h1>}
-        <h1 className={`${name ? "mt-1 text-lg text-white/70" : "mt-1 font-serif text-3xl sm:text-5xl"}`}>
+        <h1 className={`${name ? "mt-1 text-lg text-foreground/70" : "mt-1 font-serif text-3xl sm:text-5xl"}`}>
           Your reset is in motion.
         </h1>
       </motion.div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="liquid-glass-strong rounded-3xl p-6">
-          <p className="text-xs uppercase tracking-widest text-white/50">Your pattern</p>
+          <p className="text-xs uppercase tracking-widest text-foreground/50">Your pattern</p>
           <p className="mt-2 font-serif text-2xl">{pattern ?? "Not yet detected"}</p>
-          <p className="mt-2 text-xs text-white/50">
+          <p className="mt-2 text-xs text-foreground/50">
             {pattern
               ? "Each module loops back to this."
               : "Complete the quiz on the home page to find yours."}
           </p>
         </div>
         <div className="liquid-glass-strong rounded-3xl p-6">
-          <p className="text-xs uppercase tracking-widest text-white/50">Progress</p>
+          <p className="text-xs uppercase tracking-widest text-foreground/50">Progress</p>
           <p className="mt-2 font-serif text-2xl">
-            {completedCount} <span className="text-white/40">/ {total}</span>
+            {completedCount} <span className="text-foreground/40">/ {total}</span>
           </p>
-          <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+          <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-foreground/10">
             <motion.div
               className="h-full bg-white"
               initial={{ width: 0 }}
@@ -174,13 +174,13 @@ function Dashboard() {
           </div>
         </div>
         <div className="liquid-glass-strong rounded-3xl p-6">
-          <p className="text-xs uppercase tracking-widest text-white/50">Next step</p>
+          <p className="text-xs uppercase tracking-widest text-foreground/50">Next step</p>
           <p className="mt-2 font-serif text-xl">{next?.title ?? "All complete"}</p>
           {next && (
             <Link
               to="/app/module/$slug"
               params={{ slug: next.slug }}
-              className="mt-3 inline-flex items-center gap-1.5 text-sm text-white hover:text-white/80"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm text-foreground hover:text-foreground/80"
             >
               Continue <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -192,13 +192,13 @@ function Dashboard() {
         <div className="mt-8 liquid-glass-strong rounded-3xl p-6 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="font-serif text-xl">Unlock every journey</p>
-            <p className="mt-1 text-sm text-white/60">
+            <p className="mt-1 text-sm text-foreground/60">
               Members get all workbooks and audio for 4,99 € a month, plus a discount on 1:1 sessions.
             </p>
           </div>
           <Link
             to="/app/membership"
-            className="mt-4 inline-flex rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black sm:mt-0"
+            className="mt-4 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground sm:mt-0"
           >
             See membership
           </Link>
@@ -207,8 +207,8 @@ function Dashboard() {
 
       {groups.map((group) => (
         <div key={group.key} className="mt-12">
-          <p className="text-xs uppercase tracking-[0.3em] text-white/50">{group.title}</p>
-          {group.subtitle && <p className="mt-1 text-sm text-white/60">{group.subtitle}</p>}
+          <p className="text-xs uppercase tracking-[0.3em] text-foreground/50">{group.title}</p>
+          {group.subtitle && <p className="mt-1 text-sm text-foreground/60">{group.subtitle}</p>}
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {group.modules.map((m, i) => {
             const done = completedIds.has(m.id);
@@ -223,26 +223,26 @@ function Dashboard() {
                 <Link
                   to="/app/module/$slug"
                   params={{ slug: m.slug }}
-                  className="group block rounded-3xl liquid-glass p-6 transition hover:bg-white/10"
+                  className="group block rounded-3xl liquid-glass p-6 transition hover:bg-foreground/5"
                 >
                   <div className="flex items-start gap-4">
                     <div className="mt-0.5">
                       {locked ? (
-                        <Lock className="h-6 w-6 text-white/40" />
+                        <Lock className="h-6 w-6 text-foreground/40" />
                       ) : done ? (
-                        <CheckCircle2 className="h-6 w-6 text-white" />
+                        <CheckCircle2 className="h-6 w-6 text-foreground" />
                       ) : (
-                        <Circle className="h-6 w-6 text-white/40" />
+                        <Circle className="h-6 w-6 text-foreground/40" />
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="text-xs uppercase tracking-widest text-white/40">
+                      <p className="text-xs uppercase tracking-widest text-foreground/40">
                         Module {m.position}
                       </p>
                       <h3 className="mt-1 font-serif text-2xl">{m.title}</h3>
-                      <p className="mt-1 text-sm text-white/60">{m.subtitle}</p>
+                      <p className="mt-1 text-sm text-foreground/60">{m.subtitle}</p>
                     </div>
-                    <ArrowRight className="mt-2 h-4 w-4 text-white/40 transition group-hover:translate-x-1 group-hover:text-white" />
+                    <ArrowRight className="mt-2 h-4 w-4 text-foreground/40 transition group-hover:translate-x-1 group-hover:text-foreground" />
                   </div>
                 </Link>
               </motion.div>

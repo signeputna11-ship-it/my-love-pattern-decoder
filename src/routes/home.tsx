@@ -225,7 +225,7 @@ export function buildHomeHead(canonicalUrl: string) {
 
 export function HomePage() {
   return (
-    <div className="relative min-h-screen bg-black pb-24 text-white md:pb-0">
+    <div className="relative min-h-screen bg-transparent pb-24 text-foreground md:pb-0">
       <PageBackground image="floating-heart" />
       <Nav />
       <Hero />

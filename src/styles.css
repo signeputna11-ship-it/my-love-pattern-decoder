@@ -2,57 +2,57 @@
 @source "../src";
 @import "tw-animate-css";
 
-.font-serif { font-family: 'Instrument Serif', serif; }
-body { font-family: 'Inter', sans-serif; background: #000; }
+/* Signe Coach moodboard: paper, forest, rose, powder, butter. Glass surfaces on a soft static backdrop. */
+:root {
+  --paper: #FFFCF8; --forest: #173D34; --rose: #E8BAC9; --blush: #F4D9E2;
+  --powder: #BBDCF0; --butter: #F3E4A2; --leaf: #B9CBB1; --navy: #102440;
+}
 
+.font-serif { font-family: 'Instrument Serif', Georgia, serif; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--forest);
+  background:
+    radial-gradient(60rem 38rem at 8% -8%, rgba(187,220,240,.95), transparent 62%),
+    radial-gradient(52rem 36rem at 108% 6%, rgba(232,186,201,.80), transparent 62%),
+    radial-gradient(60rem 36rem at 48% 118%, rgba(243,228,162,.40), transparent 62%),
+    var(--paper);
+  background-attachment: fixed;
+}
+
+/* Frosted glass with a fine double-line border (editorial stationery feel). */
 .liquid-glass {
-  background: rgba(255, 255, 255, 0.01);
-  background-blend-mode: luminosity;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: none;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+  background: rgba(255,255,255,.52);
+  backdrop-filter: blur(18px) saturate(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 30px -18px rgba(23,61,52,.22);
   position: relative;
   overflow: hidden;
 }
 .liquid-glass::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 4px;
   border-radius: inherit;
-  padding: 1.4px;
-  background: linear-gradient(180deg,
-    rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
-    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
-    rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  border: 1px solid rgba(23,61,52,.10);
   pointer-events: none;
 }
 .liquid-glass-strong {
-  background: rgba(255,255,255,0.04);
-  background-blend-mode: luminosity;
-  backdrop-filter: blur(50px);
-  -webkit-backdrop-filter: blur(50px);
-  border: none;
-  box-shadow: 4px 4px 4px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.15);
+  background: rgba(255,255,255,.86);
+  backdrop-filter: blur(28px) saturate(1.2);
+  -webkit-backdrop-filter: blur(28px) saturate(1.2);
+  border: 1px solid rgba(255,255,255,.9);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 14px 38px -20px rgba(23,61,52,.28);
   position: relative;
   overflow: hidden;
 }
 .liquid-glass-strong::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 4px;
   border-radius: inherit;
-  padding: 1.4px;
-  background: linear-gradient(180deg,
-    rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 20%,
-    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
-    rgba(255,255,255,0.2) 80%, rgba(255,255,255,0.5) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  border: 1px solid rgba(23,61,52,.12);
   pointer-events: none;
 }
 .noise::after {
@@ -243,4 +243,26 @@ p, blockquote, li {
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+
+
+/* Brand tokens for the shadcn-style utilities (text-foreground, bg-primary, ...). */
+:root {
+  --background: var(--paper);
+  --foreground: var(--forest);
+  --card: #FFFFFF;
+  --card-foreground: var(--forest);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--forest);
+  --primary: var(--forest);
+  --primary-foreground: var(--paper);
+  --secondary: var(--powder);
+  --secondary-foreground: var(--navy);
+  --muted: color-mix(in oklab, var(--forest) 6%, var(--paper));
+  --muted-foreground: color-mix(in oklab, var(--forest) 70%, var(--paper));
+  --accent: var(--rose);
+  --accent-foreground: var(--forest);
+  --border: color-mix(in oklab, var(--forest) 22%, var(--paper));
+  --input: color-mix(in oklab, var(--forest) 22%, var(--paper));
+  --ring: var(--forest);
 }
