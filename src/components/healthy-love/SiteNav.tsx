@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown } from "lucide-react";
-import mlpLogo from "@/assets/mlp-logo.png";
+import mlpLogo from "@/assets/signe-coach-mark.png";
 
 const PATTERN_LINKS = [
   { label: "The Over-Investor", to: "/the-over-investor" as const },
@@ -18,9 +18,9 @@ export function SiteNav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link to="/home" className="flex items-center gap-2 text-foreground">
           <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-transparent">
-            <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
+            <img src={mlpLogo} alt="Signe Coach" className="h-full w-full object-contain" />
           </span>
-          <span className="font-serif text-base sm:text-lg">My Love Pattern</span>
+          <span className="font-serif text-base sm:text-lg">Signe Coach</span>
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">

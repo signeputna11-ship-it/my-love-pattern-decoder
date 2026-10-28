@@ -49,7 +49,7 @@ function AdminBlogIndex() {
     <main className="mx-auto max-w-6xl px-6 py-12" style={{ backgroundColor: "#F8F5F0", minHeight: "100vh" }}>
       <div className="flex items-center justify-between">
         <h1 className="font-serif text-3xl italic" style={{ color: "#111", fontFamily: "Instrument Serif" }}>Blog Posts</h1>
-        <Link to="/admin/blog/new" className="rounded-full px-5 py-2 text-sm text-foreground" style={{ backgroundColor: "#111" }}>+ New Post</Link>
+        <Link to="/admin/blog/new" className="rounded-full px-5 py-2 text-sm text-white" style={{ backgroundColor: "#111" }}>+ New Post</Link>
       </div>
 
       <div className="mt-6 flex gap-2">
@@ -73,7 +73,7 @@ function AdminBlogIndex() {
       <div className="mt-6 rounded-2xl border bg-white" style={{ borderColor: "#E8E3DC" }}>
         <table className="w-full text-sm">
           <thead style={{ backgroundColor: "#F8F5F0" }}>
-            <tr className="text-left" style={{ color: "#8A8480" }}>
+            <tr className="text-left" style={{ color: "#6B6560" }}>
               <th className="px-4 py-3">Title</th>
               <th className="px-4 py-3">Category</th>
               <th className="px-4 py-3">Status</th>
@@ -83,9 +83,9 @@ function AdminBlogIndex() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={5} className="px-4 py-6 text-center" style={{ color: "#8A8480" }}>Loading...</td></tr>
+              <tr><td colSpan={5} className="px-4 py-6 text-center" style={{ color: "#6B6560" }}>Loading...</td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={5} className="px-4 py-6 text-center" style={{ color: "#8A8480" }}>No posts.</td></tr>
+              <tr><td colSpan={5} className="px-4 py-6 text-center" style={{ color: "#6B6560" }}>No posts.</td></tr>
             ) : filtered.map((p) => (
               <tr key={p.id} className="border-t" style={{ borderColor: "#E8E3DC" }}>
                 <td className="px-4 py-3" style={{ color: "#111" }}>{p.title}</td>

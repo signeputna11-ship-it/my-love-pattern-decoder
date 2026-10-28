@@ -159,7 +159,7 @@ function PostPage() {
             <Link
               to="/blog/category/$category"
               params={{ category: post.category }}
-              className="inline-block rounded-full px-3 py-1 text-[11px] uppercase text-foreground"
+              className="inline-block rounded-full px-3 py-1 text-[11px] uppercase text-white"
               style={{
                 backgroundColor: "#111111",
                 letterSpacing: "1.5px",
@@ -186,7 +186,7 @@ function PostPage() {
             style={{
               fontFamily: "Inter, sans-serif",
               fontSize: "13px",
-              color: "#8A8480",
+              color: "#6B6560",
               gap: "16px",
             }}
           >
@@ -272,7 +272,7 @@ function PostPage() {
             <>
               <hr style={{ border: 0, borderTop: "1px solid #E8E3DC", margin: "48px 0 24px" }} />
               <div className="flex flex-wrap items-center gap-2">
-                <span style={{ fontSize: "13px", color: "#8A8480", fontFamily: "Inter" }}>
+                <span style={{ fontSize: "13px", color: "#6B6560", fontFamily: "Inter" }}>
                   Topics:
                 </span>
                 {post.tags.map((tag: string) => (
@@ -295,7 +295,7 @@ function PostPage() {
 
           {/* Share */}
           <div className="mt-4 flex items-center gap-3">
-            <span style={{ fontSize: "13px", color: "#8A8480", fontFamily: "Inter" }}>
+            <span style={{ fontSize: "13px", color: "#6B6560", fontFamily: "Inter" }}>
               Share:
             </span>
             <button
@@ -348,7 +348,7 @@ function PostPage() {
             <Link
               to="/home"
               hash="diagnosis"
-              className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-semibold text-foreground"
+              className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-semibold text-white"
               style={{ backgroundColor: "#111111", fontFamily: "Inter" }}
             >
               Take the free quiz →
@@ -366,7 +366,7 @@ function PostPage() {
                   fontSize: "18px",
                   textTransform: "uppercase",
                   letterSpacing: "1.5px",
-                  color: "#8A8480",
+                  color: "#6B6560",
                   marginBottom: "20px",
                 }}
               >

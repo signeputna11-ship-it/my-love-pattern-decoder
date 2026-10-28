@@ -50,7 +50,7 @@ const SECTION_LABEL: React.CSSProperties = {
   fontSize: 11,
   textTransform: "uppercase",
   letterSpacing: "2.5px",
-  color: "#8A8480",
+  color: "#6B6560",
   marginBottom: 24,
 };
 
@@ -87,7 +87,7 @@ function ShopIndex() {
       </div>
       <div style={{ position: "relative", zIndex: 2 }} className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
         <header className="mb-16 text-center">
-          <p style={SECTION_LABEL}><span style={{ color: "#EDB200" }}>✦</span> My Love Pattern Shop</p>
+          <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> My Love Pattern Shop</p>
           <h1
             style={{
               fontFamily: "'Instrument Serif', serif",
@@ -114,7 +114,7 @@ function ShopIndex() {
 
         {!products && !err && (
           <div className="flex h-40 items-center justify-center">
-            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#8A8480" }} />
+            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#6B6560" }} />
           </div>
         )}
 
@@ -122,7 +122,7 @@ function ShopIndex() {
           <>
             {/* SECTION 1 — WORKSHEETS */}
             <section className="mb-20">
-              <p style={SECTION_LABEL}><span style={{ color: "#EDB200" }}>✦</span> Individual Worksheets</p>
+              <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> Individual Worksheets</p>
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {worksheets.map((p) => (
                   <Link
@@ -149,7 +149,7 @@ function ShopIndex() {
                           fontSize: 11,
                           textTransform: "uppercase",
                           letterSpacing: "2px",
-                          color: "#8A8480",
+                          color: "#6B6560",
                         }}
                       >
                         Worksheet
@@ -210,14 +210,14 @@ function ShopIndex() {
             {/* SECTION 2 — KIT BANNER */}
             {kit && (
               <section className="mb-20">
-                <p style={SECTION_LABEL}><span style={{ color: "#EDB200" }}>✦</span> The Complete Reset Kit</p>
+                <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> The Complete Reset Kit</p>
                 <Link
                   to="/shop/$slug"
                   params={{ slug: kit.slug }}
                   style={{
                     display: "block",
                     background:
-                      "linear-gradient(135deg, rgba(20,15,30,0.97), rgba(15,15,25,0.97))",
+                      "linear-gradient(135deg, #173D34, #1f4a40)",
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: 24,
                     padding: "52px 60px",
@@ -238,7 +238,7 @@ function ShopIndex() {
                           fontSize: 11,
                           letterSpacing: "1.5px",
                           textTransform: "uppercase",
-                          color: "#EDB200",
+                          color: "#E8BAC9",
                           marginBottom: 20,
                         }}
                       >
@@ -300,14 +300,14 @@ function ShopIndex() {
             {/* SECTION 3 — DEEP PATTERN RESET SESSION */}
             {session && (
               <section>
-                <p style={SECTION_LABEL}><span style={{ color: "#EDB200" }}>✦</span> Private 1:1 Session</p>
+                <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> Private 1:1 Session</p>
                 <div
                   style={{
                     maxWidth: 1100,
                     margin: "0 auto",
                     background:
-                      "linear-gradient(135deg, rgba(30,15,25,0.97), rgba(25,15,35,0.97))",
-                    border: "1px solid rgba(201,133,122,0.25)",
+                      "linear-gradient(135deg, #102440, #173D34)",
+                    border: "1px solid rgba(232,186,201,0.45)",
                     borderRadius: 24,
                     padding: "52px 60px",
                     position: "relative",
@@ -449,7 +449,7 @@ function ShopIndex() {
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
-                          background: "linear-gradient(135deg,#c9857a,#a0574e)",
+                          background: "linear-gradient(135deg,#E8BAC9,#d99fb2)",
                           color: "white",
                           borderRadius: 100,
                           padding: "14px 32px",

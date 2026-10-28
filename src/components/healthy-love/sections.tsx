@@ -15,7 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { patterns, toolkit, quizQuestions, VIDEOS } from "./data";
-import mlpLogo from "@/assets/mlp-logo.png";
+import mlpLogo from "@/assets/signe-coach-mark.png";
 
 function BackgroundVideo(_props: { src: string }) {
   return null;
@@ -65,10 +65,10 @@ export function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full liquid-glass px-2.5 py-2 sm:px-4 sm:py-3" style={{ overflow: "visible" }}>
         <a href="#top" className="flex min-w-0 flex-1 items-center gap-2 text-foreground">
           <span className="grid h-7 w-7 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-white sm:h-8 sm:w-8">
-            <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
+            <img src={mlpLogo} alt="Signe Coach" className="h-full w-full object-contain" />
           </span>
           <span className="flex min-w-0 flex-col leading-tight">
-            <span className="truncate font-serif text-sm sm:text-lg">My Love Pattern</span>
+            <span className="truncate font-serif text-sm sm:text-lg">Signe Coach</span>
             <span className="hidden truncate text-[10px] text-foreground/55 sm:block">
               Understand why it keeps happening.
             </span>

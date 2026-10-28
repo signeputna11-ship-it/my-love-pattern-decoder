@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
-import mlpLogo from "@/assets/mlp-logo.png";
+import mlpLogo from "@/assets/signe-coach-mark.png";
 
 const CALENDLY = "https://calendly.com/mylovepattern/30min";
 const HERO_VIDEO =
@@ -56,7 +56,7 @@ function RoseBtn({
       style={{
         padding: pad,
         fontSize: fs,
-        background: "linear-gradient(135deg,#c9857a,#a0574e)",
+        background: "linear-gradient(135deg,#E8BAC9, #d99fb2)",
         boxShadow: "0 8px 32px rgba(160,87,78,0.4)",
       }}
     >
@@ -190,7 +190,7 @@ function XIcon() {
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden className="mt-1 shrink-0">
       <path
         d="M4 4 L14 14 M14 4 L4 14"
-        stroke="#8A8480"
+        stroke="#6B6560"
         strokeWidth="2"
         strokeLinecap="round"
       />
@@ -247,9 +247,9 @@ export function DeepResetPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link to="/home" className="flex items-center gap-2">
             <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-transparent">
-              <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
+              <img src={mlpLogo} alt="Signe Coach" className="h-full w-full object-contain" />
             </span>
-            <span className="font-serif text-base text-[#111] sm:text-lg">My Love Pattern</span>
+            <span className="font-serif text-base text-[#111] sm:text-lg">Signe Coach</span>
           </Link>
           <a
             href={CALENDLY}
@@ -421,7 +421,7 @@ export function DeepResetPage() {
             {STEPS.map((s, i) => (
               <div key={s.n} className="flex flex-1 items-start gap-4 md:contents">
                 <div className="flex-1">
-                  <p className="font-sans uppercase text-[#EDB200]" style={{ fontSize: 11, letterSpacing: 2, marginBottom: 12 }}>
+                  <p className="font-sans uppercase text-[#8A6A00]" style={{ fontSize: 11, letterSpacing: 2, marginBottom: 12 }}>
                     {s.n}
                   </p>
                   <p className="font-serif italic text-[#111]" style={{ fontSize: 26, marginBottom: 10, fontFamily: '"Instrument Serif", serif' }}>
@@ -503,7 +503,7 @@ export function DeepResetPage() {
           <div className="flex items-center justify-center gap-3.5">
             <div
               className="grid place-items-center rounded-full font-sans text-foreground"
-              style={{ width: 48, height: 48, fontSize: 18, background: "linear-gradient(135deg,#c9857a,#8a9e8c)" }}
+              style={{ width: 48, height: 48, fontSize: 18, background: "linear-gradient(135deg,#E8BAC9,#8a9e8c)" }}
             >
               A
             </div>
@@ -521,7 +521,7 @@ export function DeepResetPage() {
           <div
             className="relative overflow-hidden text-center"
             style={{
-              background: "linear-gradient(135deg, rgba(30,15,25,0.97), rgba(25,15,35,0.97))",
+              background: "linear-gradient(135deg, #102440, #173D34)",
               border: "1px solid rgba(201,133,122,0.25)",
               borderRadius: 28,
               padding: "60px 52px",

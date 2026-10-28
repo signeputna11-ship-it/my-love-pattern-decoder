@@ -134,18 +134,18 @@ function AdminOrders() {
           { label: "All time", value: stats?.all ?? 0 },
         ].map((c) => (
           <div key={c.label} className="rounded-2xl bg-white p-4" style={{ border: "1px solid #E8E3DC" }}>
-            <p className="text-xs uppercase tracking-widest" style={{ color: "#8A8480" }}>{c.label}</p>
+            <p className="text-xs uppercase tracking-widest" style={{ color: "#6B6560" }}>{c.label}</p>
             <p className="mt-1 text-2xl italic" style={{ fontFamily: "Instrument Serif", color: "#111" }}>{fmt(c.value)}</p>
           </div>
         ))}
       </div>
 
       <div className="mt-4 rounded-2xl bg-white p-4" style={{ border: "1px solid #E8E3DC" }}>
-        <p className="text-xs uppercase tracking-widest" style={{ color: "#8A8480" }}>Upsell conversion</p>
+        <p className="text-xs uppercase tracking-widest" style={{ color: "#6B6560" }}>Upsell conversion</p>
         <p className="mt-1 text-2xl italic" style={{ fontFamily: "Instrument Serif", color: "#111" }}>
           {stats ? `${(stats.upsellRate * 100).toFixed(1)}%` : "—"}
           {stats && (
-            <span className="ml-2 text-xs" style={{ color: "#8A8480", fontFamily: "Inter" }}>
+            <span className="ml-2 text-xs" style={{ color: "#6B6560", fontFamily: "Inter" }}>
               ({stats.upsellConverted} of {stats.upsellEligible})
             </span>
           )}
@@ -171,7 +171,7 @@ function AdminOrders() {
         </div>
         <button
           onClick={exportCsv}
-          className="rounded-full px-4 py-1.5 text-xs text-foreground"
+          className="rounded-full px-4 py-1.5 text-xs text-white"
           style={{ backgroundColor: "#111" }}
         >
           Export paid as CSV
@@ -181,7 +181,7 @@ function AdminOrders() {
       <div className="mt-4 overflow-x-auto rounded-2xl border bg-white" style={{ borderColor: "#E8E3DC" }}>
         <table className="w-full text-sm">
           <thead style={{ backgroundColor: "#F8F5F0" }}>
-            <tr className="text-left" style={{ color: "#8A8480" }}>
+            <tr className="text-left" style={{ color: "#6B6560" }}>
               <th className="px-4 py-3">Date</th>
               <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">Product</th>
@@ -193,9 +193,9 @@ function AdminOrders() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={7} className="px-4 py-6 text-center" style={{ color: "#8A8480" }}>Loading</td></tr>
+              <tr><td colSpan={7} className="px-4 py-6 text-center" style={{ color: "#6B6560" }}>Loading</td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={7} className="px-4 py-6 text-center" style={{ color: "#8A8480" }}>No orders.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-6 text-center" style={{ color: "#6B6560" }}>No orders.</td></tr>
             ) : filtered.map((o) => (
               <tr key={o.id} className="border-t" style={{ borderColor: "#E8E3DC" }}>
                 <td className="px-4 py-3" style={{ color: "#6b4c44" }}>{new Date(o.created_at).toLocaleDateString()}</td>
@@ -205,10 +205,10 @@ function AdminOrders() {
                   {o.amount_total != null ? `$${(o.amount_total / 100).toFixed(2)}` : "—"}
                 </td>
                 <td className="px-4 py-3">{pill(o.status)}</td>
-                <td className="px-4 py-3" style={{ color: o.upsell_converted ? "#166534" : "#8A8480" }}>
+                <td className="px-4 py-3" style={{ color: o.upsell_converted ? "#166534" : "#6B6560" }}>
                   {o.upsell_converted ? "✓" : "✗"}
                 </td>
-                <td className="px-4 py-3" style={{ color: o.downloaded_at ? "#166534" : "#8A8480" }}>
+                <td className="px-4 py-3" style={{ color: o.downloaded_at ? "#166534" : "#6B6560" }}>
                   {o.downloaded_at ? "✓" : "✗"}
                 </td>
               </tr>

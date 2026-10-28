@@ -192,7 +192,7 @@ function WorksheetPage() {
               fontSize: 11,
               textTransform: "uppercase",
               letterSpacing: "2.5px",
-              color: "#8A8480",
+              color: "#6B6560",
             }}
           >
             Worksheet <span style={{ color: "#EDB200" }}>✦</span>
@@ -229,7 +229,7 @@ function WorksheetPage() {
               style={{
                 height: 3,
                 width: `${progressPct}%`,
-                background: "linear-gradient(90deg, #c9857a, #EDB200)",
+                background: "linear-gradient(90deg, #E8BAC9, #EDB200)",
                 borderRadius: 100,
                 transition: "width 0.4s ease",
               }}
@@ -243,7 +243,7 @@ function WorksheetPage() {
               fontSize: 11,
               textTransform: "uppercase",
               letterSpacing: "2px",
-              color: "#8A8480",
+              color: "#6B6560",
             }}
           >
             {saveState === "saving" ? (
@@ -282,7 +282,7 @@ function WorksheetPage() {
                   fontSize: 11,
                   textTransform: "uppercase",
                   letterSpacing: "2px",
-                  color: "#8A8480",
+                  color: "#6B6560",
                 }}
               >
                 {q.number}.{" "}
@@ -332,7 +332,7 @@ function WorksheetPage() {
 
         <p
           className="mt-12 text-center"
-          style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#8A8480" }}
+          style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#6B6560" }}
         >
           Your answers are private to this link. Save the link, it's your way back in.
         </p>

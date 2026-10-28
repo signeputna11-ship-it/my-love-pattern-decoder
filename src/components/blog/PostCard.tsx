@@ -61,7 +61,7 @@ export function PostCard({ post, index = 0 }: { post: BlogPost; index?: number }
         )}
         {post.category && (
           <span
-            className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] uppercase text-foreground"
+            className="absolute bottom-3 left-3 rounded-full px-3 py-1 text-[11px] uppercase text-white"
             style={{
               backgroundColor: "#111111",
               letterSpacing: "1.5px",
@@ -106,7 +106,7 @@ export function PostCard({ post, index = 0 }: { post: BlogPost; index?: number }
             style={{
               fontFamily: "Inter, sans-serif",
               fontSize: "12px",
-              color: "#8A8480",
+              color: "#6B6560",
             }}
           >
             {post.read_time_minutes ? `${post.read_time_minutes} min read` : "Read"}

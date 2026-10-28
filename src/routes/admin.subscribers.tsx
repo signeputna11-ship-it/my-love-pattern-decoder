@@ -91,7 +91,7 @@ function AdminSubs() {
           { label: "Paused", value: stats?.paused ?? 0 },
         ].map((c) => (
           <div key={c.label} className="rounded-2xl bg-white p-4" style={{ border: "1px solid #E8E3DC" }}>
-            <p className="text-xs uppercase tracking-widest" style={{ color: "#8A8480" }}>{c.label}</p>
+            <p className="text-xs uppercase tracking-widest" style={{ color: "#6B6560" }}>{c.label}</p>
             <p className="mt-1 text-2xl italic" style={{ fontFamily: "Instrument Serif", color: "#111" }}>{c.value}</p>
           </div>
         ))}
@@ -123,7 +123,7 @@ function AdminSubs() {
       <div className="mt-4 overflow-x-auto rounded-2xl border bg-white" style={{ borderColor: "#E8E3DC" }}>
         <table className="w-full text-sm">
           <thead style={{ backgroundColor: "#F8F5F0" }}>
-            <tr className="text-left" style={{ color: "#8A8480" }}>
+            <tr className="text-left" style={{ color: "#6B6560" }}>
               <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">First name</th>
               <th className="px-4 py-3">Source</th>
@@ -136,9 +136,9 @@ function AdminSubs() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={8} className="px-4 py-6 text-center" style={{ color: "#8A8480" }}>Loading</td></tr>
+              <tr><td colSpan={8} className="px-4 py-6 text-center" style={{ color: "#6B6560" }}>Loading</td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={8} className="px-4 py-6 text-center" style={{ color: "#8A8480" }}>No subscribers.</td></tr>
+              <tr><td colSpan={8} className="px-4 py-6 text-center" style={{ color: "#6B6560" }}>No subscribers.</td></tr>
             ) : filtered.map((s) => (
               <tr key={s.id} className="border-t" style={{ borderColor: "#E8E3DC" }}>
                 <td className="px-4 py-3" style={{ color: "#111" }}>{s.email}</td>

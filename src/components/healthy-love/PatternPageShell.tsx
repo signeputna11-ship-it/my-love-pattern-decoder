@@ -46,7 +46,7 @@ export function PatternPageShell({
               fontWeight: 600,
               letterSpacing: "2.5px",
               textTransform: "uppercase",
-              color: "#8A8480",
+              color: "#6B6560",
               marginBottom: "32px",
             }}
           >

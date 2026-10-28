@@ -30,7 +30,7 @@ function EditPostPage() {
     });
   }, [id, navigate, get]);
 
-  if (loading) return <div className="p-12 text-center" style={{ color: "#8A8480" }}>Loading...</div>;
-  if (!post) return <div className="p-12 text-center" style={{ color: "#8A8480" }}>Post not found.</div>;
+  if (loading) return <div className="p-12 text-center" style={{ color: "#6B6560" }}>Loading...</div>;
+  if (!post) return <div className="p-12 text-center" style={{ color: "#6B6560" }}>Post not found.</div>;
   return <PostEditor initialPost={post} />;
 }

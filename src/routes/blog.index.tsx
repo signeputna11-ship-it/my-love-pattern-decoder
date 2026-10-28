@@ -63,7 +63,7 @@ function BlogIndex() {
               fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               letterSpacing: "2.5px",
-              color: "#8A8480",
+              color: "#6B6560",
             }}
           >
             ✦ Weekly Writing
@@ -107,11 +107,11 @@ function BlogIndex() {
           style={{ maxWidth: "1100px" }}
         >
           {loading ? (
-            <p className="text-center text-sm" style={{ color: "#8A8480" }}>
+            <p className="text-center text-sm" style={{ color: "#6B6560" }}>
               Loading...
             </p>
           ) : filtered.length === 0 ? (
-            <p className="text-center text-sm" style={{ color: "#8A8480" }}>
+            <p className="text-center text-sm" style={{ color: "#6B6560" }}>
               No posts in this category yet.
             </p>
           ) : (

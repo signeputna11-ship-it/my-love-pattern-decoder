@@ -48,7 +48,7 @@ function CategoryPage() {
       <SiteNav />
       <main className="relative z-[1]">
         <section className="mx-auto max-w-[1100px] px-6 pt-16 pb-10">
-          <Link to="/blog" className="text-sm" style={{ color: "#8A8480", fontFamily: "Inter" }}>
+          <Link to="/blog" className="text-sm" style={{ color: "#6B6560", fontFamily: "Inter" }}>
             ← All posts
           </Link>
           <p
@@ -57,7 +57,7 @@ function CategoryPage() {
               fontFamily: "Inter, sans-serif",
               fontSize: "11px",
               letterSpacing: "2.5px",
-              color: "#8A8480",
+              color: "#6B6560",
             }}
           >
             ✦ Category
@@ -77,11 +77,11 @@ function CategoryPage() {
 
         <section className="mx-auto px-6 pb-[100px]" style={{ maxWidth: "1100px" }}>
           {loading ? (
-            <p className="text-center text-sm" style={{ color: "#8A8480" }}>
+            <p className="text-center text-sm" style={{ color: "#6B6560" }}>
               Loading...
             </p>
           ) : posts.length === 0 ? (
-            <p className="text-center text-sm" style={{ color: "#8A8480" }}>
+            <p className="text-center text-sm" style={{ color: "#6B6560" }}>
               No posts in this category yet.
             </p>
           ) : (

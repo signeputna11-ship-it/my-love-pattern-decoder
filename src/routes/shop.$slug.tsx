@@ -101,7 +101,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: 11,
   textTransform: "uppercase",
   letterSpacing: "2.5px",
-  color: "#8A8480",
+  color: "#6B6560",
 };
 
 const cardStyle: React.CSSProperties = {
@@ -131,7 +131,7 @@ function SessionProductView({ product }: { product: Product }) {
           width: 5,
           height: 5,
           borderRadius: "50%",
-          background: "#c9857a",
+          background: "#E8BAC9",
           flexShrink: 0,
           marginTop: 9,
         }}
@@ -155,7 +155,7 @@ function SessionProductView({ product }: { product: Product }) {
             fontSize: 11,
             letterSpacing: "1.5px",
             textTransform: "uppercase",
-            color: "#a0574e",
+            color: "#173D34",
             marginBottom: 16,
           }}
         >
@@ -224,7 +224,7 @@ function SessionProductView({ product }: { product: Product }) {
           >
             $333
           </div>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#8A8480", marginTop: 4 }}>
+          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#6B6560", marginTop: 4 }}>
             per private session
           </div>
           <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "#6b4c44", marginTop: 20, lineHeight: 1.65 }}>
@@ -233,7 +233,7 @@ function SessionProductView({ product }: { product: Product }) {
           <div className="mt-5">
             <StripeBuyForm product={product} ctaLabel="Reserve your session · $333" />
           </div>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8A8480", marginTop: 14, textAlign: "center" }}>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#6B6560", marginTop: 14, textAlign: "center" }}>
             Not ready yet?{" "}
             <a
               href={SESSION_MAILTO}
@@ -338,7 +338,7 @@ function StripeBuyForm({
           }}
           style={{
             fontSize: 12,
-            color: "#8A8480",
+            color: "#6B6560",
             textDecoration: "underline",
             fontFamily: "Inter, sans-serif",
             background: "transparent",
@@ -392,7 +392,7 @@ function StripeBuyForm({
         {touched.email && !emailOk ? (
           <p style={errorStyle}>Enter a valid email address.</p>
         ) : (
-          <p style={{ marginTop: 8, fontSize: 12, color: "#8A8480" }}>
+          <p style={{ marginTop: 8, fontSize: 12, color: "#6B6560" }}>
             Your access link goes to this email. Double-check spelling.
           </p>
         )}
@@ -435,7 +435,7 @@ function StripeBuyForm({
         {submitting ? "Starting secure checkout…" : ctaLabel ?? defaultCta}
       </button>
       {!formValid && (
-        <p style={{ textAlign: "center", fontSize: 12, color: "#8A8480", marginTop: 4 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "#6B6560", marginTop: 4 }}>
           Fill in all fields above to continue.
         </p>
       )}
@@ -505,7 +505,7 @@ function StripeProductView({ product }: { product: Product }) {
             <li>· Re-open anytime from your email, no account needed</li>
           </ul>
           {product.kind === "worksheet" && (
-            <p style={{ marginTop: 14, fontSize: 13, color: "#8A8480" }}>
+            <p style={{ marginTop: 14, fontSize: 13, color: "#6B6560" }}>
               Want all six worksheets plus the full five-stage reset?{" "}
               <Link
                 to="/shop/$slug"
@@ -532,7 +532,7 @@ function StripeProductView({ product }: { product: Product }) {
           >
             {formatPrice(product.price_cents, product.currency)}
           </div>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#8A8480", marginTop: 4 }}>
+          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#6B6560", marginTop: 4 }}>
             one-time, lifetime access
           </div>
           <div className="mt-6">
@@ -586,7 +586,7 @@ function ShopProductPage() {
             fontSize: 12,
             textTransform: "uppercase",
             letterSpacing: "2px",
-            color: "#8A8480",
+            color: "#6B6560",
           }}
         >
           <ArrowLeft className="h-3.5 w-3.5" /> Back to shop
@@ -600,7 +600,7 @@ function ShopProductPage() {
 
         {!product && !err && (
           <div className="mt-20 flex items-center justify-center">
-            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#8A8480" }} />
+            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#6B6560" }} />
           </div>
         )}
 

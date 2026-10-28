@@ -101,7 +101,7 @@ function KitPage() {
               fontSize: 11,
               textTransform: "uppercase",
               letterSpacing: "2.5px",
-              color: "#8A8480",
+              color: "#6B6560",
             }}
           >
             <span style={{ color: "#EDB200" }}>✦</span> My Love Pattern · Reset Kit
@@ -135,7 +135,7 @@ function KitPage() {
               style={{
                 height: 3,
                 width: `${pct}%`,
-                background: "linear-gradient(90deg, #c9857a, #EDB200)",
+                background: "linear-gradient(90deg, #E8BAC9, #EDB200)",
                 borderRadius: 100,
                 transition: "width 0.4s ease",
               }}
@@ -148,7 +148,7 @@ function KitPage() {
               fontSize: 11,
               textTransform: "uppercase",
               letterSpacing: "2px",
-              color: "#8A8480",
+              color: "#6B6560",
             }}
           >
             {done} of {stages.length} complete
@@ -176,7 +176,7 @@ function KitPage() {
                       fontSize: 11,
                       textTransform: "uppercase",
                       letterSpacing: "2px",
-                      color: "#8A8480",
+                      color: "#6B6560",
                     }}
                   >
                     Stage {s.position}
@@ -232,7 +232,7 @@ function KitPage() {
                       ? "1px solid rgba(120,180,120,0.4)"
                       : "1px solid #E8E3DC",
                     background: s.completed ? "rgba(120,180,120,0.15)" : "rgba(255,255,255,0.7)",
-                    color: s.completed ? "#3f7048" : "#8A8480",
+                    color: s.completed ? "#3f7048" : "#6B6560",
                     transition: "all 0.2s",
                   }}
                 >
@@ -245,7 +245,7 @@ function KitPage() {
 
         <p
           className="mt-12 text-center"
-          style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#8A8480" }}
+          style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "#6B6560" }}
         >
           Bookmark this page. Your progress saves to your access link.
         </p>

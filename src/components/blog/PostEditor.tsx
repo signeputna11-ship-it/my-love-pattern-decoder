@@ -175,7 +175,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
     <div className="mx-auto max-w-7xl px-6 py-8" style={{ backgroundColor: "#F8F5F0", minHeight: "100vh" }}>
       <div className="mb-6 flex items-center justify-between">
         <a href="/admin/blog" className="text-sm" style={{ color: "#6b4c44" }}>← All posts</a>
-        <div className="flex items-center gap-3 text-xs" style={{ color: "#8A8480" }}>
+        <div className="flex items-center gap-3 text-xs" style={{ color: "#6B6560" }}>
           {saving ? "Saving..." : savedAt ? `Saved ${savedAt.toLocaleTimeString()}` : "Not saved yet"}
         </div>
       </div>
@@ -190,7 +190,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
             className="w-full bg-transparent outline-none focus:border-b focus:border-[#111] pb-2"
             style={{ fontFamily: "Instrument Serif, serif", fontSize: "32px", color: "#111111" }}
           />
-          <div className="mt-2 flex items-center gap-2 text-xs" style={{ color: "#8A8480" }}>
+          <div className="mt-2 flex items-center gap-2 text-xs" style={{ color: "#6B6560" }}>
             <span>mylovepattern.com/blog/</span>
             <input
               value={form.slug}
@@ -252,7 +252,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
             />
             <div className="mt-3 flex gap-2">
               <button onClick={() => doSave(false)} className="rounded-full border px-4 py-2 text-sm" style={{ borderColor: "#E8E3DC" }}>Save draft</button>
-              <button onClick={() => doSave(true)} className="rounded-full px-4 py-2 text-sm text-foreground" style={{ backgroundColor: "#111" }}>Publish</button>
+              <button onClick={() => doSave(true)} className="rounded-full px-4 py-2 text-sm text-white" style={{ backgroundColor: "#111" }}>Publish</button>
             </div>
           </Section>
 
@@ -319,7 +319,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
               className="w-full rounded-md border px-2 py-1 text-sm"
               style={{ borderColor: "#E8E3DC" }}
             />
-            <p className="mt-1 text-[10px]" style={{ color: "#8A8480" }}>{form.meta_title.length}/60</p>
+            <p className="mt-1 text-[10px]" style={{ color: "#6B6560" }}>{form.meta_title.length}/60</p>
             <textarea
               value={form.meta_description}
               onChange={(e) => update({ meta_description: e.target.value.slice(0, 155) })}
@@ -327,7 +327,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
               className="mt-2 w-full rounded-md border px-2 py-1 text-sm"
               style={{ borderColor: "#E8E3DC", minHeight: 60 }}
             />
-            <p className="mt-1 text-[10px]" style={{ color: "#8A8480" }}>{form.meta_description.length}/155</p>
+            <p className="mt-1 text-[10px]" style={{ color: "#6B6560" }}>{form.meta_description.length}/155</p>
             <input
               value={form.og_image_url}
               onChange={(e) => update({ og_image_url: e.target.value })}
@@ -351,7 +351,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
               className="w-24 rounded-md border px-2 py-1 text-sm"
               style={{ borderColor: "#E8E3DC" }}
             />
-            <span className="ml-2 text-xs" style={{ color: "#8A8480" }}>min read</span>
+            <span className="ml-2 text-xs" style={{ color: "#6B6560" }}>min read</span>
           </Section>
         </aside>
       </div>
@@ -362,7 +362,7 @@ export function PostEditor({ initialPost }: { initialPost: BlogPost | null }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl border p-4" style={{ borderColor: "#E8E3DC", backgroundColor: "rgba(255,255,255,0.85)" }}>
-      <h3 className="mb-3 text-xs uppercase" style={{ letterSpacing: "1.5px", color: "#8A8480", fontFamily: "Inter" }}>{title}</h3>
+      <h3 className="mb-3 text-xs uppercase" style={{ letterSpacing: "1.5px", color: "#6B6560", fontFamily: "Inter" }}>{title}</h3>
       {children}
     </div>
   );

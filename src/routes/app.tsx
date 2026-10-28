@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, LogOut, Shield } from "lucide-react";
 import { toast } from "sonner";
-import mlpLogo from "@/assets/mlp-logo.png";
+import mlpLogo from "@/assets/signe-coach-mark.png";
 import { checkIsAdmin } from "@/lib/server-fns/admin-emails.functions";
 import { linkGuestPurchases } from "@/lib/server-fns/payments.functions";
 
@@ -184,15 +184,15 @@ function AppLayout() {
     <div className="relative min-h-screen overflow-hidden bg-transparent text-foreground">
       <div className="fixed inset-0 z-[1] bg-white/60" />
 
-      <header className="relative z-10 flex items-center justify-between px-4 pt-4 sm:px-6">
-        <Link to="/app" className="flex items-center gap-2 text-sm">
+      <header className="relative z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 pt-4 sm:px-6">
+        <Link to="/app" className="flex shrink-0 items-center gap-2 whitespace-nowrap text-sm">
           <span className="grid h-7 w-7 flex-shrink-0 place-items-center overflow-hidden rounded-full bg-white">
-            <img src={mlpLogo} alt="My Love Pattern" className="h-full w-full object-contain" />
+            <img src={mlpLogo} alt="Signe Coach" className="h-full w-full object-contain" />
           </span>
-          <span className="font-serif italic text-base">Signe Coach</span>
+          <span className="whitespace-nowrap font-serif italic text-base">Signe Coach</span>
           <span className="hidden text-xs text-foreground/40 sm:inline">/ Member space</span>
         </Link>
-        <div className="flex items-center gap-3 text-xs text-foreground/60">
+        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-foreground/60 sm:gap-3">
           <span className="hidden truncate max-w-[160px] sm:inline">{email}</span>
           <Link
             to="/app/membership"

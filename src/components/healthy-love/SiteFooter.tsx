@@ -71,7 +71,7 @@ export function SiteFooter({ relatedPattern }: { relatedPattern?: PatternSlug } 
             </p>
             <a
               href={SIGNE_MAILTO} target="_blank" rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-transparent px-5 py-3 text-sm font-semibold text-foreground hover:opacity-90"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#FFFCF8] px-5 py-3 text-sm font-semibold text-foreground hover:opacity-90"
             >
               Email Signe <ArrowUpRight className="h-4 w-4" />
             </a>

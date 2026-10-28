@@ -153,7 +153,7 @@ function SessionUpsellCard() {
           params={{ slug: "deep-pattern-reset" }}
           style={{
             display: "inline-block",
-            background: "linear-gradient(135deg,#c9857a,#a0574e)",
+            background: "linear-gradient(135deg,#E8BAC9, #d99fb2)",
             color: "white",
             borderRadius: 100,
             padding: "14px 32px",
@@ -220,7 +220,7 @@ function ThankYouPage() {
       <div style={{ position: "relative", zIndex: 2 }} className="mx-auto max-w-3xl px-4 py-16">
         {loading ? (
           <div className="flex h-40 items-center justify-center">
-            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#8A8480" }} />
+            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#6B6560" }} />
           </div>
         ) : !resolved ? (
           <div
@@ -275,7 +275,7 @@ function ThankYouPage() {
                     fontSize: 11,
                     textTransform: "uppercase",
                     letterSpacing: "2.5px",
-                    color: "#8A8480",
+                    color: "#6B6560",
                   }}
                 >
                   You're in
@@ -338,7 +338,7 @@ function ThankYouPage() {
                     fontSize: 11,
                     textTransform: "uppercase",
                     letterSpacing: "2.5px",
-                    color: "#8A8480",
+                    color: "#6B6560",
                   }}
                 >
                   <span style={{ color: "#EDB200" }}>✦</span> One-time upgrade
@@ -387,7 +387,7 @@ function ThankYouPage() {
                   fontSize: 11,
                   textTransform: "uppercase",
                   letterSpacing: "2.5px",
-                  color: "#8A8480",
+                  color: "#6B6560",
                   textAlign: "center",
                 }}
               >
