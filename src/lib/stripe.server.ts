@@ -16,7 +16,16 @@ export function getConnectionApiKey(env: StripeEnv): string {
     : getEnv("STRIPE_LIVE_API_KEY");
 }
 
+// Direct Stripe keys (own Stripe account, no Lovable gateway). When present they take priority.
+function getDirectStripeKey(env: StripeEnv): string | undefined {
+  return env === "sandbox" ? process.env.STRIPE_SANDBOX_SECRET_KEY : process.env.STRIPE_LIVE_SECRET_KEY;
+}
+
 export function createStripeClient(env: StripeEnv): Stripe {
+  const directKey = getDirectStripeKey(env);
+  if (directKey) {
+    return new Stripe(directKey, { apiVersion: "2026-03-25.dahlia" });
+  }
   const connectionApiKey = getConnectionApiKey(env);
   const lovableApiKey = getEnv("LOVABLE_API_KEY");
 
