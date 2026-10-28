@@ -63,6 +63,7 @@ revoke execute on function public.can_access_module(uuid, uuid) from public, ano
 grant execute on function public.can_access_module(uuid, uuid) to authenticated, service_role;
 
 drop policy if exists "exercises_read_authenticated" on public.exercises;
+drop policy if exists "exercises_read_paid" on public.exercises;
 create policy "exercises_read_accessible" on public.exercises
   for select to authenticated
   using (public.can_access_module(auth.uid(), module_id));

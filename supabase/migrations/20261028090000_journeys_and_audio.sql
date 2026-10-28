@@ -41,6 +41,7 @@ where journey_id is null;
 
 -- Only show modules (and their exercises, which inherit this check) of published journeys.
 drop policy if exists "modules_read_authenticated" on public.modules;
+drop policy if exists "modules_read_paid" on public.modules;
 create policy "modules_read_published_journeys" on public.modules
   for select to authenticated
   using (
