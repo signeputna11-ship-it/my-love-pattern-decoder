@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Loader2, Save, Download } from "lu
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import { AudioPlayer } from "@/components/AudioPlayer";
-import { CoverArt } from "@/components/CoverArt";
+import { CoverHero } from "@/components/CoverArt";
 import { InAppTools } from "@/components/healthy-love/InAppTools";
 import { PatternGuideCard } from "@/components/healthy-love/PatternGuideCard";
 
@@ -312,7 +312,13 @@ function ModulePage() {
       )}
 
       {!locked && module.audio_path && (
-        <CoverArt slug={module.slug} className="mb-4 h-36 w-full rounded-3xl sm:h-44" />
+        <CoverHero
+          slug={module.slug}
+          title={module.audio_title || module.title}
+          subtitle={module.subtitle}
+          label={`${module.is_free ? "Free audio" : "Member audio"}${module.audio_binaural ? " · Binaural" : ""}`}
+          minutes={module.audio_minutes}
+        />
       )}
 
       {!locked && <AudioPlayer
