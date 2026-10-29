@@ -267,6 +267,12 @@ function AppLayout() {
           >
             Membership
           </Link>
+          <Link
+            to="/app/work-with-signe"
+            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
+          >
+            Work with Signe
+          </Link>
           {isAdmin && (
             <Link
               to="/app/admin/emails"

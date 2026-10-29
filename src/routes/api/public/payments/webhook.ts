@@ -209,6 +209,21 @@ async function upsertSubscription(sub: any, env: StripeEnv) {
     },
     { onConflict: "stripe_subscription_id" },
   );
+
+  // Moving up from Starter: end the Starter plan once a Full plan is active, so she is not billed twice.
+  const key: string = item?.price?.lookup_key ?? "";
+  if (customerId && !key.startsWith("signe_coach_starter") && (sub.status === "active" || sub.status === "trialing")) {
+    try {
+      const stripe = createStripeClient(env);
+      const others = await stripe.subscriptions.list({ customer: customerId, status: "active", limit: 20 });
+      for (const o of others.data) {
+        const k = o.items?.data?.[0]?.price?.lookup_key ?? "";
+        if (o.id !== sub.id && k.startsWith("signe_coach_starter")) await stripe.subscriptions.cancel(o.id);
+      }
+    } catch (e) {
+      console.warn("Could not end Starter plan after upgrade:", (e as Error).message);
+    }
+  }
 }
 
 async function handleWebhook(req: Request, env: StripeEnv) {

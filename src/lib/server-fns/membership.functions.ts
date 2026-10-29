@@ -2,10 +2,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { type StripeEnv, createStripeClient } from "@/lib/stripe.server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+// Price ladder. Amounts are in cents. Stripe prices are immutable, so changing an amount
+// here and running "Set up membership in Stripe" creates a new price and moves the lookup key to it.
 export const MEMBERSHIP_PRICES = {
-  monthly: { lookupKey: "signe_coach_member_monthly", amount: 499, interval: "month" as const },
-  yearly: { lookupKey: "signe_coach_member_yearly", amount: 3900, interval: "year" as const },
+  starter: { lookupKey: "signe_coach_starter_monthly", amount: 499, interval: "month" as const },
+  monthly: { lookupKey: "signe_coach_member_monthly", amount: 1499, interval: "month" as const },
+  yearly: { lookupKey: "signe_coach_member_yearly", amount: 11900, interval: "year" as const },
+  founding: { lookupKey: "signe_coach_founding_yearly", amount: 7900, interval: "year" as const },
 };
+export type MembershipPlan = keyof typeof MEMBERSHIP_PRICES;
+const FOUNDING_LIMIT = 100;
 export const MEMBER_COUPON_ID = "signe-member-1to1";
 // Percentage off 1:1 session products for active members. Change here to adjust.
 export const MEMBER_SESSION_PERCENT_OFF = 15;
@@ -48,9 +54,9 @@ async function userEmail(userId: string) {
 /** Start an embedded subscription checkout for the signed-in user. */
 export const createMembershipCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { plan: "monthly" | "yearly"; returnUrl: string; environment: StripeEnv; withdrawalAck: boolean }) => {
+  .inputValidator((data: { plan: MembershipPlan; returnUrl: string; environment: StripeEnv; withdrawalAck: boolean }) => {
     envSchema(data);
-    if (data.plan !== "monthly" && data.plan !== "yearly") throw new Error("Invalid plan");
+    if (!(data.plan in MEMBERSHIP_PRICES)) throw new Error("Invalid plan");
     if (data.withdrawalAck !== true) throw new Error("Please confirm the immediate access terms first");
     if (!data.returnUrl) throw new Error("Missing returnUrl");
     return data;
@@ -58,6 +64,16 @@ export const createMembershipCheckout = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const stripe = createStripeClient(data.environment);
     const lookupKey = MEMBERSHIP_PRICES[data.plan].lookupKey;
+
+    if (data.plan === "founding") {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { count } = await (supabaseAdmin as any)
+        .from("subscriptions")
+        .select("id", { count: "exact", head: true })
+        .eq("price_lookup_key", lookupKey)
+        .in("status", ["active", "trialing", "past_due"]);
+      if ((count ?? 0) >= FOUNDING_LIMIT) throw new Error("The founding offer is full");
+    }
     const prices = await stripe.prices.list({ lookup_keys: [lookupKey], active: true });
     if (!prices.data.length) throw new Error("Membership price is not set up yet");
 
@@ -169,16 +185,20 @@ export const setupMembershipInStripe = createServerFn({ method: "POST" })
     const created: string[] = [];
 
     let productId: string | undefined;
+    const productOf = (pr: { product: string | { id: string } }) =>
+      typeof pr.product === "string" ? pr.product : pr.product.id;
+    // Reuse the existing membership product so old subscribers keep their history.
     for (const p of Object.values(MEMBERSHIP_PRICES)) {
       const existing = await stripe.prices.list({ lookup_keys: [p.lookupKey], active: true });
-      if (existing.data.length) {
-        productId ??= typeof existing.data[0].product === "string" ? existing.data[0].product : existing.data[0].product.id;
-        continue;
-      }
+      if (existing.data.length) productId ??= productOf(existing.data[0]);
+    }
+    for (const p of Object.values(MEMBERSHIP_PRICES)) {
+      const existing = await stripe.prices.list({ lookup_keys: [p.lookupKey], active: true });
+      if (existing.data.length && existing.data[0].unit_amount === p.amount) continue;
       if (!productId) {
         const prod = await stripe.products.create({
           name: "Signe Coach Membership",
-          description: "All journeys, workbooks and audio library.",
+          description: "Journeys, workbooks and audio library.",
         });
         productId = prod.id;
         created.push("product");
@@ -189,6 +209,8 @@ export const setupMembershipInStripe = createServerFn({ method: "POST" })
         unit_amount: p.amount,
         recurring: { interval: p.interval },
         lookup_key: p.lookupKey,
+        // Moves the key off an older price with a different amount; existing subscribers keep theirs.
+        transfer_lookup_key: true,
       });
       created.push(p.lookupKey);
     }

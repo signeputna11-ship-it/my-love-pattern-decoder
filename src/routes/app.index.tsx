@@ -14,6 +14,7 @@ type Module = {
   subtitle: string | null;
   journey_id?: string | null;
   is_free?: boolean;
+  is_starter?: boolean;
 };
 type Journey = { id: string; slug: string; position: number; title: string; subtitle: string | null };
 
@@ -26,6 +27,8 @@ function Dashboard() {
   const [journeys, setJourneys] = useState<Journey[]>([]);
   const [startPoint, setStartPoint] = useState<JourneyKey | null>(null);
   const [isMember, setIsMember] = useState(false);
+  const [isStarter, setIsStarter] = useState(false);
+  const [startingSlug, setStartingSlug] = useState<string | null>(null);
   const [hasKit, setHasKit] = useState(false);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [pattern, setPattern] = useState<string | null>(null);
@@ -49,19 +52,21 @@ function Dashboard() {
         if (!cancelled) setJourneys((jRes.data as Journey[]) ?? []);
 
         if (userId) {
-          const [memRes, kitRes] = await Promise.all([
+          const [memRes, kitRes, starterRes] = await Promise.all([
             (supabase as any).rpc("has_membership", { _user_id: userId }),
             supabase.rpc("has_paid_access", { _user_id: userId }),
+            (supabase as any).rpc("has_starter", { _user_id: userId }),
           ]);
           if (!cancelled) {
             setIsMember(!!memRes.data);
             setHasKit(!!kitRes.data);
+            setIsStarter(!!starterRes.data);
           }
           const [progRes, profileRes] = await Promise.all([
             supabase.from("user_progress").select("module_id, completed_at").eq("user_id", userId),
-            supabase
+            (supabase as any)
               .from("profiles")
-              .select("display_name, pattern_type")
+              .select("display_name, pattern_type, starting_journey")
               .eq("user_id", userId)
               .maybeSingle(),
           ]);
@@ -76,6 +81,7 @@ function Dashboard() {
                 .map((p) => p.module_id as string),
             ),
           );
+          setStartingSlug((profileRes.data as any)?.starting_journey ?? null);
           setPattern(profileRes.data?.pattern_type ?? null);
           setName(profileRes.data?.display_name ?? "");
         }
@@ -120,10 +126,13 @@ function Dashboard() {
   const total = modules.length || 5;
   const percent = Math.round((completedCount / total) * 100);
   const relationshipsId = journeys.find((j) => j.slug === "relationships")?.id;
+  // Mirrors can_access_module in the database. Starter opens her quiz journey plus flagged modules.
+  const startingJourneyId = journeys.find((j) => j.slug === startingSlug)?.id;
   const isLocked = (m: Module) =>
     !m.is_free &&
     !isMember &&
-    !(hasKit && (!m.journey_id || m.journey_id === relationshipsId));
+    !(hasKit && (!m.journey_id || m.journey_id === relationshipsId)) &&
+    !(isStarter && (m.is_starter || (!!startingJourneyId && m.journey_id === startingJourneyId)));
   const groups =
     journeys.length > 0
       ? journeys
@@ -199,7 +208,7 @@ function Dashboard() {
           <div>
             <p className="font-serif text-xl">Unlock every journey</p>
             <p className="mt-1 text-sm text-foreground/60">
-              Members get all workbooks and audio for 4,99 € a month, plus a discount on 1:1 sessions.
+              Full Members get every workbook and audio from 119 € a year, plus 15% off a Deep Reset with Signe.
             </p>
           </div>
           <Link

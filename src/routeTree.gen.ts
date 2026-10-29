@@ -36,6 +36,7 @@ import { Route as KitTokenRouteImport } from './routes/kit.$token'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AppWorkWithSigneRouteImport } from './routes/app.work-with-signe'
 import { Route as AppMembershipRouteImport } from './routes/app.membership'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
@@ -190,6 +191,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppWorkWithSigneRoute = AppWorkWithSigneRouteImport.update({
+  id: '/work-with-signe',
+  path: '/work-with-signe',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMembershipRoute = AppMembershipRouteImport.update({
   id: '/membership',
   path: '/membership',
@@ -308,6 +314,7 @@ export interface FileRoutesByFullPath {
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/app/membership': typeof AppMembershipRoute
+  '/app/work-with-signe': typeof AppWorkWithSigneRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -354,6 +361,7 @@ export interface FileRoutesByTo {
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/app/membership': typeof AppMembershipRoute
+  '/app/work-with-signe': typeof AppWorkWithSigneRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -402,6 +410,7 @@ export interface FileRoutesById {
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
   '/app/membership': typeof AppMembershipRoute
+  '/app/work-with-signe': typeof AppWorkWithSigneRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -451,6 +460,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/subscribers'
     | '/app/membership'
+    | '/app/work-with-signe'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -497,6 +507,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/subscribers'
     | '/app/membership'
+    | '/app/work-with-signe'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -544,6 +555,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/subscribers'
     | '/app/membership'
+    | '/app/work-with-signe'
     | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -803,6 +815,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/work-with-signe': {
+      id: '/app/work-with-signe'
+      path: '/work-with-signe'
+      fullPath: '/app/work-with-signe'
+      preLoaderRoute: typeof AppWorkWithSigneRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/membership': {
       id: '/app/membership'
       path: '/membership'
@@ -934,6 +953,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppMembershipRoute: typeof AppMembershipRoute
+  AppWorkWithSigneRoute: typeof AppWorkWithSigneRoute
   AppIndexRoute: typeof AppIndexRoute
   AppAdminAudioRoute: typeof AppAdminAudioRoute
   AppAdminEmailsRoute: typeof AppAdminEmailsRoute
@@ -942,6 +962,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppMembershipRoute: AppMembershipRoute,
+  AppWorkWithSigneRoute: AppWorkWithSigneRoute,
   AppIndexRoute: AppIndexRoute,
   AppAdminAudioRoute: AppAdminAudioRoute,
   AppAdminEmailsRoute: AppAdminEmailsRoute,
