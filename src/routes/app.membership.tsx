@@ -57,11 +57,21 @@ function MembershipPage() {
   const [busy, setBusy] = useState(false);
   const [ack, setAck] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [grant, setGrant] = useState<{ tier: "full" | "starter"; expires_at: string } | null>(null);
+  const [code, setCode] = useState("");
 
   useEffect(() => {
     (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (u.user) {
+        const { data: g } = await (supabase as any)
+          .from("access_grants")
+          .select("tier,expires_at")
+          .eq("user_id", u.user.id)
+          .gt("expires_at", new Date().toISOString())
+          .order("expires_at", { ascending: false });
+        const grants = (g as { tier: "full" | "starter"; expires_at: string }[] | null) ?? [];
+        setGrant(grants.find((x) => x.tier === "full") ?? grants[0] ?? null);
         const { data } = await (supabase as any)
           .from("subscriptions")
           .select("status,current_period_end,cancel_at_period_end,price_lookup_key")
@@ -79,6 +89,22 @@ function MembershipPage() {
   const active = !!sub && (sub.status === "active" || sub.status === "trialing");
   const isStarter = active && !!sub?.price_lookup_key?.startsWith("signe_coach_starter");
   const returnUrl = () => `${window.location.origin}/app/membership?welcome=1`;
+  const passFull = grant?.tier === "full";
+
+  const redeem = async () => {
+    if (!code.trim()) return;
+    setBusy(true);
+    const { data, error } = await (supabase as any).rpc("redeem_access_code", { _code: code });
+    if (error) {
+      toast.error(error.message || "That code did not work");
+      setBusy(false);
+      return;
+    }
+    toast.success(
+      `Your ${data?.tier === "starter" ? "Starter" : "Full Member"} pass is active until ${new Date(data?.expires_at).toLocaleDateString()}.`,
+    );
+    window.location.reload();
+  };
 
   const portal = async () => {
     setBusy(true);
@@ -189,6 +215,16 @@ function MembershipPage() {
       <p className="text-xs uppercase tracking-[0.3em] text-foreground/50">Membership</p>
       <h1 className="mt-2 font-serif text-4xl sm:text-5xl">Grow at your own pace</h1>
 
+      {passFull && !(active && !isStarter) && (
+        <div className="mt-8 liquid-glass-strong rounded-3xl p-6">
+          <p className="font-serif text-2xl">Your free pass is active</p>
+          <p className="mt-2 text-sm text-foreground/60">
+            You have Full Member access until {new Date(grant!.expires_at).toLocaleDateString()}. Keep going, and you can
+            join any time to keep it after that.
+          </p>
+        </div>
+      )}
+
       {active && !isStarter ? (
         <div className="mt-8 liquid-glass-strong rounded-3xl p-6">
           <p className="font-serif text-2xl">You are a member</p>
@@ -290,6 +326,34 @@ function MembershipPage() {
               >
                 Claim founding place
               </button>
+            </div>
+          )}
+          {!passFull && (
+            <div className="mt-8 liquid-glass rounded-3xl p-5">
+              <p className="font-serif text-xl">Have a pass code?</p>
+              <p className="mt-1 text-sm text-foreground/60">Enter it here to unlock your free access. No card needed.</p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  redeem();
+                }}
+                className="mt-3 flex flex-col gap-2 sm:flex-row"
+              >
+                <input
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
+                  placeholder="BETA-XXXX-XXXX"
+                  autoCapitalize="characters"
+                  className="flex-1 rounded-2xl liquid-glass px-4 py-3 text-sm tracking-widest text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
+                />
+                <button
+                  type="submit"
+                  disabled={busy || !code.trim()}
+                  className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground disabled:opacity-50"
+                >
+                  Redeem
+                </button>
+              </form>
             </div>
           )}
           <p className="mt-6 text-xs text-foreground/40">

@@ -45,6 +45,7 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
 import { Route as AppModuleSlugRouteImport } from './routes/app.module.$slug'
 import { Route as AppAdminEmailsRouteImport } from './routes/app.admin.emails'
+import { Route as AppAdminCodesRouteImport } from './routes/app.admin.codes'
 import { Route as AppAdminAudioRouteImport } from './routes/app.admin.audio'
 import { Route as AdminBlogNewRouteImport } from './routes/admin.blog.new'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -236,6 +237,11 @@ const AppAdminEmailsRoute = AppAdminEmailsRouteImport.update({
   path: '/admin/emails',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminCodesRoute = AppAdminCodesRouteImport.update({
+  id: '/admin/codes',
+  path: '/admin/codes',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAdminAudioRoute = AppAdminAudioRouteImport.update({
   id: '/admin/audio',
   path: '/admin/audio',
@@ -326,6 +332,7 @@ export interface FileRoutesByFullPath {
   '/shop/': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/audio': typeof AppAdminAudioRoute
+  '/app/admin/codes': typeof AppAdminCodesRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
@@ -373,6 +380,7 @@ export interface FileRoutesByTo {
   '/shop': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/audio': typeof AppAdminAudioRoute
+  '/app/admin/codes': typeof AppAdminCodesRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
@@ -422,6 +430,7 @@ export interface FileRoutesById {
   '/shop/': typeof ShopIndexRoute
   '/admin/blog/new': typeof AdminBlogNewRoute
   '/app/admin/audio': typeof AppAdminAudioRoute
+  '/app/admin/codes': typeof AppAdminCodesRoute
   '/app/admin/emails': typeof AppAdminEmailsRoute
   '/app/module/$slug': typeof AppModuleSlugRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
@@ -472,6 +481,7 @@ export interface FileRouteTypes {
     | '/shop/'
     | '/admin/blog/new'
     | '/app/admin/audio'
+    | '/app/admin/codes'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/blog/category/$category'
@@ -519,6 +529,7 @@ export interface FileRouteTypes {
     | '/shop'
     | '/admin/blog/new'
     | '/app/admin/audio'
+    | '/app/admin/codes'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/blog/category/$category'
@@ -567,6 +578,7 @@ export interface FileRouteTypes {
     | '/shop/'
     | '/admin/blog/new'
     | '/app/admin/audio'
+    | '/app/admin/codes'
     | '/app/admin/emails'
     | '/app/module/$slug'
     | '/blog/category/$category'
@@ -878,6 +890,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminEmailsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/admin/codes': {
+      id: '/app/admin/codes'
+      path: '/admin/codes'
+      fullPath: '/app/admin/codes'
+      preLoaderRoute: typeof AppAdminCodesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/admin/audio': {
       id: '/app/admin/audio'
       path: '/admin/audio'
@@ -956,6 +975,7 @@ interface AppRouteChildren {
   AppWorkWithSigneRoute: typeof AppWorkWithSigneRoute
   AppIndexRoute: typeof AppIndexRoute
   AppAdminAudioRoute: typeof AppAdminAudioRoute
+  AppAdminCodesRoute: typeof AppAdminCodesRoute
   AppAdminEmailsRoute: typeof AppAdminEmailsRoute
   AppModuleSlugRoute: typeof AppModuleSlugRoute
 }
@@ -965,6 +985,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppWorkWithSigneRoute: AppWorkWithSigneRoute,
   AppIndexRoute: AppIndexRoute,
   AppAdminAudioRoute: AppAdminAudioRoute,
+  AppAdminCodesRoute: AppAdminCodesRoute,
   AppAdminEmailsRoute: AppAdminEmailsRoute,
   AppModuleSlugRoute: AppModuleSlugRoute,
 }

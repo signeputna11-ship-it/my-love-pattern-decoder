@@ -209,7 +209,8 @@ function Dashboard() {
           <div>
             <p className="font-serif text-xl">Unlock every journey</p>
             <p className="mt-1 text-sm text-foreground/60">
-              Full Members get every workbook and audio from 119 € a year, plus 15% off a Deep Reset with Signe.
+              Full Members get every workbook and audio from 119 € a year, plus 15% off a Deep Reset with Signe.{" "}
+              <Link to="/app/membership" className="underline underline-offset-2 hover:text-foreground">Have a pass code?</Link>
             </p>
           </div>
           <Link
