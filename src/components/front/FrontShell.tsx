@@ -31,7 +31,12 @@ export function FrontFooter(): ReactNode {
         mental health care. If you are in crisis, please contact your local emergency number or a helpline in your
         country.
       </p>
-      <p className="mt-2">© {new Date().getFullYear()} Signe Coach</p>
+      <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+        <span>© {new Date().getFullYear()} Signe Coach</span>
+        <Link to="/terms" className="hover:text-foreground">Terms</Link>
+        <Link to="/privacy" className="hover:text-foreground">Privacy</Link>
+        <Link to="/refunds" className="hover:text-foreground">Refunds</Link>
+      </p>
     </footer>
   );
 }

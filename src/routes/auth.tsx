@@ -7,6 +7,14 @@ import { sendTransactionalEmail } from "@/lib/email/send";
 import { linkGuestPurchases } from "@/lib/server-fns/payments.functions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { TermsConsent } from "@/components/TermsConsent";
+import { TERMS_VERSION } from "@/lib/legal";
+
+// Remembers a ticked box through the Google redirect so the app does not ask twice.
+const TERMS_KEY = "sc_terms_version";
+const rememberTerms = () => {
+  try { localStorage.setItem(TERMS_KEY, TERMS_VERSION); } catch { /* private mode */ }
+};
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): { mode?: "signup" } =>
@@ -54,6 +62,7 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [agreed, setAgreed] = useState(false);
   const [signupSuccessEmail, setSignupSuccessEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -69,13 +78,21 @@ function AuthPage() {
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (mode === "signup" && !agreed) {
+      toast.error("Please tick the box to agree to the terms.");
+      return;
+    }
     setLoading(true);
     try {
       if (mode === "signup") {
+        rememberTerms();
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/app` },
+          options: {
+            emailRedirectTo: `${window.location.origin}/app`,
+            data: { terms_version: TERMS_VERSION, terms_accepted_at: new Date().toISOString() },
+          },
         });
         if (error) throw error;
         // Supabase signals "email already registered" by returning a user with empty identities.
@@ -105,6 +122,11 @@ function AuthPage() {
   const showGoogle = !nativeAuth || import.meta.env.VITE_GOOGLE_AUTH === "true";
 
   const handleGoogle = async () => {
+    if (mode === "signup" && !agreed) {
+      toast.error("Please tick the box to agree to the terms.");
+      return;
+    }
+    if (mode === "signup") rememberTerms();
     setLoading(true);
     if (nativeAuth) {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -198,11 +220,17 @@ function AuthPage() {
                   : "Create a free account to start where you are."}
               </p>
 
+              {mode === "signup" && (
+                <div className="mt-6 rounded-2xl liquid-glass p-4">
+                  <TermsConsent checked={agreed} onChange={setAgreed} />
+                </div>
+              )}
+
               {showGoogle && (
                 <>
               <button
                 onClick={handleGoogle}
-                disabled={loading}
+                disabled={loading || (mode === "signup" && !agreed)}
                 className="mt-6 flex w-full items-center justify-center gap-3 rounded-full liquid-glass px-5 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50"
               >
                 <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
@@ -252,7 +280,7 @@ function AuthPage() {
                 />
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || (mode === "signup" && !agreed)}
                   className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
                 >
                   {loading && <Loader2 className="h-4 w-4 animate-spin" />}

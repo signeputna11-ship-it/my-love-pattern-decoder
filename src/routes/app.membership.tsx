@@ -11,6 +11,7 @@ import {
   setupMembershipInStripe,
 } from "@/lib/server-fns/membership.functions";
 import { checkIsAdmin } from "@/lib/server-fns/admin-emails.functions";
+import { WITHDRAWAL_CONSENT } from "@/lib/legal";
 
 export const Route = createFileRoute("/app/membership")({
   component: MembershipPage,
@@ -34,6 +35,8 @@ function MembershipPage() {
   const [plan, setPlan] = useState<"monthly" | "yearly" | null>(null);
   const [admin, setAdmin] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [ack, setAck] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -88,10 +91,56 @@ function MembershipPage() {
       </div>
     );
 
+  const leaveCheckout = () => {
+    setPlan(null);
+    setAck(false);
+    setConfirmed(false);
+  };
+
+  if (plan && !confirmed) {
+    return (
+      <div className="mx-auto max-w-xl px-4 py-10 sm:py-16">
+        <button onClick={leaveCheckout} className="text-xs uppercase tracking-widest text-foreground/50 hover:text-foreground">
+          Back
+        </button>
+        <div className="mt-6 liquid-glass-strong rounded-3xl p-6 sm:p-8">
+          <p className="text-xs uppercase tracking-widest text-foreground/50">
+            {plan === "yearly" ? "Yearly membership · 39 €" : "Monthly membership · 4,99 €"}
+          </p>
+          <h1 className="mt-2 font-serif text-3xl">Before you pay</h1>
+          <p className="mt-3 text-sm text-foreground/70">
+            Your access opens the moment you pay. Your membership renews automatically and you can cancel any time from this page.
+          </p>
+          <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl liquid-glass p-4 text-xs leading-relaxed text-foreground/70">
+            <input
+              type="checkbox"
+              checked={ack}
+              onChange={(e) => setAck(e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--primary)]"
+            />
+            <span>
+              {WITHDRAWAL_CONSENT}{" "}
+              <Link to="/refunds" target="_blank" className="underline underline-offset-2 hover:text-foreground">
+                Refund Policy
+              </Link>
+            </span>
+          </label>
+          <button
+            disabled={!ack}
+            onClick={() => setConfirmed(true)}
+            className="mt-5 w-full rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground disabled:opacity-50"
+          >
+            Continue to payment
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (plan) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 sm:py-16">
-        <button onClick={() => setPlan(null)} className="text-xs uppercase tracking-widest text-foreground/50 hover:text-foreground">
+        <button onClick={leaveCheckout} className="text-xs uppercase tracking-widest text-foreground/50 hover:text-foreground">
           Back
         </button>
         <div className="mt-6 liquid-glass-strong overflow-hidden rounded-3xl p-2">
@@ -100,7 +149,7 @@ function MembershipPage() {
             options={{
               fetchClientSecret: async () => {
                 const secret = await createMembershipCheckout({
-                  data: { plan, returnUrl: returnUrl(), environment: getStripeEnvironment() },
+                  data: { plan, returnUrl: returnUrl(), environment: getStripeEnvironment(), withdrawalAck: ack },
                 });
                 if (!secret) throw new Error("Could not start checkout");
                 return secret;

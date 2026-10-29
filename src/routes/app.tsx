@@ -6,6 +6,18 @@ import { toast } from "sonner";
 import mlpLogo from "@/assets/signe-coach-mark.png";
 import { checkIsAdmin } from "@/lib/server-fns/admin-emails.functions";
 import { linkGuestPurchases } from "@/lib/server-fns/payments.functions";
+import { TermsConsent } from "@/components/TermsConsent";
+import { TERMS_VERSION } from "@/lib/legal";
+
+const TERMS_KEY = "sc_terms_version";
+
+async function recordTerms(userId: string) {
+  const { error } = await (supabase as any)
+    .from("profiles")
+    .update({ terms_accepted_at: new Date().toISOString(), terms_version: TERMS_VERSION })
+    .eq("user_id", userId);
+  return !error;
+}
 
 export const Route = createFileRoute("/app")({
   component: AppLayout,
@@ -20,7 +32,9 @@ export const Route = createFileRoute("/app")({
 
 function AppLayout() {
   const navigate = useNavigate();
-  const [state, setState] = useState<"loading" | "no-auth" | "no-access" | "ready" | "error">("loading");
+  const [state, setState] = useState<"loading" | "no-auth" | "no-access" | "terms" | "ready" | "error">("loading");
+  const [userId, setUserId] = useState<string>("");
+  const [agreed, setAgreed] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -44,6 +58,23 @@ function AppLayout() {
       }
 
       setEmail(user.email ?? "");
+      setUserId(user.id);
+
+      // Terms: everyone must have accepted the current version. A box ticked at sign-up
+      // (kept in the user's metadata or browser) is recorded silently, otherwise we ask.
+      const { data: prof } = await (supabase as any)
+        .from("profiles")
+        .select("terms_version")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (prof && prof.terms_version !== TERMS_VERSION) {
+        let ticked = user.user_metadata?.terms_version === TERMS_VERSION;
+        try { ticked = ticked || localStorage.getItem(TERMS_KEY) === TERMS_VERSION; } catch { /* private mode */ }
+        if (!ticked || !(await recordTerms(user.id))) {
+          setState("terms");
+          return;
+        }
+      }
 
       // Admin check (best-effort, never blocks)
       checkIsAdmin()
@@ -131,6 +162,42 @@ function AppLayout() {
           >
             Sign in
           </Link>
+        }
+      />
+    );
+  }
+
+  if (state === "terms") {
+    return (
+      <CenterCard
+        title="One quick step"
+        body="Please read and accept our terms to enter your space."
+        cta={
+          <div className="space-y-4">
+            <div className="rounded-2xl liquid-glass p-4">
+              <TermsConsent checked={agreed} onChange={setAgreed} />
+            </div>
+            <button
+              disabled={!agreed}
+              onClick={async () => {
+                if (await recordTerms(userId)) {
+                  try { localStorage.setItem(TERMS_KEY, TERMS_VERSION); } catch { /* private mode */ }
+                  setAgreed(false);
+                  check();
+                } else {
+                  toast.error("Could not save your acceptance. Please try again.");
+                }
+              }}
+              className="w-full rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            >
+              Agree and continue
+            </button>
+          </div>
+        }
+        footer={
+          <button onClick={signOut} className="text-xs text-foreground/50 hover:text-foreground">
+            Sign out
+          </button>
         }
       />
     );

@@ -15,8 +15,11 @@ import { Route as TheUnavailableChaserRouteImport } from './routes/the-unavailab
 import { Route as TheOverInvestorRouteImport } from './routes/the-over-investor'
 import { Route as TheBoundarySoftenerRouteImport } from './routes/the-boundary-softener'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RefundsRouteImport } from './routes/refunds'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as DeepResetRouteImport } from './routes/deep-reset'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -82,14 +85,29 @@ const ThankYouRoute = ThankYouRouteImport.update({
   path: '/thank-you',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RefundsRoute = RefundsRouteImport.update({
+  id: '/refunds',
+  path: '/refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -276,8 +294,11 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/refunds': typeof RefundsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
@@ -319,8 +340,11 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/refunds': typeof RefundsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
@@ -364,8 +388,11 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRouteWithChildren
   '/deep-reset': typeof DeepResetRoute
   '/home': typeof HomeRoute
+  '/privacy': typeof PrivacyRoute
   '/quiz': typeof QuizRoute
+  '/refunds': typeof RefundsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
   '/the-boundary-softener': typeof TheBoundarySoftenerRoute
   '/the-over-investor': typeof TheOverInvestorRoute
@@ -410,8 +437,11 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/deep-reset'
     | '/home'
+    | '/privacy'
     | '/quiz'
+    | '/refunds'
     | '/sitemap.xml'
+    | '/terms'
     | '/thank-you'
     | '/the-boundary-softener'
     | '/the-over-investor'
@@ -453,8 +483,11 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/deep-reset'
     | '/home'
+    | '/privacy'
     | '/quiz'
+    | '/refunds'
     | '/sitemap.xml'
+    | '/terms'
     | '/thank-you'
     | '/the-boundary-softener'
     | '/the-over-investor'
@@ -497,8 +530,11 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/deep-reset'
     | '/home'
+    | '/privacy'
     | '/quiz'
+    | '/refunds'
     | '/sitemap.xml'
+    | '/terms'
     | '/thank-you'
     | '/the-boundary-softener'
     | '/the-over-investor'
@@ -542,8 +578,11 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRouteWithChildren
   DeepResetRoute: typeof DeepResetRoute
   HomeRoute: typeof HomeRoute
+  PrivacyRoute: typeof PrivacyRoute
   QuizRoute: typeof QuizRoute
+  RefundsRoute: typeof RefundsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
   ThankYouRoute: typeof ThankYouRoute
   TheBoundarySoftenerRoute: typeof TheBoundarySoftenerRoute
   TheOverInvestorRoute: typeof TheOverInvestorRoute
@@ -617,6 +656,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ThankYouRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -624,11 +670,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/refunds': {
+      id: '/refunds'
+      path: '/refunds'
+      fullPath: '/refunds'
+      preLoaderRoute: typeof RefundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quiz': {
       id: '/quiz'
       path: '/quiz'
       fullPath: '/quiz'
       preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -910,8 +970,11 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRouteWithChildren,
   DeepResetRoute: DeepResetRoute,
   HomeRoute: HomeRoute,
+  PrivacyRoute: PrivacyRoute,
   QuizRoute: QuizRoute,
+  RefundsRoute: RefundsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
   ThankYouRoute: ThankYouRoute,
   TheBoundarySoftenerRoute: TheBoundarySoftenerRoute,
   TheOverInvestorRoute: TheOverInvestorRoute,

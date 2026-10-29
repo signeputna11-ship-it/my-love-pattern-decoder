@@ -48,9 +48,10 @@ async function userEmail(userId: string) {
 /** Start an embedded subscription checkout for the signed-in user. */
 export const createMembershipCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { plan: "monthly" | "yearly"; returnUrl: string; environment: StripeEnv }) => {
+  .inputValidator((data: { plan: "monthly" | "yearly"; returnUrl: string; environment: StripeEnv; withdrawalAck: boolean }) => {
     envSchema(data);
     if (data.plan !== "monthly" && data.plan !== "yearly") throw new Error("Invalid plan");
+    if (data.withdrawalAck !== true) throw new Error("Please confirm the immediate access terms first");
     if (!data.returnUrl) throw new Error("Missing returnUrl");
     return data;
   })
@@ -61,6 +62,7 @@ export const createMembershipCheckout = createServerFn({ method: "POST" })
     if (!prices.data.length) throw new Error("Membership price is not set up yet");
 
     const customer = await customerForUser(stripe, context.userId, await userEmail(context.userId));
+    const ackAt = new Date().toISOString();
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       ui_mode: "embedded_page",
@@ -68,8 +70,14 @@ export const createMembershipCheckout = createServerFn({ method: "POST" })
       customer: customer ?? undefined,
       line_items: [{ price: prices.data[0].id, quantity: 1 }],
       allow_promotion_codes: true,
-      subscription_data: { metadata: { userId: context.userId } },
-      metadata: { userId: context.userId, kind: "membership" },
+      custom_text: {
+        submit: {
+          message:
+            "Access starts immediately. Digital memberships are non-refundable once access begins. Cancel any time before your next renewal.",
+        },
+      },
+      subscription_data: { metadata: { userId: context.userId, withdrawal_ack_at: ackAt } },
+      metadata: { userId: context.userId, kind: "membership", withdrawal_ack_at: ackAt },
     });
     return session.client_secret;
   });
