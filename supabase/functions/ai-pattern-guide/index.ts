@@ -37,8 +37,8 @@ Deno.serve(async (req: Request): Promise<Response> => {
       Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ??
       Deno.env.get("SUPABASE_ANON_KEY") ??
       "";
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) return json({ error: "AI not configured" }, 500);
+    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
+    if (!ANTHROPIC_API_KEY) return json({ error: "AI not configured" }, 500);
 
     const userClient = createClient(SUPABASE_URL, PUB_KEY, {
       global: { headers: { Authorization: `Bearer ${token}` } },
@@ -141,56 +141,54 @@ Deno.serve(async (req: Request): Promise<Response> => {
       validToolSlugs.length > 0 ? [...validToolSlugs, null] : [null];
 
     const tool = {
-      type: "function",
-      function: {
-        name: "return_pattern_reflection",
-        description: "Return one structured pattern reflection.",
-        parameters: {
-          type: "object",
-          properties: {
-            noticing: {
-              type: "string",
-              description: "2-3 grounded sentences about the repeated pattern. Supportive, direct, no diagnosis, no therapy claims. Use the user's own words.",
-            },
-            question: { type: "string", description: "ONE focused follow-up question." },
-            next_step: { type: "string", description: "ONE practical next step the user can take this week." },
-            recommended_tool_slug: {
-              type: ["string", "null"],
-              description: "Slug of ONE tool from available_tools, or null if none fits.",
-              enum: toolSlugEnum,
-            },
-            key_triggers: { type: "array", items: { type: "string" }, maxItems: 5 },
-            repeated_behaviors: { type: "array", items: { type: "string" }, maxItems: 5 },
-            boundaries_needed: { type: "array", items: { type: "string" }, maxItems: 5 },
+      name: "return_pattern_reflection",
+      description: "Return one structured pattern reflection.",
+      input_schema: {
+        type: "object",
+        properties: {
+          noticing: {
+            type: "string",
+            description: "2-3 grounded sentences about the repeated pattern. Supportive, direct, no diagnosis, no therapy claims. Use the user's own words.",
           },
-          required: [
-            "noticing",
-            "question",
-            "next_step",
-            "recommended_tool_slug",
-            "key_triggers",
-            "repeated_behaviors",
-            "boundaries_needed",
-          ],
-          additionalProperties: false,
+          question: { type: "string", description: "ONE focused follow-up question." },
+          next_step: { type: "string", description: "ONE practical next step the user can take this week." },
+          recommended_tool_slug: {
+            type: ["string", "null"],
+            description: "Slug of ONE tool from available_tools, or null if none fits.",
+            enum: toolSlugEnum,
+          },
+          key_triggers: { type: "array", items: { type: "string" }, maxItems: 5 },
+          repeated_behaviors: { type: "array", items: { type: "string" }, maxItems: 5 },
+          boundaries_needed: { type: "array", items: { type: "string" }, maxItems: 5 },
         },
+        required: [
+          "noticing",
+          "question",
+          "next_step",
+          "recommended_tool_slug",
+          "key_triggers",
+          "repeated_behaviors",
+          "boundaries_needed",
+        ],
       },
     };
 
-    const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const aiRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "claude-haiku-5-5",
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: "Reflect on this user's saved answers and return ONE structured reflection.\n\n" + JSON.stringify(userContext, null, 2) },
         ],
         tools: [tool],
-        tool_choice: { type: "function", function: { name: "return_pattern_reflection" } },
+        tool_choice: { type: "tool", name: "return_pattern_reflection" },
       }),
     });
 
@@ -198,17 +196,17 @@ Deno.serve(async (req: Request): Promise<Response> => {
     if (aiRes.status === 402) return json({ error: "AI credits exhausted. Please contact support." }, 402);
     if (!aiRes.ok) {
       const t = await aiRes.text();
-      console.error("Gateway error", aiRes.status, t);
-      return json({ error: "AI gateway error" }, 500);
+      console.error("Anthropic error", aiRes.status, t);
+      return json({ error: "AI service error" }, 500);
     }
 
     const aiJson = await aiRes.json();
-    const call = aiJson?.choices?.[0]?.message?.tool_calls?.[0];
-    if (!call?.function?.arguments) {
+    const call = (aiJson?.content ?? []).find((c: any) => c.type === "tool_use");
+    if (!call?.input) {
       console.error("No tool call", JSON.stringify(aiJson).slice(0, 500));
       return json({ error: "AI returned no structured output" }, 500);
     }
-    const parsed = JSON.parse(call.function.arguments);
+    const parsed = call.input;
 
     const merge = (a: string[] = [], b: string[] = []) =>
       Array.from(new Set([...a, ...b].map((s: string) => s.trim()).filter(Boolean))).slice(0, 12);
