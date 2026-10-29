@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import mlpLogo from "@/assets/signe-coach-mark.png";
+import { Orb } from "@/components/icons/Orb";
 
 const CALENDLY = "https://calendly.com/mylovepattern/30min";
 const HERO_VIDEO =
@@ -66,7 +67,7 @@ function RoseBtn({
 }
 
 function Star({ color = "#EDB200" }: { color?: string }) {
-  return <span style={{ color }}>✦</span>;
+  return <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" style={{ color }} />;
 }
 
 const PAIN = [

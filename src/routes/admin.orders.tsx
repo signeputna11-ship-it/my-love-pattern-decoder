@@ -3,6 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { adminGetOrders } from "@/lib/server-fns/admin.functions";
+import { Orb } from "@/components/icons/Orb";
 
 type Order = {
   id: string;
@@ -118,7 +119,7 @@ function AdminOrders() {
     <main className="mx-auto max-w-7xl px-6 py-12" style={{ backgroundColor: "#F8F5F0", minHeight: "100vh" }}>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl italic" style={{ fontFamily: "Instrument Serif", color: "#111", textWrap: "balance" }}>
-          Orders <span style={{ color: "#EDB200" }}>✦</span>
+          Orders <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" />
         </h1>
         <div className="flex gap-3">
           <Link to="/admin/subscribers" className="text-xs underline" style={{ color: "#111" }}>Subscribers</Link>

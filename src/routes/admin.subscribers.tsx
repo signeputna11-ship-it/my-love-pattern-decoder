@@ -7,6 +7,7 @@ import {
   adminToggleSubscriberPause,
   adminResendLast,
 } from "@/lib/server-fns/admin.functions";
+import { Orb } from "@/components/icons/Orb";
 
 type Sub = {
   id: string;
@@ -76,7 +77,7 @@ function AdminSubs() {
     <main className="mx-auto max-w-7xl px-6 py-12" style={{ backgroundColor: "#F8F5F0", minHeight: "100vh" }}>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl italic" style={{ fontFamily: "Instrument Serif", color: "#111", textWrap: "balance" }}>
-          Subscribers <span style={{ color: "#EDB200" }}>✦</span>
+          Subscribers <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" />
         </h1>
         <div className="flex gap-3">
           <Link to="/admin/orders" className="text-xs underline" style={{ color: "#111" }}>Orders</Link>

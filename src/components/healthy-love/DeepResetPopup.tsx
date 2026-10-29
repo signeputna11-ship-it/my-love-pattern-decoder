@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowUpRight } from "lucide-react";
+import { Orb } from "@/components/icons/Orb";
 
 const MAILTO =
   "https://calendly.com/mylovepattern/30min";
@@ -129,13 +130,13 @@ export function DeepResetPopup() {
                 What is included
               </p>
               <ul className="mt-3 space-y-1.5 text-sm text-foreground/80">
-                <li>✦ 90-minute private 1:1 session with Signe</li>
+                <li><Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> 90-minute private 1:1 session with Signe</li>
                 <li>
-                  ✦ Personalised 21-day reset audio meditation to anchor your
+                  <Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Personalised 21-day reset audio meditation to anchor your
                   shift
                 </li>
-                <li>✦ Pre-session pattern clarity worksheet</li>
-                <li>✦ Follow-up voice note from Signe within 48 hours</li>
+                <li><Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Pre-session pattern clarity worksheet</li>
+                <li><Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Follow-up voice note from Signe within 48 hours</li>
               </ul>
             </div>
 

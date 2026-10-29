@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import { VideoBackground } from "@/components/blog/VideoBackground";
 import { PostCard } from "@/components/blog/PostCard";
 import { SubscribeForm } from "@/components/blog/SubscribeForm";
+import { Orb } from "@/components/icons/Orb";
 
 export const Route = createFileRoute("/blog/category/$category")({
   head: ({ params }) => {
@@ -60,7 +61,7 @@ function CategoryPage() {
               color: "#6B6560",
             }}
           >
-            ✦ Category
+            <Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Category
           </p>
           <h1
             className="mt-3 italic"

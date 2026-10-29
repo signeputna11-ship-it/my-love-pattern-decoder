@@ -21,15 +21,15 @@ function kindFromSlug(slug?: string): Kind {
 }
 
 function headingFor(kind: Kind, name: string): string {
-  if (kind === 'kit') return `Your Reset Kit is unlocked, ${name} ✦`
-  if (kind === 'session') return `Your Deep Pattern Reset is booked, ${name} ✦`
-  return `Your worksheet is here, ${name} ✦`
+  if (kind === 'kit') return `Your Reset Kit is unlocked, ${name}`
+  if (kind === 'session') return `Your Deep Pattern Reset is booked, ${name}`
+  return `Your worksheet is here, ${name}`
 }
 
 function subjectFor(kind: Kind): string {
-  if (kind === 'kit') return 'Your Reset Kit is unlocked ✦'
-  if (kind === 'session') return 'Your Deep Pattern Reset — next steps inside ✦'
-  return 'Your worksheet is here ✦'
+  if (kind === 'kit') return 'Your Reset Kit is unlocked'
+  if (kind === 'session') return 'Your Deep Pattern Reset — next steps inside'
+  return 'Your worksheet is here'
 }
 
 const PurchaseConfirmationEmail = ({

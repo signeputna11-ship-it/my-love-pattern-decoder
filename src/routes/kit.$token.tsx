@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getKitByToken, markStageComplete } from "@/lib/server-fns/access.functions";
 import { Check, Loader2 } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
+import { Orb } from "@/components/icons/Orb";
 
 type Stage = {
   id: string;
@@ -104,7 +105,7 @@ function KitPage() {
               color: "#6B6560",
             }}
           >
-            <span style={{ color: "#EDB200" }}>✦</span> My Love Pattern · Reset Kit
+            <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> My Love Pattern · Reset Kit
           </p>
           <h1
             style={{

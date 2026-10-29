@@ -4,8 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   Loader2,
   Lock,
-  Sparkles,
-  Wand2,
   Save,
   Download,
   X,
@@ -16,6 +14,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
+import { Orb } from "@/components/icons/Orb";
 
 type ToolKind = "worksheet" | "tracker" | "cheatsheet" | "scripts" | "planner";
 
@@ -146,7 +145,7 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
           >
             <div className="flex items-start gap-4">
               <div className="rounded-2xl bg-foreground/5 p-3 ring-1 ring-foreground/10">
-                <Sparkles className="h-5 w-5 text-foreground/80" />
+                <Orb className="h-5 w-5 text-foreground/80" />
               </div>
               <div className="min-w-0 flex-1">
                 <h3 className="font-serif text-lg text-foreground">{t.title}</h3>
@@ -154,7 +153,7 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
                   <p className="mt-1 text-sm text-foreground/60">{t.description}</p>
                 )}
                 <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-foreground/5 px-2.5 py-1 text-[10px] uppercase tracking-widest text-foreground/50 ring-1 ring-foreground/10">
-                  <Wand2 className="h-3 w-3" /> Guided tool
+                  <Orb className="h-3 w-3" /> Guided tool
                 </span>
               </div>
             </div>
@@ -163,7 +162,7 @@ export function InAppTools({ moduleKey }: { moduleKey: string }) {
               onClick={() => setActiveId(activeId === t.id ? null : t.id)}
               className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
-              <Sparkles className="h-4 w-4" />
+              <Orb className="h-4 w-4" />
               {activeId === t.id ? "Close tool" : "Start Tool"}
             </button>
           </motion.div>

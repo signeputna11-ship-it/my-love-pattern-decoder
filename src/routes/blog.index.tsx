@@ -8,6 +8,7 @@ import { VideoBackground } from "@/components/blog/VideoBackground";
 import { SubscribeForm } from "@/components/blog/SubscribeForm";
 import { PostCard } from "@/components/blog/PostCard";
 import { CategoryPills } from "@/components/blog/CategoryPills";
+import { Orb } from "@/components/icons/Orb";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -66,7 +67,7 @@ function BlogIndex() {
               color: "#6B6560",
             }}
           >
-            ✦ Weekly Writing
+            <Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Weekly Writing
           </p>
           <h1
             className="mt-4 italic"

@@ -5,7 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowUpRight,
   Heart,
-  Sparkles,
   Shield,
   Eye,
   Waves,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import { patterns, toolkit, quizQuestions, VIDEOS } from "./data";
 import mlpLogo from "@/assets/signe-coach-mark.png";
+import { Orb } from "@/components/icons/Orb";
 
 function BackgroundVideo(_props: { src: string }) {
   return null;
@@ -567,7 +567,7 @@ export function ExperiencePortal() {
   const modules: [string, string, React.ComponentType<{ className?: string }>][] = [
     ["Pattern Reveal", "Map the repeated dynamic and name what is actually happening.", Heart],
     ["Trigger Reset", "Calm the anxiety spike before it becomes a chase response.", Waves],
-    ["Self-Worth Rebuild", "Separate your value from attention, silence, and being chosen.", Sparkles],
+    ["Self-Worth Rebuild", "Separate your value from attention, silence, and being chosen.", Orb],
     ["Boundaries", "Turn your needs into clear words and protected decisions.", Shield],
     ["Relationship Decision", "Choose from evidence instead of chemistry, hope, or fear.", Brain],
   ];

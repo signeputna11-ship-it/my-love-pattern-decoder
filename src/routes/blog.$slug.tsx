@@ -9,6 +9,7 @@ import { SubscribeForm } from "@/components/blog/SubscribeForm";
 import { PostCard } from "@/components/blog/PostCard";
 import { InlineProductCard } from "@/components/blog/InlineProductCard";
 import "@/components/blog/blog-prose.css";
+import { Orb } from "@/components/icons/Orb";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
@@ -308,7 +309,7 @@ function PostPage() {
                 fontFamily: "Inter",
               }}
             >
-              {copied ? "Copied ✦" : "Copy link"}
+              {copied ? "Copied" : "Copy link"}
             </button>
           </div>
 
@@ -370,7 +371,7 @@ function PostPage() {
                   marginBottom: "20px",
                 }}
               >
-                <span style={{ color: "#EDB200" }}>✦</span> Read next
+                <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> Read next
               </h2>
               <div className="grid gap-6 sm:grid-cols-2">
                 {related.map((p: BlogPost, i: number) => (

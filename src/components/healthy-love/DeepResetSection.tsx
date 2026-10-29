@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { Orb } from "@/components/icons/Orb";
 
 const MAILTO =
   "https://calendly.com/mylovepattern/30min";
@@ -47,10 +48,10 @@ export function DeepResetSection() {
               What is included
             </p>
             <ul className="mt-4 space-y-2.5 text-sm text-foreground/80">
-              <li>✦ 90-minute private session with Signe</li>
-              <li>✦ Personalised 21-day reset audio meditation</li>
-              <li>✦ Pre-session pattern worksheet</li>
-              <li>✦ Follow-up voice note within 48 hours</li>
+              <li><Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> 90-minute private session with Signe</li>
+              <li><Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Personalised 21-day reset audio meditation</li>
+              <li><Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Pre-session pattern worksheet</li>
+              <li><Orb className="mr-1.5 inline-block h-[0.8em] w-[0.8em] align-[-0.05em]" /> Follow-up voice note within 48 hours</li>
             </ul>
           </div>
 

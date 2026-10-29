@@ -6,6 +6,7 @@ import { getShopProduct, createGuestCheckout } from "@/lib/server-fns/shop.funct
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { VideoBg } from "@/components/shop/VideoBg";
 import { SiteNav } from "@/components/healthy-love/SiteNav";
+import { Orb } from "@/components/icons/Orb";
 
 type Product = {
   slug: string;
@@ -119,7 +120,7 @@ function SessionProductView({ product }: { product: Product }) {
   const Section = ({ label, children }: { label: string; children: React.ReactNode }) => (
     <div className="mt-8">
       <p style={labelStyle}>
-        <span style={{ color: "#EDB200" }}>✦</span> {label}
+        <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> {label}
       </p>
       <div className="mt-3">{children}</div>
     </div>
@@ -487,7 +488,7 @@ function StripeProductView({ product }: { product: Product }) {
             padding: 28,
           }}
         >
-          <p style={labelStyle}><span style={{ color: "#EDB200" }}>✦</span> What you get</p>
+          <p style={labelStyle}><Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> What you get</p>
           <ul
             style={{
               listStyle: "none",

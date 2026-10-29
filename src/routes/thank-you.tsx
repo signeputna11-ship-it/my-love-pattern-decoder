@@ -4,6 +4,7 @@ import { Check, Loader2 } from "lucide-react";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { createServerFn } from "@tanstack/react-start";
 import { VideoBg } from "@/components/shop/VideoBg";
+import { Orb } from "@/components/icons/Orb";
 
 const resolvePurchaseBySession = createServerFn({ method: "GET" })
   .inputValidator((data: { sessionId: string }) => {
@@ -106,7 +107,7 @@ function SessionUpsellCard() {
             marginBottom: 20,
           }}
         >
-          <span style={{ color: "#EDB200" }}>✦</span> For when you are ready to go deeper
+          <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> For when you are ready to go deeper
         </span>
         <h2
           style={{
@@ -341,7 +342,7 @@ function ThankYouPage() {
                     color: "#6B6560",
                   }}
                 >
-                  <span style={{ color: "#EDB200" }}>✦</span> One-time upgrade
+                  <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> One-time upgrade
                 </p>
                 <h2
                   style={{
@@ -391,7 +392,7 @@ function ThankYouPage() {
                   textAlign: "center",
                 }}
               >
-                <span style={{ color: "#EDB200" }}>✦</span> Next steps
+                <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> Next steps
               </p>
               <p
                 style={{
@@ -410,7 +411,7 @@ function ThankYouPage() {
 
             {/* Divider with sparkle */}
             <div style={{ textAlign: "center", margin: "48px 0" }}>
-              <span style={{ color: "#EDB200", fontSize: 18 }}>✦</span>
+              <Orb className="inline-block h-4 w-4 text-[#C98BA0]" />
             </div>
 
             {/* Section 4 — Deep Pattern Reset upsell for everyone */}

@@ -3,6 +3,7 @@ import { VideoBackground } from "@/components/blog/VideoBackground";
 import { SiteNav } from "@/components/healthy-love/SiteNav";
 import { SiteFooter } from "@/components/healthy-love/SiteFooter";
 import { RelatedPatterns } from "@/components/healthy-love/RelatedPatterns";
+import { Orb } from "@/components/icons/Orb";
 
 export function PatternPageShell({
   videoSrc,
@@ -50,7 +51,7 @@ export function PatternPageShell({
               marginBottom: "32px",
             }}
           >
-            <span style={{ color: "#EDB200" }}>✦</span> {subtitle}
+            <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> {subtitle}
           </p>
           <div
             className="pattern-prose"

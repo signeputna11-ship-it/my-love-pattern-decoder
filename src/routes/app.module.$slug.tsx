@@ -2,7 +2,7 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, ArrowRight, CheckCircle2, Loader2, Save, Download, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Loader2, Save, Download } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import { AudioPlayer } from "@/components/AudioPlayer";

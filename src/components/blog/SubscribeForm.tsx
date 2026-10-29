@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { subscribeToBlog } from "@/lib/blog.functions";
+import { Orb } from "@/components/icons/Orb";
 
 export function SubscribeForm({ compact = false }: { compact?: boolean }) {
   const subscribe = useServerFn(subscribeToBlog);
@@ -34,7 +35,7 @@ export function SubscribeForm({ compact = false }: { compact?: boolean }) {
         style={{ color: "#111111", fontSize: compact ? "20px" : "24px" }}
       >
         {state === "already" ? "You are already subscribed." : "You are in."}{" "}
-        <span style={{ color: "#EDB200" }}>✦</span>
+        <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" />
       </p>
     );
   }

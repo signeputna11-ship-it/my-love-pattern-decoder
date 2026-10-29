@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Loader2, Save, ArrowRight, RefreshCw, Lightbulb } from "lucide-react";
+import { Loader2, Save, ArrowRight, RefreshCw, Lightbulb } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Orb } from "@/components/icons/Orb";
 
 type Reflection = {
   noticing: string;
@@ -168,7 +169,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
           <div className="rounded-full bg-foreground/10 p-2">
-            <Sparkles className="h-4 w-4 text-foreground/80" />
+            <Orb className="h-4 w-4 text-foreground/80" />
           </div>
           <div>
             <p className="text-xs uppercase tracking-widest text-foreground/40">Your Pattern Guide</p>
@@ -204,7 +205,7 @@ export function PatternGuideCard({ moduleSlug }: { moduleSlug: string }) {
               onClick={generate}
               className="mt-4 flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
-              <Sparkles className="h-4 w-4" /> Generate Guidance
+              <Orb className="h-4 w-4" /> Generate Guidance
             </button>
           </motion.div>
         )}

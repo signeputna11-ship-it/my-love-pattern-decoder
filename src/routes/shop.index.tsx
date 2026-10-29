@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { getShopProducts } from "@/lib/server-fns/shop.functions";
 import { Loader2 } from "lucide-react";
+import { Orb } from "@/components/icons/Orb";
 import { VideoBg } from "@/components/shop/VideoBg";
 import { SiteNav } from "@/components/healthy-love/SiteNav";
 
@@ -87,7 +88,7 @@ function ShopIndex() {
       </div>
       <div style={{ position: "relative", zIndex: 2 }} className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
         <header className="mb-16 text-center">
-          <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> My Love Pattern Shop</p>
+          <p style={SECTION_LABEL}><Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> My Love Pattern Shop</p>
           <h1
             style={{
               fontFamily: "'Instrument Serif', serif",
@@ -122,7 +123,7 @@ function ShopIndex() {
           <>
             {/* SECTION 1 — WORKSHEETS */}
             <section className="mb-20">
-              <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> Individual Worksheets</p>
+              <p style={SECTION_LABEL}><Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> Individual Worksheets</p>
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {worksheets.map((p) => (
                   <Link
@@ -210,7 +211,7 @@ function ShopIndex() {
             {/* SECTION 2 — KIT BANNER */}
             {kit && (
               <section className="mb-20">
-                <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> The Complete Reset Kit</p>
+                <p style={SECTION_LABEL}><Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> The Complete Reset Kit</p>
                 <Link
                   to="/shop/$slug"
                   params={{ slug: kit.slug }}
@@ -300,7 +301,7 @@ function ShopIndex() {
             {/* SECTION 3 — DEEP PATTERN RESET SESSION */}
             {session && (
               <section>
-                <p style={SECTION_LABEL}><span style={{ color: "#E8BAC9" }}>✦</span> Private 1:1 Session</p>
+                <p style={SECTION_LABEL}><Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> Private 1:1 Session</p>
                 <div
                   style={{
                     maxWidth: 1100,

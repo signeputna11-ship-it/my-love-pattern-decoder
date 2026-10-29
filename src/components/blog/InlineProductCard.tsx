@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { MatchedProduct } from "@/lib/blog.functions";
+import { Orb } from "@/components/icons/Orb";
 
 function formatPrice(cents: number, currency: string) {
   try {
@@ -35,7 +36,7 @@ export function InlineProductCard({ product }: { product: MatchedProduct }) {
           marginBottom: "10px",
         }}
       >
-        <span style={{ color: "#EDB200" }}>✦</span> Matching template
+        <Orb className="inline-block h-[0.8em] w-[0.8em] align-[-0.05em] text-[#C98BA0]" /> Matching template
       </div>
       <h3
         className="italic text-balance"
