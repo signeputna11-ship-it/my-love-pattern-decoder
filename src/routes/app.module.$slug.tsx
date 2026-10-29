@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Loader2, Save, Download, Sparkles 
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import { AudioPlayer } from "@/components/AudioPlayer";
+import { CoverArt } from "@/components/CoverArt";
 import { InAppTools } from "@/components/healthy-love/InAppTools";
 import { PatternGuideCard } from "@/components/healthy-love/PatternGuideCard";
 
@@ -308,6 +309,10 @@ function ModulePage() {
             See membership
           </Link>
         </div>
+      )}
+
+      {!locked && module.audio_path && (
+        <CoverArt slug={module.slug} className="mb-4 h-36 w-full rounded-3xl sm:h-44" />
       )}
 
       {!locked && <AudioPlayer

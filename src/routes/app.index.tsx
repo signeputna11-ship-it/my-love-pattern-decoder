@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle2, Circle, ArrowRight, Lock } from "lucide-react";
+import { CoverArt } from "@/components/CoverArt";
 import { getMyStartingPoint } from "@/lib/server-fns/quiz.functions";
 import { JOURNEYS as QUIZ_JOURNEYS, type JourneyKey } from "@/lib/quiz";
 
@@ -250,6 +251,7 @@ function Dashboard() {
                         <Circle className="h-6 w-6 text-foreground/40" />
                       )}
                     </div>
+                    <CoverArt slug={m.slug} className="h-16 w-16 shrink-0 rounded-2xl" />
                     <div className="flex-1">
                       <p className="text-xs uppercase tracking-widest text-foreground/40">
                         Module {m.position}
