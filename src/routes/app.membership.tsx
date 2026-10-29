@@ -158,6 +158,9 @@ function MembershipPage() {
           <p className="mt-3 text-sm text-foreground/70">
             Your access opens the moment you pay. Your membership renews automatically and you can cancel any time from this page.
           </p>
+          <p className="mt-2 text-xs text-foreground/50">
+            Have a free pass code? Go back and enter it on the Membership page. Do not use the code box in the payment form.
+          </p>
           <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl liquid-glass p-4 text-xs leading-relaxed text-foreground/70">
             <input
               type="checkbox"
@@ -244,6 +247,34 @@ function MembershipPage() {
         </div>
       ) : (
         <>
+          {!passFull && (
+            <div className="mt-8 liquid-glass-strong rounded-3xl p-5 ring-1 ring-foreground/10">
+              <p className="font-serif text-xl">Have a pass code?</p>
+              <p className="mt-1 text-sm text-foreground/60">Enter it here to unlock your free access. No card needed.</p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  redeem();
+                }}
+                className="mt-3 flex flex-col gap-2 sm:flex-row"
+              >
+                <input
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
+                  placeholder="BETA-XXXX-XXXX"
+                  autoCapitalize="characters"
+                  className="flex-1 rounded-2xl liquid-glass px-4 py-3 text-sm tracking-widest text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
+                />
+                <button
+                  type="submit"
+                  disabled={busy || !code.trim()}
+                  className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground disabled:opacity-50"
+                >
+                  Redeem
+                </button>
+              </form>
+            </div>
+          )}
           {isStarter && (
             <div className="mt-6 liquid-glass rounded-3xl p-5 text-sm text-foreground/70">
               <p className="font-serif text-xl text-foreground">You are on Starter</p>
@@ -326,34 +357,6 @@ function MembershipPage() {
               >
                 Claim founding place
               </button>
-            </div>
-          )}
-          {!passFull && (
-            <div className="mt-8 liquid-glass rounded-3xl p-5">
-              <p className="font-serif text-xl">Have a pass code?</p>
-              <p className="mt-1 text-sm text-foreground/60">Enter it here to unlock your free access. No card needed.</p>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  redeem();
-                }}
-                className="mt-3 flex flex-col gap-2 sm:flex-row"
-              >
-                <input
-                  value={code}
-                  onChange={(e) => setCode(e.target.value.toUpperCase())}
-                  placeholder="BETA-XXXX-XXXX"
-                  autoCapitalize="characters"
-                  className="flex-1 rounded-2xl liquid-glass px-4 py-3 text-sm tracking-widest text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30"
-                />
-                <button
-                  type="submit"
-                  disabled={busy || !code.trim()}
-                  className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground disabled:opacity-50"
-                >
-                  Redeem
-                </button>
-              </form>
             </div>
           )}
           <p className="mt-6 text-xs text-foreground/40">
