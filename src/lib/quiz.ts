@@ -4,39 +4,39 @@ export type JourneyKey = "confidence" | "self-worth" | "money" | "business" | "p
 export const JOURNEYS: Record<JourneyKey, { title: string; tagline: string; reflection: string }> = {
   confidence: {
     title: "Confidence",
-    tagline: "Say it clearly. Trust your own decisions.",
+    tagline: "Say what you mean and stand by it.",
     reflection:
-      "You often know what you want to say, and then you soften it. Your starting point is learning to speak and decide from steady ground, one small moment at a time.",
+      "You know what you think, and you swallow it. You say yes when you mean no. Your starting point is speaking clearly and deciding without apologising for it.",
   },
   "self-worth": {
     title: "Self-Worth",
-    tagline: "Feel enough as you are, then act from it.",
+    tagline: "Stop earning your place. You already have it.",
     reflection:
-      "You give, achieve and carry a lot, and enough still feels just out of reach. Your starting point is building a quiet, steady sense of worth that does not depend on proving anything.",
+      "You work hard, you give a lot, and it still feels like it is never enough. Your starting point is separating your worth from your output.",
   },
   money: {
     title: "Money",
-    tagline: "Release old money stories and keep what you earn.",
+    tagline: "Keep what you earn and lose the dread of the next bill.",
     reflection:
-      "Your relationship with money has a story behind it, and that story can change. Your starting point is meeting it with kindness, then choosing a new one.",
+      "Money comes in and does not stay, or it never feels safe. Your starting point is the story you learned about money, and rewriting it.",
   },
   business: {
     title: "Business",
-    tagline: "Build an offer you are proud to sell.",
+    tagline: "Charge what you are worth and sell without cringing.",
     reflection:
-      "You have real skill and something worth offering. Your starting point is a clear offer, a clear price and a way of being seen that feels like you.",
+      "You have real skill, and you are undercharging or underselling it. Your starting point is a clear offer at a price you stand behind.",
   },
   purpose: {
     title: "Purpose",
-    tagline: "Find the direction that feels like yours.",
+    tagline: "Know what you are here to do.",
     reflection:
-      "You are capable, and you are ready for work and a life that mean something to you. Your starting point is hearing your own direction clearly.",
+      "From the outside it looks fine. On the inside you do not know what it is all for. Your starting point is finding a direction you believe in.",
   },
   relationships: {
     title: "Relationships",
-    tagline: "Understand your pattern and choose differently.",
+    tagline: "Break the pattern and choose differently.",
     reflection:
-      "The same kind of connection keeps finding you. Your starting point is seeing the pattern kindly, so the next choice can be a different one.",
+      "The same kind of person, and the same ending. Your starting point is seeing your pattern clearly, so the next choice can be a different one.",
   },
 };
 
@@ -46,75 +46,75 @@ export type QuizQuestion = { id: string; prompt: string; options: QuizOption[] }
 export const QUIZ: QuizQuestion[] = [
   {
     id: "sentence",
-    prompt: "Which sentence sounds most like you this week?",
+    prompt: "Which one is the most true for you right now?",
     options: [
-      { label: "I know what I want to say, then I soften it.", weights: { confidence: 3, "self-worth": 1 } },
-      { label: "I do a lot, and it still does not feel like enough.", weights: { "self-worth": 3, purpose: 1 } },
-      { label: "Money arrives and somehow leaves again.", weights: { money: 3 } },
-      { label: "I have skills, and I want to turn them into real work.", weights: { business: 3, money: 1 } },
-      { label: "I am capable, and I want to know where I am headed.", weights: { purpose: 3 } },
-      { label: "I keep meeting the same kind of connection.", weights: { relationships: 3 } },
+      { label: "I say yes when I mean no, and I stay quiet when I should speak.", weights: { confidence: 3, "self-worth": 1 } },
+      { label: "I work myself to exhaustion and still feel I am not enough.", weights: { "self-worth": 3, purpose: 1 } },
+      { label: "I earn money and it disappears. I feel broke or scared even when it comes in.", weights: { money: 3 } },
+      { label: "I have the skills, I undercharge, and I cannot get people to pay a real price.", weights: { business: 3, money: 1 } },
+      { label: "On paper my life looks fine. Inside I feel lost and I do not know what it is for.", weights: { purpose: 3 } },
+      { label: "I keep ending up with the same type of person and the same ending.", weights: { relationships: 3 } },
     ],
   },
   {
     id: "year",
-    prompt: "A year from now, which change would matter most to you?",
+    prompt: "If nothing changes, where are you a year from now?",
     options: [
-      { label: "Speaking up and trusting my decisions.", weights: { confidence: 3 } },
-      { label: "Feeling worthy of good things.", weights: { "self-worth": 3 } },
-      { label: "Earning more and feeling calm about money.", weights: { money: 3 } },
-      { label: "Running work I am proud of.", weights: { business: 3 } },
-      { label: "Knowing what I am here to do.", weights: { purpose: 3 } },
-      { label: "Feeling safe and seen with someone.", weights: { relationships: 3 } },
+      { label: "Still biting my tongue and second-guessing every decision.", weights: { confidence: 3 } },
+      { label: "Still feeling not good enough, however much I achieve.", weights: { "self-worth": 3 } },
+      { label: "Still stressed about money and living month to month.", weights: { money: 3 } },
+      { label: "Still stuck with a business or a skill that does not pay what it should.", weights: { business: 3 } },
+      { label: "Still drifting, with no direction I believe in.", weights: { purpose: 3 } },
+      { label: "Still lonely in my relationship, or repeating the same heartbreak.", weights: { relationships: 3 } },
     ],
   },
   {
     id: "feedback",
-    prompt: "After a conversation or a piece of feedback, you tend to...",
+    prompt: "After a hard conversation or criticism, what do you do?",
     options: [
-      { label: "Replay it and rewrite what I should have said.", weights: { confidence: 3 } },
-      { label: "Decide I must try harder to deserve my place.", weights: { "self-worth": 3 } },
-      { label: "Move on quickly and bury how it felt.", weights: { "self-worth": 1, purpose: 1, relationships: 1 } },
-      { label: "Look for what it means for my work.", weights: { business: 2, purpose: 1 } },
+      { label: "I replay it for hours and rewrite what I should have said.", weights: { confidence: 3 } },
+      { label: "I decide I must work harder to deserve my place.", weights: { "self-worth": 3 } },
+      { label: "I shut down, say it is fine and swallow how it felt.", weights: { "self-worth": 1, purpose: 1, relationships: 1 } },
+      { label: "I panic about what it means for my work and my income.", weights: { business: 2, purpose: 1 } },
     ],
   },
   {
     id: "price",
-    prompt: "When it is time to name a price or ask for what you need...",
+    prompt: "When you have to name your price or ask for what you need...",
     options: [
-      { label: "I lower it before anyone asks.", weights: { money: 2, confidence: 2, business: 1 } },
-      { label: "I wonder if I am allowed to ask.", weights: { "self-worth": 3 } },
-      { label: "I am unsure what my work is really worth.", weights: { business: 3, money: 1 } },
-      { label: "It feels fine. I want to grow what I have.", weights: { business: 2, purpose: 1 } },
+      { label: "I discount myself before they can say no.", weights: { money: 2, confidence: 2, business: 1 } },
+      { label: "I feel I do not have the right to ask.", weights: { "self-worth": 3 } },
+      { label: "I honestly do not know what I am worth, so I guess low.", weights: { business: 3, money: 1 } },
+      { label: "I can say it, but my income still does not match my work.", weights: { business: 2, purpose: 1 } },
     ],
   },
   {
     id: "weekends",
-    prompt: "Picture a free Sunday. What comes up first?",
+    prompt: "It is 11pm and you cannot sleep. What is your mind on?",
     options: [
-      { label: "A quiet wish for more meaning in how I spend my time.", weights: { purpose: 3 } },
-      { label: "A list of things I still have to prove or catch up on.", weights: { "self-worth": 2, business: 1 } },
-      { label: "Thinking about someone, or the lack of someone.", weights: { relationships: 3 } },
-      { label: "Checking my accounts and feeling a knot.", weights: { money: 3 } },
+      { label: "What is the point of all this, and what am I meant to be doing?", weights: { purpose: 3 } },
+      { label: "Everything I have not done well enough.", weights: { "self-worth": 2, business: 1 } },
+      { label: "One person: what they said, what they did not say, and where it is going.", weights: { relationships: 3 } },
+      { label: "Bills, my balance and how long the money will last.", weights: { money: 3 } },
     ],
   },
   {
     id: "support",
-    prompt: "What kind of support would feel best right now?",
+    prompt: "What would you actually use to change this?",
     options: [
-      { label: "Short guided audio to settle and reset.", weights: { "self-worth": 1, confidence: 1, purpose: 1 } },
-      { label: "Clear exercises I can fill in privately.", weights: { money: 1, business: 1, purpose: 1 } },
-      { label: "A gentle daily nudge from Signe.", weights: { confidence: 1, "self-worth": 1 } },
-      { label: "A bigger plan with real structure.", weights: { business: 1, money: 1 } },
+      { label: "A guided audio for when my head will not switch off.", weights: { "self-worth": 1, confidence: 1, purpose: 1 } },
+      { label: "Questions that make me face what I have been avoiding.", weights: { money: 1, business: 1, purpose: 1 } },
+      { label: "A daily push from Signe so I stay on track.", weights: { confidence: 1, "self-worth": 1 } },
+      { label: "A clear plan with steps I can follow.", weights: { business: 1, money: 1 } },
     ],
   },
   {
     id: "ready",
-    prompt: "How ready do you feel to begin?",
+    prompt: "How ready are you to change this?",
     options: [
-      { label: "Ready. Show me where to start.", weights: {} },
-      { label: "Curious, and a little cautious.", weights: {} },
-      { label: "I want to look around first.", weights: {} },
+      { label: "Ready. I am done living like this.", weights: {} },
+      { label: "Nervous. I have tried before and it did not stick.", weights: {} },
+      { label: "Not sure yet. I want to look around first.", weights: {} },
     ],
   },
 ];
