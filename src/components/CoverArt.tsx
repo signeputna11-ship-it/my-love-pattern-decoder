@@ -59,6 +59,16 @@ const KEY_BY_SLUG: Record<string, keyof typeof THEMES> = {
   "purpose-values": "focus",
   "purpose-vision": "sunrise",
   "purpose-plan": "fork",
+  "business-clarity": "focus",
+  "business-offer": "business",
+  "business-sales": "money",
+  "business-visibility": "sunrise",
+  "business-rhythm": "waves",
+  "selfworth-enough": "gem",
+  "selfworth-critic": "ripple",
+  "selfworth-proof": "focus",
+  "selfworth-receive": "love",
+  "selfworth-daily": "sunrise",
 };
 const FALLBACK: (keyof typeof THEMES)[] = ["loop", "waves", "focus", "gem", "sunrise", "ripple"];
 
