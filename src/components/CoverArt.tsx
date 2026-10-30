@@ -46,6 +46,19 @@ const KEY_BY_SLUG: Record<string, keyof typeof THEMES> = {
   "rebuild-self-worth": "gem",
   "set-the-boundary": "boundary",
   "decide-differently": "fork",
+  "confidence-notice": "focus",
+  "confidence-understand": "loop",
+  "confidence-reframe": "gem",
+  "confidence-release": "boundary",
+  "confidence-rehearse": "sunrise",
+  "money-notice": "money",
+  "money-understand": "loop",
+  "money-release": "boundary",
+  "money-sustain": "business",
+  "purpose-strengths": "gem",
+  "purpose-values": "focus",
+  "purpose-vision": "sunrise",
+  "purpose-plan": "fork",
 };
 const FALLBACK: (keyof typeof THEMES)[] = ["loop", "waves", "focus", "gem", "sunrise", "ripple"];
 
