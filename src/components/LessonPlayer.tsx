@@ -82,7 +82,7 @@ function Rich({ text }: { text: string }) {
 }
 
 const area =
-  "w-full rounded-2xl bg-white/60 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30";
+  "w-full rounded-2xl border border-foreground/15 bg-white/60 px-4 py-3 text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-1 focus:ring-foreground/30";
 
 function StepBody({ step, a, onAnswer }: { step: Step; a: Answer; onAnswer: (text: string, data: any) => void }) {
   if (step.kind === "prompt")
@@ -139,7 +139,7 @@ function StepBody({ step, a, onAnswer }: { step: Step; a: Answer; onAnswer: (tex
                   onClick={() => set(s, n)}
                   aria-pressed={data[s] === n}
                   className={`h-10 rounded-full text-sm transition ${
-                    data[s] === n ? "bg-primary text-primary-foreground" : "bg-white/70 text-foreground/70 hover:bg-white"
+                    data[s] === n ? "bg-primary text-primary-foreground" : "border border-foreground/25 bg-white/70 text-foreground/70 hover:bg-white"
                   }`}
                 >
                   {n}
@@ -165,7 +165,7 @@ function StepBody({ step, a, onAnswer }: { step: Step; a: Answer; onAnswer: (tex
               onClick={() => onAnswer(o, { selected: o })}
               aria-pressed={on}
               className={`flex w-full items-start gap-3 rounded-2xl px-4 py-3.5 text-left text-sm transition ${
-                on ? "bg-primary text-primary-foreground" : "bg-white/60 text-foreground/85 hover:bg-white"
+                on ? "bg-primary text-primary-foreground" : "border border-foreground/15 bg-white/60 text-foreground/85 hover:bg-white"
               }`}
             >
               <span className={`mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full border ${on ? "border-primary-foreground" : "border-foreground/30"}`}>
@@ -185,7 +185,7 @@ function StepBody({ step, a, onAnswer }: { step: Step; a: Answer; onAnswer: (tex
     return (
       <div className="mt-5 space-y-2.5">
         {opts.map((o) => (
-          <label key={o} className="flex cursor-pointer items-start gap-3 rounded-2xl bg-white/60 px-4 py-3.5 text-sm hover:bg-white">
+          <label key={o} className="flex cursor-pointer items-start gap-3 rounded-2xl border border-foreground/15 bg-white/60 px-4 py-3.5 text-sm hover:bg-white">
             <input
               type="checkbox"
               checked={!!data[o]}

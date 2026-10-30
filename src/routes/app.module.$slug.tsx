@@ -306,7 +306,7 @@ function ModulePage() {
         )}
       </motion.div>
 
-      {module.intro && (
+      {module.intro && !lessonMode && (
         <div className="mt-6 liquid-glass-strong rounded-3xl p-6 text-sm leading-relaxed text-foreground/80">
           {module.intro}
         </div>
