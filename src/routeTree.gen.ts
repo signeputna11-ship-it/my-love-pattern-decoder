@@ -38,6 +38,8 @@ import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AppWorkWithSigneRouteImport } from './routes/app.work-with-signe'
 import { Route as AppMembershipRouteImport } from './routes/app.membership'
+import { Route as AppLibraryRouteImport } from './routes/app.library'
+import { Route as AppCheckinRouteImport } from './routes/app.checkin'
 import { Route as AdminSubscribersRouteImport } from './routes/admin.subscribers'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
@@ -202,6 +204,16 @@ const AppMembershipRoute = AppMembershipRouteImport.update({
   path: '/membership',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLibraryRoute = AppLibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCheckinRoute = AppCheckinRouteImport.update({
+  id: '/checkin',
+  path: '/checkin',
+  getParentRoute: () => AppRoute,
+} as any)
 const AdminSubscribersRoute = AdminSubscribersRouteImport.update({
   id: '/admin/subscribers',
   path: '/admin/subscribers',
@@ -319,6 +331,8 @@ export interface FileRoutesByFullPath {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/library': typeof AppLibraryRoute
   '/app/membership': typeof AppMembershipRoute
   '/app/work-with-signe': typeof AppWorkWithSigneRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -367,6 +381,8 @@ export interface FileRoutesByTo {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/library': typeof AppLibraryRoute
   '/app/membership': typeof AppMembershipRoute
   '/app/work-with-signe': typeof AppWorkWithSigneRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -417,6 +433,8 @@ export interface FileRoutesById {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/subscribers': typeof AdminSubscribersRoute
+  '/app/checkin': typeof AppCheckinRoute
+  '/app/library': typeof AppLibraryRoute
   '/app/membership': typeof AppMembershipRoute
   '/app/work-with-signe': typeof AppWorkWithSigneRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -468,6 +486,8 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/orders'
     | '/admin/subscribers'
+    | '/app/checkin'
+    | '/app/library'
     | '/app/membership'
     | '/app/work-with-signe'
     | '/blog/$slug'
@@ -516,6 +536,8 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/orders'
     | '/admin/subscribers'
+    | '/app/checkin'
+    | '/app/library'
     | '/app/membership'
     | '/app/work-with-signe'
     | '/blog/$slug'
@@ -565,6 +587,8 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin/orders'
     | '/admin/subscribers'
+    | '/app/checkin'
+    | '/app/library'
     | '/app/membership'
     | '/app/work-with-signe'
     | '/blog/$slug'
@@ -841,6 +865,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMembershipRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/library': {
+      id: '/app/library'
+      path: '/library'
+      fullPath: '/app/library'
+      preLoaderRoute: typeof AppLibraryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/checkin': {
+      id: '/app/checkin'
+      path: '/checkin'
+      fullPath: '/app/checkin'
+      preLoaderRoute: typeof AppCheckinRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/admin/subscribers': {
       id: '/admin/subscribers'
       path: '/admin/subscribers'
@@ -971,6 +1009,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppCheckinRoute: typeof AppCheckinRoute
+  AppLibraryRoute: typeof AppLibraryRoute
   AppMembershipRoute: typeof AppMembershipRoute
   AppWorkWithSigneRoute: typeof AppWorkWithSigneRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -981,6 +1021,8 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCheckinRoute: AppCheckinRoute,
+  AppLibraryRoute: AppLibraryRoute,
   AppMembershipRoute: AppMembershipRoute,
   AppWorkWithSigneRoute: AppWorkWithSigneRoute,
   AppIndexRoute: AppIndexRoute,

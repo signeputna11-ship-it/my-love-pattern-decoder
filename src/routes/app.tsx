@@ -260,7 +260,26 @@ function AppLayout() {
           <span className="hidden text-xs text-foreground/40 sm:inline">/ Member space</span>
         </Link>
         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-foreground/60 sm:gap-3">
-          <span className="hidden truncate max-w-[160px] sm:inline">{email}</span>
+          <span className="hidden truncate max-w-[160px] lg:inline">{email}</span>
+          <Link
+            to="/app"
+            activeOptions={{ exact: true }}
+            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
+          >
+            Today
+          </Link>
+          <Link
+            to="/app/checkin"
+            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
+          >
+            Check-in
+          </Link>
+          <Link
+            to="/app/library"
+            className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
+          >
+            Library
+          </Link>
           <Link
             to="/app/membership"
             className="flex items-center gap-1.5 rounded-full liquid-glass px-3 py-1.5 hover:bg-foreground/5"
