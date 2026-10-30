@@ -9,6 +9,7 @@ import { AudioPlayer } from "@/components/AudioPlayer";
 import { CoverHero } from "@/components/CoverArt";
 import { InAppTools } from "@/components/healthy-love/InAppTools";
 import { PatternGuideCard } from "@/components/healthy-love/PatternGuideCard";
+import { LessonPlayer, answerSummary, type Step } from "@/components/LessonPlayer";
 
 type Module = {
   id: string;
@@ -23,14 +24,7 @@ type Module = {
   audio_binaural?: boolean;
   is_free?: boolean;
 };
-type Exercise = {
-  id: string;
-  position: number;
-  kind: "prompt" | "checklist";
-  title: string;
-  body: string | null;
-  options: string[] | null;
-};
+type Exercise = Step;
 
 export const Route = createFileRoute("/app/module/$slug")({
   component: ModulePage,
@@ -167,6 +161,7 @@ function ModulePage() {
 
   const saveAll = async () => {
     for (const ex of exercises) {
+      if (ex.kind === "lesson") continue;
       const a = answers[ex.id] ?? { text: "", data: null };
       await persist(ex.id, a.text, a.data);
     }
@@ -208,35 +203,34 @@ function ModulePage() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
 
-    exercises.forEach((ex, i) => {
-      if (y > 740) {
-        doc.addPage();
-        y = margin;
-      }
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
-      const heading = `${i + 1}. ${ex.title}`;
-      doc.text(heading, margin, y);
-      y += 18;
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(11);
-      if (ex.kind === "prompt") {
-        const text = answers[ex.id]?.text || "(no answer)";
+    exercises
+      .filter((ex) => ex.kind !== "lesson")
+      .forEach((ex, i) => {
+        if (y > 740) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        const heading = doc.splitTextToSize(`${i + 1}. ${ex.title}`, 500);
+        doc.text(heading, margin, y);
+        y += heading.length * 15 + 3;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        const text = answerSummary(ex, answers[ex.id]) || "(no answer)";
         const lines = doc.splitTextToSize(text, 500);
-        doc.text(lines, margin, y);
-        y += lines.length * 14 + 10;
-      } else {
-        const data = (answers[ex.id]?.data as Record<string, boolean>) || {};
-        (ex.options ?? []).forEach((opt) => {
-          const mark = data[opt] ? "[x]" : "[ ]";
-          doc.text(`${mark} ${opt}`, margin, y);
+        for (const line of lines as string[]) {
+          if (y > 780) {
+            doc.addPage();
+            y = margin;
+          }
+          doc.text(line, margin, y);
           y += 14;
-        });
-        y += 6;
-      }
-    });
+        }
+        y += 12;
+      });
 
-    doc.save(`${module.slug}-my-love-pattern.pdf`);
+    doc.save(`${module.slug}-signe-coach-workbook.pdf`);
   };
 
   if (loadError || notFound) {
@@ -267,6 +261,28 @@ function ModulePage() {
       </div>
     );
   }
+
+  const lessonMode = exercises.some((e) => e.kind === "lesson");
+  const nextModule = allModules
+    .filter((m) => m.position > module.position)
+    .sort((a, b) => a.position - b.position)[0];
+  const audioNode = (
+    <>
+      <CoverHero
+        slug={module.slug}
+        title={module.audio_title || module.title}
+        subtitle={module.subtitle}
+        label={`${module.is_free ? "Free audio" : "Member audio"}${module.audio_binaural ? " · Binaural" : ""}`}
+        minutes={module.audio_minutes}
+      />
+      <AudioPlayer
+        path={module.audio_path ?? null}
+        title={module.audio_title}
+        minutes={module.audio_minutes}
+        binaural={module.audio_binaural}
+      />
+    </>
+  );
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 pb-32 sm:px-6 sm:py-16 sm:pb-32">
@@ -311,6 +327,23 @@ function ModulePage() {
         </div>
       )}
 
+      {!locked && lessonMode && (
+        <LessonPlayer
+          moduleSlug={module.slug}
+          steps={exercises}
+          answers={answers}
+          onAnswer={updateAnswer}
+          audioNode={module.audio_path ? audioNode : undefined}
+          summaryExtra={<PatternGuideCard moduleSlug={module.slug} />}
+          completed={completed}
+          onComplete={markComplete}
+          onPdf={downloadPdf}
+          nextModule={nextModule ? { slug: nextModule.slug, title: nextModule.title } : null}
+        />
+      )}
+
+      {!lessonMode && (
+        <>
       {!locked && module.audio_path && (
         <CoverHero
           slug={module.slug}
@@ -362,7 +395,7 @@ function ModulePage() {
                 />
               ) : (
                 <div className="mt-4 space-y-2">
-                  {(ex.options ?? []).map((opt) => {
+                  {(ex.options ?? []).map((opt: string) => {
                     const data = (a.data as Record<string, boolean>) || {};
                     const checked = !!data[opt];
                     return (
@@ -435,6 +468,10 @@ function ModulePage() {
         </>
       )}
 
+        </>
+      )}
+
+      {!lessonMode && (
       <div className="fixed bottom-4 left-1/2 z-40 w-[calc(100%-1.5rem)] max-w-xl -translate-x-1/2">
         <div className="liquid-glass flex items-center justify-center gap-2 rounded-full px-3 py-2 shadow-2xl backdrop-blur">
           <button
@@ -452,6 +489,7 @@ function ModulePage() {
           </button>
         </div>
       </div>
+      )}
     </div>
   );
 }
